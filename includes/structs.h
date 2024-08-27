@@ -6,11 +6,17 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 10:48:07 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/27 10:48:23 by roespici         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:17:36 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
+typedef struct s_parse
+{
+
+}	t_parse;
+
 
 #endif
