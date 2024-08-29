@@ -6,7 +6,7 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/29 11:45:01 by roespici         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:46:01 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@
 # include <readline/history.h>
 
 
-hello
+hel
 #endif
