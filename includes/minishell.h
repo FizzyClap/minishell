@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/29 12:01:02 by roespici         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:56:47 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-allo
+hello
+
 #endif
