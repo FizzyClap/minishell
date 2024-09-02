@@ -4,6 +4,7 @@ FLAGS = -Wall -Werror -Wextra
 LIBFT = libft/libft.a
 LIBFT_PATH = ./libft
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
+LDFLAGS = $(LIBFT_FLAGS) -lreadline -lhistory -lncurses
 INCLUDES = -I./includes -I$(LIBFT_PATH)/includes
 RM = rm -rf
 GREEN = \033[0;32m
@@ -12,12 +13,18 @@ BLUE = \033[38;5;153m
 NC = \033[0m
 
 SRCS =	srcs/main.c\
+		srcs/exec/exec.c\
+		srcs/exec/free.c\
+		srcs/exec/here_doc.c\
+		srcs/exec/path_building.c\
+		srcs/exec/pipex.c\
+		srcs/exec/utils.c\
 
 OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(LIBFT) pimped $(OBJS)
 	@sleep 0.8
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT_FLAGS) $(INCLUDES)
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LDFLAGS) $(INCLUDES)
 	@echo "\033[1A\033[2K\033[1A"
 	@echo "│$(GREEN) Compilation of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"

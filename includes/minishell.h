@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/29 12:01:02 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 07:38:54 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,25 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-allo
+# define SUCCESS 0
+# define FAILURE -1
+
+//FONCTIONS EXEC
+int		execute_pipex(int argc, char **argv, char *const *envp);
+void	here_doc(t_pipex *pipex, char const *limiter, int argc, char **argv);
+pid_t	fork_child(void);
+void	exec(t_pipex *pipex, int inputfd, int outputfd, char *cmd);
+void	execute_pipes(t_pipex *pipex, char **argv, int start);
+void	error_exit(const char *msg);
+//FONCTIONS PATH BUILDING
+char	*get_path(t_pipex *pipex, const char *command);
+//FONCTIONS UTILS
+void	init_pipex(t_pipex *pipex, int argc, char **argv, char *const *envp);
+int		open_infile(t_pipex *pipex, char **argv);
+int		open_outfile(t_pipex *pipex, int argc, char **argv);
+void	close_pipes(t_pipex *pipex);
+//FONCTIONS FREE
+void	free_split(char **split);
+void	free_pipex(t_pipex *pipex);
+
 #endif
