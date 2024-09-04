@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:39:52 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 07:36:14 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/04 09:08:41 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-pid_t	fork_child(void)
+static pid_t	fork_child(void)
 {
 	pid_t	child;
 
@@ -20,6 +20,41 @@ pid_t	fork_child(void)
 	if (child == FAILURE)
 		error_exit("Fork error");
 	return (child);
+}
+
+static void	exec_command(t_pipex *pipex, char *command)
+{
+	char	*path;
+	char	**args;
+
+	args = ft_split(command, ' ');
+	path = get_path(pipex, args[0]);
+	if (!path)
+	{
+		free_split(args);
+		free_pipex(pipex);
+		error_exit("Command not found in path");
+	}
+	free(args[0]);
+	args[0] = path;
+	if (execve(args[0], args, pipex->envp) == FAILURE)
+	{
+		free_split(args);
+		free_pipex(pipex);
+		error_exit("Error executing command");
+	}
+}
+
+static void	exec(t_pipex *pipex, int inputfd, int outputfd, char *cmd)
+{
+	if (dup2(inputfd, STDIN_FILENO) == FAILURE)
+		error_exit("Dup2 input error");
+	if (dup2(outputfd, STDOUT_FILENO) == FAILURE)
+		error_exit("Dup2 output error");
+	close(inputfd);
+	close(outputfd);
+	exec_command(pipex, cmd);
+	error_exit("Execve error");
 }
 
 static void	chose_pipe(t_pipex *pipex, int i, int start, char **argv)
@@ -77,39 +112,4 @@ void	execute_pipes(t_pipex *pipex, char **argv, int start)
 				close(pipex->pipefd[i][1]);
 		}
 	}
-}
-
-void	exec_command(t_pipex *pipex, const char *command)
-{
-	char	*path;
-	char	**args;
-
-	args = ft_split(command, ' ');
-	path = get_path(pipex, args[0]);
-	if (!path)
-	{
-		free_split(args);
-		free_pipex(pipex);
-		error_exit("Command not found in path");
-	}
-	free(args[0]);
-	args[0] = path;
-	if (execve(args[0], args, pipex->envp) == FAILURE)
-	{
-		free_split(args);
-		free_pipex(pipex);
-		error_exit("Error executing command");
-	}
-}
-
-void	exec(t_pipex *pipex, int inputfd, int outputfd, char *cmd)
-{
-	if (dup2(inputfd, STDIN_FILENO) == FAILURE)
-		error_exit("Dup2 input error");
-	if (dup2(outputfd, STDOUT_FILENO) == FAILURE)
-		error_exit("Dup2 output error");
-	close(inputfd);
-	close(outputfd);
-	exec_command(pipex, cmd);
-	error_exit("Execve error");
 }

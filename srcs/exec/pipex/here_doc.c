@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:37:15 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 07:36:14 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:10:09 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
-static void	fill_here_doc(t_pipex *pipex, char const *limiter)
+static void	fill_here_doc(t_pipex *pipex, char *limiter)
 {
 	char	*line;
 
@@ -47,7 +47,7 @@ static void	close_here_doc(t_pipex *pipex)
 	unlink("here_doc.tmp");
 }
 
-void	here_doc(t_pipex *pipex, char const *limiter, int argc, char **argv)
+void	here_doc(t_pipex *pipex, char *limiter, int argc, char **argv)
 {
 	int	i;
 	int	last_arg;

@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 07:53:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/05/11 15:40:59 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:07:42 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_type(va_list args, char *format)
 	return (count);
 }
 
-int	ft_printf(const char *str, ...)
+int	ft_printf(char *str, ...)
 {
 	va_list	args;
 	int		i;

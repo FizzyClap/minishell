@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 21:31:52 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/17 17:31:26 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:08:40 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-int	ft_strlen_split(char const *s, char c)
+int	ft_strlen_split(char *s, char c)
 {
 	size_t	i;
 
@@ -22,7 +22,7 @@ int	ft_strlen_split(char const *s, char c)
 	return (i);
 }
 
-int	ft_countstrings(char const *s, char c)
+int	ft_countstrings(char *s, char c)
 {
 	size_t	i;
 	size_t	strings;
@@ -43,7 +43,7 @@ int	ft_countstrings(char const *s, char c)
 	return (strings);
 }
 
-char	*ft_strdup_split(char const *s, char c)
+char	*ft_strdup_split(char *s, char c)
 {
 	size_t	i;
 	char	*dest;
@@ -62,7 +62,7 @@ char	*ft_strdup_split(char const *s, char c)
 	return (dest);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char *s, char c)
 {
 	size_t		i;
 	int			j;

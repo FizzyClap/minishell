@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:06:53 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/17 17:31:26 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:07:42 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup(char *s)
 {
 	int		i;
 	char	*dest;

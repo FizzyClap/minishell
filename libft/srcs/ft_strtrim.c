@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 12:39:37 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/17 17:31:26 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:08:40 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-int	ft_checkcharset(char const *set, char c)
+int	ft_checkcharset(char *set, char c)
 {
 	size_t	i;
 
@@ -26,7 +26,7 @@ int	ft_checkcharset(char const *set, char c)
 	return (0);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char *s1, char *set)
 {
 	char	*dest;
 	size_t	i;

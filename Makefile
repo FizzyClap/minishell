@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g3 #-fsanitize=address
 LIBFT = libft/libft.a
 LIBFT_PATH = ./libft
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
@@ -13,12 +13,16 @@ BLUE = \033[38;5;153m
 NC = \033[0m
 
 SRCS =	srcs/main.c\
-		srcs/exec/exec.c\
-		srcs/exec/free.c\
-		srcs/exec/here_doc.c\
-		srcs/exec/path_building.c\
-		srcs/exec/pipex.c\
-		srcs/exec/utils.c\
+		srcs/exec/pipex/exec.c\
+		srcs/exec/pipex/free.c\
+		srcs/exec/pipex/here_doc.c\
+		srcs/exec/pipex/path_building.c\
+		srcs/exec/pipex/pipex.c\
+		srcs/exec/pipex/utils_pipex.c\
+		srcs/exec/builtins/utils_builtins.c\
+		srcs/exec/builtins/builtins_env.c\
+		srcs/exec/builtins/builtins_other.c\
+		srcs/exec/builtins/chain_list_utils.c\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -71,13 +75,12 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-	@make -s -C $(LIBFT_PATH) fclean
 
 re: fclean all
 
 norme:
 	@echo "$(BLUE)Checking norminette in progress... ⌛"
-	@if norminette src includes libft > norme.tmp;\
+	@if norminette srcs includes libft > norme.tmp;\
 	then echo "$(GREEN)Norminette check passed successfully ✓";\
 	else echo "$(RED)Norminette check failed.$(NC)";\
 	cat norme.tmp | grep "Error";\

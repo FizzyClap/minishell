@@ -6,11 +6,11 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:15:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 07:36:14 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:10:13 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 static char	*get_env(char *const *envp)
 {
@@ -32,7 +32,7 @@ static char	*get_env(char *const *envp)
 	return (path_env);
 }
 
-static char	*get_cmd(const char *command)
+static char	*get_cmd(char *command)
 {
 	char	*cmd;
 	char	*space_pos;
@@ -84,7 +84,7 @@ static char	*build_path(char **paths, char *command)
 	return (NULL);
 }
 
-char	*get_path(t_pipex *pipex, const char *command)
+char	*get_path(t_pipex *pipex, char *command)
 {
 	char	**paths;
 	char	*full_path;

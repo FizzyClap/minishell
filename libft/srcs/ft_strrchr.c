@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:15:53 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/17 17:31:26 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:07:42 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strrchr(char *s, int c)
 {
 	size_t	i;
 

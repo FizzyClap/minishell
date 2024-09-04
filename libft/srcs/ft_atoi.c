@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 09:37:37 by roespici          #+#    #+#             */
-/*   Updated: 2024/08/20 15:12:25 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:07:42 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi(char *nptr)
 {
 	int	i;
 	int	sign;

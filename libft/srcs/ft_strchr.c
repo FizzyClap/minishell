@@ -6,11 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:11:37 by roespici          #+#    #+#             */
-/*   Updated: 2024/05/05 14:13:09 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:11:06 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strchr(const char *s, int c)
+#include <unistd.h>
+
+char	*ft_strchr(char *s, int c)
 {
 	int	i;
 
@@ -20,5 +22,5 @@ char	*ft_strchr(const char *s, int c)
 		i++;
 	if (s[i] == c)
 		return ((char *)s + i);
-	return (0);
+	return (NULL);
 }

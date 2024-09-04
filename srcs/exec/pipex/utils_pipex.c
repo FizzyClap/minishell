@@ -6,11 +6,11 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 08:29:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 07:36:14 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:10:20 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 void	error_exit(const char *msg)
 {

@@ -6,11 +6,11 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 08:14:18 by roespici          #+#    #+#             */
-/*   Updated: 2024/07/15 08:15:38 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:08:40 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char const *s1, char const *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
 

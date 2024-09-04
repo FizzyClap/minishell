@@ -6,11 +6,11 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:41:50 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 07:36:14 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:10:04 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 void	free_pipex(t_pipex *pipex)
 {
