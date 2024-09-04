@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 14:38:15 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:49:07 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,14 @@ void	builtin_pwd(void)
 		perror("getcwd error");
 }
 
-void	builtin_exit(char **args)
+void	builtin_exit(t_env *env, char **args)
 {
 	int	exit_code;
 
 	exit_code = 0;
 	if (args[1])
 		exit_code = ft_atoi(args[1]);
+	free_env(env);
 	free_split(args);
 	exit(exit_code);
 }

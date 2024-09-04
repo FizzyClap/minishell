@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:52:21 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 15:39:05 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:07:58 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	builtin_env(t_env *head, char *command)
 	current = head;
 	while (current)
 	{
+		if (ft_strcmp(command, "export") == 0)
+			printf("declare -x ");
 		if (current->token)
 		{
 			if (current->args[0] != '"')
@@ -95,7 +97,7 @@ void	builtin_env(t_env *head, char *command)
 			else
 				printf("%s=%s\n", current->var, current->args);
 		}
-		else if (ft_strcmp((command), "export") == 0)
+		else if (ft_strcmp(command, "export") == 0)
 			printf("%s\n", current->var);
 		current = current->next;
 	}

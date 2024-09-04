@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 14:38:06 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:49:19 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	builtin_unset(t_env *env, char **args);
 void	builtin_echo(char **args);
 void	builtin_cd(char **args);
 void	builtin_pwd(void);
-void	builtin_exit(char **args);
+void	builtin_exit(t_env *env, char **args);
 //BUILTINS/CHAIN LIST UTILS
 t_env	*create_node(char *env_line);
 void	modify_node(t_env *env, char *env_line);

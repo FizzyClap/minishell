@@ -6,20 +6,19 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 11:21:27 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 15:35:48 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:45:12 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-static int	equal_pos_exist(t_env *new)
+static int	equal_pos_exist(t_env *new, char *equal_pos)
 {
-	new->var = ft_substr(new->line, 0, ft_strchr(new->line, '=') - new->line);
+	new->var = ft_substr(new->line, 0, equal_pos - new->line);
 	if (!new->var)
 		return (free(new->line), free(new), FAILURE);
 	new->token = 1;
-	new->args = ft_substr(ft_strchr(new->line, '=') + 1, 0, \
-				ft_strlen(ft_strchr(new->line, '=') + 1));
+	new->args = ft_substr(equal_pos + 1, 0, ft_strlen(equal_pos + 1));
 	if (!new->args)
 		return (free(new->var), free(new->line), free(new), FAILURE);
 	return (SUCCESS);
@@ -28,6 +27,7 @@ static int	equal_pos_exist(t_env *new)
 t_env	*create_node(char *env_line)
 {
 	t_env	*new;
+	char	*equal_pos;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
@@ -36,7 +36,8 @@ t_env	*create_node(char *env_line)
 	if (!new->line)
 		return (free(new), NULL);
 	new->next = NULL;
-	if (!ft_strchr(new->line, '='))
+	equal_pos = ft_strchr(new->line, '=');
+	if (!equal_pos)
 	{
 		new->var = ft_strdup(new->line);
 		if (!new->var)
@@ -45,7 +46,7 @@ t_env	*create_node(char *env_line)
 		new->args = NULL;
 		return (new);
 	}
-	if (equal_pos_exist(new) == FAILURE)
+	if (equal_pos_exist(new, equal_pos) == FAILURE)
 		return (NULL);
 	return (new);
 }

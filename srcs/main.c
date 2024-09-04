@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 14:38:12 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:49:26 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	execute_builtins(t_env *env, char *line, char **args)
 	else if (ft_strcmp(args[0], "env") == 0)
 		builtin_env(env, args[0]);
 	else if (ft_strcmp(args[0], "exit") == 0)
-		builtin_exit(args);
+		builtin_exit(env, args);
 	else
 		printf("Fraudistan Inc: command not found: %s\n", args[0]);
 	free_split(args);

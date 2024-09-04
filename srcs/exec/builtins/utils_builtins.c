@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 15:32:22 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:00:58 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,12 @@ t_env	*copy_env(t_env *env)
 {
 	t_env	*copy;
 	t_env	*temp;
-	t_env	*new_node;
 
 	copy = NULL;
 	temp = env;
 	while (temp)
 	{
-		new_node = create_node(temp->line);
-		if (!new_node)
-			return (free_env(copy), NULL);
-		add_node(&copy, new_node->line);
+		add_node(&copy, temp->line);
 		temp = temp->next;
 	}
 	return (copy);
