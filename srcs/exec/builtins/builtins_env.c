@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:52:21 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 17:07:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 09:08:56 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	builtin_export(t_env *env, char **args)
 void	builtin_unset(t_env *env, char **args)
 {
 	t_env	*current;
+	t_env	*prev;
 	t_env	*temp;
 	int		i;
 
@@ -64,12 +65,14 @@ void	builtin_unset(t_env *env, char **args)
 	while (args[++i])
 	{
 		current = env;
-		while (current && current->next)
+		while (current->next)
 		{
 			if (ft_strcmp(current->next->var, args[i]) == 0)
 			{
+				prev = current;
 				temp = current->next;
-				current->next = current->next->next;
+				prev->next = current->next->next;
+				free(temp->line);
 				free(temp->var);
 				free(temp->args);
 				free(temp);
@@ -77,7 +80,6 @@ void	builtin_unset(t_env *env, char **args)
 			else
 				current = current->next;
 		}
-		current = current->next;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 11:21:27 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 16:45:12 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 09:07:48 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_env	*create_node(char *env_line)
 	t_env	*new;
 	char	*equal_pos;
 
+	if (!env_line)
+		return (NULL);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
