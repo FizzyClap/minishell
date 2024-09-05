@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 09:37:15 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 09:10:09 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:00:21 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	here_doc(t_pipex *pipex, char *limiter, int argc, char **argv)
 	fill_here_doc(pipex, limiter);
 	if (!pipex->outfile_open)
 	{
-		ft_printf("zsh: permission denied: %s\n", argv[last_arg]);
+		printf("bash: %s: Permission denied\n", argv[last_arg]);
 		unlink("here_doc.tmp");
 		return ;
 	}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 08:29:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 09:10:20 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:05:04 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ int	open_infile(t_pipex *pipex, char **argv)
 	if (access(argv[1], F_OK) == FAILURE)
 	{
 		pipex->infile_open = 0;
+		pipex->infile_exist = 0;
 		pipex->nb_pipes--;
-		ft_printf("zsh: no such file or directory: %s\n", argv[1]);
 		return (FAILURE);
 	}
 	if (access(argv[1], R_OK) == FAILURE)
 	{
 		pipex->infile_open = 0;
 		pipex->nb_pipes--;
-		ft_printf("zsh: permission denied: %s\n", argv[1]);
+		printf("bash: %s: Permission denied\n", argv[1]);
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -56,9 +56,13 @@ int	open_outfile(t_pipex *pipex, int argc, char **argv)
 			pipex->nb_pipes--;
 		if (pipex->limiter)
 			return (FAILURE);
-		ft_printf("zsh: permission denied: %s\n", argv[last_arg]);
+		printf("bash: %s: Permission denied\n", argv[last_arg]);
+		if (!pipex->infile_exist)
+			printf("bash: %s: No such file or directory\n", argv[1]);
 		return (FAILURE);
 	}
+	if (!pipex->infile_exist)
+		printf("bash: %s: No such file or directory\n", argv[1]);
 	return (SUCCESS);
 }
 
@@ -94,6 +98,7 @@ void	init_pipex(t_pipex *pipex, int argc, char **argv, char *const *envp)
 	if (!pipex->child)
 		return ;
 	pipex->infile_open = 1;
+	pipex->infile_exist = 1;
 	pipex->outfile_open = 1;
 	pipex->limiter = NULL;
 	pipex->status = 1;

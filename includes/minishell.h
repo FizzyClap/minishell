@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 16:49:19 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:41:47 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ void	init_env(t_env **env);
 void	sort_env(t_env *env);
 t_env	*copy_env(t_env *env);
 void	free_env(t_env *head);
+int		count_args(char **args);
 
 #endif

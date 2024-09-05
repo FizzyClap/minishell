@@ -6,15 +6,14 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 16:49:26 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:50:30 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute_builtins(t_env *env, char *line, char **args)
+void	execute_builtins(t_env *env, char **args)
 {
-	args = ft_split(line, ' ');
 	if (ft_strcmp(args[0], "echo") == 0)
 		builtin_echo(args);
 	else if (ft_strcmp(args[0], "cd") == 0)
@@ -34,6 +33,16 @@ void	execute_builtins(t_env *env, char *line, char **args)
 	free_split(args);
 }
 
+int	count_args(char **args)
+{
+	int	count;
+
+	count = 1;
+	while (args[count])
+		count++;
+	return (count);
+}
+
 int	main(void)
 {
 	t_command	command;
@@ -46,8 +55,12 @@ int	main(void)
 		command.line = readline("Fraudistan> ");
 		if (!command.line)
 			break ;
+		add_history(command.line);
+		command.args = ft_split(command.line, ' ');
 		if (is_builtins(command.line))
-			execute_builtins(env, command.line, command.args);
+			execute_builtins(env, command.args);
+		//else
+		//	execute_pipex(count_args(command.args), command.args, env);
 		free(command.line);
 	}
 }

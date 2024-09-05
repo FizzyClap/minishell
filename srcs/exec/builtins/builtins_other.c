@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 16:49:07 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:51:21 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,20 @@ void	builtin_pwd(void)
 
 void	builtin_exit(t_env *env, char **args)
 {
+	int	nb_args;
 	int	exit_code;
 
+	nb_args = count_args(args);
 	exit_code = 0;
-	if (args[1])
+	if (nb_args == 2)
 		exit_code = ft_atoi(args[1]);
+	printf("exit\n");
+	if (nb_args > 2)
+	{
+		printf("bash: exit: too many arguments\n");
+		exit_code = 1;
+		return ;
+	}
 	free_env(env);
 	free_split(args);
 	exit(exit_code);

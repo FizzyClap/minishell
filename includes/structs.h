@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 10:48:07 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 11:16:30 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/05 11:49:36 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_pipex
 	int			**pipefd;
 	char *const	*envp;
 	int			infile_open;
+	int			infile_exist;
 	int			outfile_open;
 	char		*limiter;
 	pid_t		*child;
