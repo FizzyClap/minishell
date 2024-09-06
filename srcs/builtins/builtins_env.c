@@ -6,11 +6,11 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:52:21 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/05 09:08:56 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 08:36:35 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 static void	sort_and_print(t_env *env, char **args)
 {

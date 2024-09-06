@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:02:12 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/02 08:08:40 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 08:56:59 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 # include "../gnl/get_next_line.h"
 # include "../printf/printf.h"
 
@@ -30,6 +31,9 @@ int					ft_atoi(char *nptr);
 char				*ft_itoa(int nb);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
+bool				ft_change_bool(bool quote);
+int					ft_count_args(char **args);
+int					ft_chrinstr(char *str, int c);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);

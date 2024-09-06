@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/05 11:41:47 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:14:52 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,43 +33,42 @@
 # include <readline/history.h>
 # include <stdbool.h>
 
-//PIPEX/EXEC
-int		execute_pipex(int argc, char **argv, char *const *envp);
-//PIPEX/FREE
-void	free_pipex(t_pipex *pipex);
-void	free_split(char **split);
-//PIPEX/HERE_DOC
-void	here_doc(t_pipex *pipex, char *limiter, int argc, char **argv);
-//PIPEX/PATH BUILDING
-char	*get_path(t_pipex *pipex, char *command);
-//PIPEX/PIPEX
-void	execute_pipes(t_pipex *pipex, char **argv, int start);
-//PIPEX/UTILS PIPEX
-void	error_exit(const char *msg);
-int		open_infile(t_pipex *pipex, char **argv);
-int		open_outfile(t_pipex *pipex, int argc, char **argv);
-void	close_pipes(t_pipex *pipex);
-void	init_pipex(t_pipex *pipex, int argc, char **argv, char *const *envp);
+//INIT
+void		init_minishell(t_env **env, t_cmd *command);
+void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 //BUILTINS/BUILTINS ENV
-void	builtin_env(t_env *head, char *command);
-void	builtin_export(t_env *env, char **args);
-void	builtin_unset(t_env *env, char **args);
+void		builtin_env(t_env *head, char *command);
+void		builtin_export(t_env *env, char **args);
+void		builtin_unset(t_env *env, char **args);
 //BUILTINS/BUILTINS OTHER
-void	builtin_echo(char **args);
-void	builtin_cd(char **args);
-void	builtin_pwd(void);
-void	builtin_exit(t_env *env, char **args);
+void		builtin_echo(t_cmd *command);
+void		builtin_cd(char **args);
+void		builtin_pwd(void);
+void		builtin_exit(t_env *env, t_cmd *command);
 //BUILTINS/CHAIN LIST UTILS
-t_env	*create_node(char *env_line);
-void	modify_node(t_env *env, char *env_line);
-void	add_node(t_env **head, char *env_line);
-void	swap_nodes(t_env *node1, t_env *node2);
+t_env		*create_node(char *env_line);
+void		modify_node(t_env *env, char *env_line);
+void		add_node(t_env **head, char *env_line);
+void		swap_nodes(t_env *node1, t_env *node2);
 //BUILTINS/UTILS BUILTINS
-int		is_builtins(char *command);
-void	init_env(t_env **env);
-void	sort_env(t_env *env);
-t_env	*copy_env(t_env *env);
-void	free_env(t_env *head);
-int		count_args(char **args);
+int			is_builtins(char *command);
+void		sort_env(t_env *env);
+t_env		*copy_env(t_env *env);
+void		free_env(t_env *head);
+void		free_split(char **args);
+//LEXER/LEXER LST
+t_lexer		*lexer_new(char *element, int token);
+void		lexer_add_back(t_lexer **lst, t_lexer *new);
+//LEXER/LEXER REDIR
+t_lexer		*clean_redir(t_lexer *lexer);
+//LEXER/LEXER
+t_lexer		*make_lexer(char *input);
+//PARSER/PARSER LST
+t_cmd		*cmd_new(char *cmd, char **args, t_lexer *out);
+void		cmd_add_back(t_cmd **lst, t_cmd *new);
+//PARSER/PARSER
+t_cmd		*make_cmd(t_split_cmd *split);
+//PARSER/SPLIT CMD
+t_split_cmd	*split_cmd(t_lexer *lexer);
 
 #endif

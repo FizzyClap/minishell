@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                           :+:      :+:    :+:   */
+/*   ft_change_bool.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/02 09:23:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:13:33 by roespici         ###   ########.fr       */
+/*   Created: 2024/09/06 08:50:16 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/06 08:56:55 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#include "../include/libft.h"
 
-# define PROMPT "Fraudistan> "
-# define SUCCESS 0
-# define FAILURE -1
-# define ISBUILTINS 1
-# define ISNOTBUILTINS 0
-//TOKEN
-# define WORD 0
-# define PIPE 1
-# define IN 2
-# define OUT 3
-# define HEREDOC 4
-# define APPEND 5
-# define DOLLAR 6
-# define QUESTION 7
-# define OR 8
-# define AND 9
-
-#endif
+bool	ft_change_bool(bool quote)
+{
+	if (quote == true)
+		quote = false;
+	else
+		quote = true;
+	return (quote);
+}

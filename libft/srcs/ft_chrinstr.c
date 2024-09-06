@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                           :+:      :+:    :+:   */
+/*   ft_chrinstr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/02 09:23:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:13:33 by roespici         ###   ########.fr       */
+/*   Created: 2024/09/06 08:54:54 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/06 09:16:16 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#include "../include/libft.h"
 
-# define PROMPT "Fraudistan> "
-# define SUCCESS 0
-# define FAILURE -1
-# define ISBUILTINS 1
-# define ISNOTBUILTINS 0
-//TOKEN
-# define WORD 0
-# define PIPE 1
-# define IN 2
-# define OUT 3
-# define HEREDOC 4
-# define APPEND 5
-# define DOLLAR 6
-# define QUESTION 7
-# define OR 8
-# define AND 9
+int	ft_chrinstr(char *str, char c)
+{
+	int	i;
 
-#endif
+	i = -1;
+	while (str[++i])
+		if (str[i] == c)
+			return (0);
+	return (1);
+}

@@ -6,11 +6,11 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/04 17:00:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 08:36:35 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	is_builtins(char *command)
 {
@@ -29,15 +29,6 @@ int	is_builtins(char *command)
 	if ((ft_strncmp(command, "exit", ft_strlen("exit")) == 0))
 		return (ISBUILTINS);
 	return (ISNOTBUILTINS);
-}
-
-void	init_env(t_env **env)
-{
-	int	i;
-
-	i = -1;
-	while (__environ[++i])
-		add_node(env, __environ[i]);
 }
 
 void	sort_env(t_env *env)
@@ -91,4 +82,14 @@ void	free_env(t_env *head)
 		free(head);
 		head = temp;
 	}
+}
+
+void	free_split(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+		free(args[i]);
+	free(args);
 }

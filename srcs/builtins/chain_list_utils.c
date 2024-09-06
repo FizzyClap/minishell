@@ -6,11 +6,11 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 11:21:27 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/05 09:07:48 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 08:36:35 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 static int	equal_pos_exist(t_env *new, char *equal_pos)
 {
