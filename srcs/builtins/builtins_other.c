@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:56:47 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:24:35 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ void	builtin_cd(t_env *env, char **args)
 	int			nb_args;
 
 	path_to_home = NULL;
-	nb_args = ft_count_args(args);
+	nb_args = 0;
+	if (args)
+		nb_args = ft_count_args(args);
 	if (nb_args == 0)
 	{
 		path_to_home = getenv("HOME");
@@ -75,7 +77,9 @@ void	builtin_pwd(char **args)
 	char	*cwd;
 	int		nb_args;
 
-	nb_args = ft_count_args(args);
+	nb_args = 0;
+	if (args)
+		nb_args = ft_count_args(args);
 	if (nb_args > 0)
 	{
 		printf("pwd: too many arguments\n");
@@ -95,7 +99,9 @@ void	builtin_exit(t_env *env, t_cmd *command)
 {
 	int	nb_args;
 
-	nb_args = ft_count_args(command->args);
+	nb_args = 0;
+	if (command->args)
+		nb_args = ft_count_args(command->args);
 	printf("exit\n");
 	if (nb_args > 1)
 	{
@@ -108,13 +114,12 @@ void	builtin_exit(t_env *env, t_cmd *command)
 		command->exit_code = ft_atoi(command->args[0]) % 256;
 		if (!ft_strisnum(command->args[0]))
 		{
-			printf("bash: exit: %s: numeric argument required\n",
+			printf("bash: exit: %s: numeric argument required\n", \
 				command->args[0]);
 			command->exit_code = 2;
 		}
 	}
-	free(env->prev_path);
 	free_env(env);
-	free_split(command->args);
+	ft_free_tab(command->args);
 	exit(command->exit_code);
 }

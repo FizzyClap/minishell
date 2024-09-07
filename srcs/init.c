@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:40:31 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:36:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:15:48 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	init_pipex(t_pipex *pipex, t_env *env)
 
 	pipex->i = -1;
 	pipex->env = env;
+	tab_env(pipex->env);
 	pipex->infile_exist = 1;
 	pipex->infile_open = 1;
 	pipex->outfile_open = 1;

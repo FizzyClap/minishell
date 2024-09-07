@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:41:51 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:50:51 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 13:36:48 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_cmd	*cmd_new(char *line, char *cmd, char **args, t_lexer *out)
 	tcmd->line = line;
 	tcmd->cmd = cmd;
 	tcmd->args = args;
-	tcmd->output_redirection = out;
+	tcmd->redir = out;
 	tcmd->next = NULL;
 	return (tcmd);
 }

@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:52:00 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:32:03 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int			is_builtins(t_cmd *command);
 void		sort_env(t_env *env);
 t_env		*copy_env(t_env *env);
 void		free_env(t_env *head);
-void		free_split(char **args);
 //LEXER/LEXER LST
 t_lexer		*lexer_new(char *element, int token);
 void		lexer_add_back(t_lexer **lst, t_lexer *new);
@@ -70,5 +69,15 @@ void		cmd_add_back(t_cmd **lst, t_cmd *new);
 t_cmd		*make_cmd(t_split_cmd *split);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
+//PIPEX/PATH BUILDING
+char		*get_path(t_pipex *pipex);
+//PIPEX/PIPEX
+void		exec_command(t_pipex *pipex);
+void		exec(t_pipex *pipex, int inputfd, int outputfd);
+//PIPEX/UTILS PIPEX
+void		error_exit(const char *msg);
+int			open_infile(t_pipex *pipex);
+int			open_outfile(t_pipex *pipex);
+void		close_pipes(t_pipex *pipex);
 
 #endif

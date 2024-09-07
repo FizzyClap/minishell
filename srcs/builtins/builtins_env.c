@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:52:21 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 10:53:32 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 13:48:44 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ static void	sort_and_print(t_env *env, char *cmd, char **args)
 	t_env	*sorted_env;
 	int		nb_args;
 
-	nb_args = ft_count_args(args);
+	nb_args = 0;
+	if (args)
+		nb_args = ft_count_args(args);
 	if (ft_strcmp(cmd, "export") == 0 && nb_args == 0)
 	{
 		sorted_env = copy_env(env);

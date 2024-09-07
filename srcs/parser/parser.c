@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:40:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:51:04 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:01:12 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	count_args(t_lexer *cmd)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->token == 0)
+		if (cmd->token == WORD)
 			i++;
 		cmd = cmd->next;
 	}
@@ -37,24 +37,22 @@ t_cmd	*make_cmd(t_split_cmd *split)
 	while (split)
 	{
 		new = cmd_new(NULL, NULL, NULL, NULL);
-		if (split->cmd->token == 0)
-		{
-			new->cmd = ft_strdup(split->cmd->element);
-			split->cmd = split->cmd->next;
-		}
 		arg = -1;
-		new->args = ft_calloc(count_args(split->cmd) + 1, sizeof(char *));
 		while (split->cmd)
 		{
-			if (split->cmd->token == 0)
+			if (split->cmd->token == WORD && new->cmd == NULL)
+				new->cmd = ft_strdup(split->cmd->element);
+			else if (split->cmd->token == WORD && count_args(split->cmd))
 			{
+				if (new->args == NULL)
+					new->args = ft_calloc(count_args(split->cmd) + 1, sizeof(char *));
 				new->args[++arg] = ft_strdup(split->cmd->element);
 				split->cmd = split->cmd->next;
 			}
-			else
+			else if (split->cmd->token != WORD)
 			{
 				tmp = lexer_new(split->cmd->element, split->cmd->token);
-				lexer_add_back(&new->output_redirection, tmp);
+				lexer_add_back(&new->redir, tmp);
 				split->cmd = split->cmd->next;
 			}
 		}

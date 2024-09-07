@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:02:12 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 09:29:29 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 13:52:44 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void				*ft_calloc(size_t nmemb, size_t size);
 bool				ft_change_bool(bool quote);
 int					ft_count_args(char **args);
 int					ft_chrinstr(char *str, int c);
+void				ft_free_tab(char **args);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
