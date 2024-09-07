@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:40:44 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 13:50:54 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ void	free_split(char **args)
 	int	i;
 
 	i = -1;
-	while (args[++i])
-		free(args[i]);
-	free(args);
+	if (args)
+	{
+		while (args[++i])
+			free(args[i]);
+		free(args);
+	}
 }

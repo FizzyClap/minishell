@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_other.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:56:47 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 17:40:23 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ void	builtin_pwd(char **args)
 	char	*cwd;
 	int		nb_args;
 
-	nb_args = ft_count_args(args);
+	nb_args = 0;
+	if (args)
+		nb_args = ft_count_args(args);
 	if (nb_args > 0)
 	{
 		printf("pwd: too many arguments\n");
@@ -97,24 +99,24 @@ void	builtin_exit(t_env *env, t_cmd *command)
 
 	nb_args = ft_count_args(command->args);
 	printf("exit\n");
-	if (nb_args > 1)
+	if (nb_args > 2)
 	{
 		printf("bash: exit: too many arguments\n");
 		command->exit_code = 1;
 		return ;
 	}
-	else if (nb_args == 1)
+	else if (nb_args == 2)
 	{
-		command->exit_code = ft_atoi(command->args[0]) % 256;
-		if (!ft_strisnum(command->args[0]))
+		command->exit_code = ft_atoi(command->args[1]) % 256;
+		if (!ft_strisnum(command->args[1]))
 		{
 			printf("bash: exit: %s: numeric argument required\n",
-				command->args[0]);
+				command->args[1]);
 			command->exit_code = 2;
 		}
 	}
 	free(env->prev_path);
 	free_env(env);
-	free_split(command->args);
+	// free_split(command->args);
 	exit(command->exit_code);
 }

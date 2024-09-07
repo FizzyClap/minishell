@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:27:38 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 17:48:37 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ static t_cmd	*prompt_loop(char *line)
 	lex_redir = clean_redir(lexer);
 	split = split_cmd(lex_redir);
 	final = make_cmd(split);
-	final->line = ft_strdup(line);
-	final->exit_code = 0;
+	make_lines(lexer, &final);
+	// free_lexer(lexer);
+	free_lexer(lex_redir);
+	// free_split_cmd(split);
 	return (final);
 }
 
@@ -63,15 +65,19 @@ int	main(void)
 		line = readline(PROMPT);
 		if (!line)
 			break ;
-		command = prompt_loop(line);
-		add_history(command->line);
-		if (is_builtins(command))
-			execute_builtins(env, command);
+		if (ft_strlen(line))
+		{
+			command = prompt_loop(line);
+			add_history(command->line);
+			if (is_builtins(command))
+				execute_builtins(env, command);
+		}
 		//else
 		//{
 		//	init_pipex(&pipex, &command, env);
 		//	free_split(command.args);
 		//}
 		free(line);
+		free_cmd(command);
 	}
 }

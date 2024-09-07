@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:42:23 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:10:48 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 17:44:59 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ t_split_cmd	*split_cmd(t_lexer *lexer)
 		if (lexer && lexer->token == PIPE)
 			lexer = lexer->next;
 		split_add_back(&split, new);
+		free_split_cmd(new);
 	}
+	free_lexer(lexer);
 	return (split);
 }

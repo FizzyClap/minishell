@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:52:00 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 17:09:40 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,12 @@ t_cmd		*cmd_new(char *line, char *cmd, char **args, t_lexer *out);
 void		cmd_add_back(t_cmd **lst, t_cmd *new);
 //PARSER/PARSER
 t_cmd		*make_cmd(t_split_cmd *split);
+void		make_lines(t_lexer *lexer, t_cmd **final);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
+//FREE_UTILS
+void		free_cmd(t_cmd *cmd);
+void		free_split_cmd(t_split_cmd *split);
+void		free_lexer(t_lexer *lexer);
 
 #endif
