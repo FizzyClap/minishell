@@ -76,7 +76,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-#@make -s -C libft fclean
+	@make -s -C libft fclean
 
 re: fclean all
 
