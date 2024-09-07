@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:02:12 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 08:56:59 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 09:29:29 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char				**ft_split(char *s, char c);
 char				*ft_substr(char *s, unsigned int start, size_t len);
 char				*ft_strmapi(char *s, char (*f)(unsigned int, char));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
+int					ft_strisnum(char *str);
 char				*ft_strtrim(char *s1, char *set);
 char				*ft_strjoin(char *s1, char *s2);
 void				ft_lstadd_back(t_list **lst, t_list *new);

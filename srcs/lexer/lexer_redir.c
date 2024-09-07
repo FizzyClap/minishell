@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:34:23 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:17:00 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 10:06:41 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_lexer	*clean_redir(t_lexer *lexer)
 	clean = NULL;
 	while (lexer)
 	{
-		if (ft_chrinstr("235", ft_itoa(lexer->token)[0]) == 0)
+		if (ft_chrinstr("2345", ft_itoa(lexer->token)[0]) == 0)
 		{
 			new = lexer_new(lexer->next->element, lexer->token);
 			lexer = lexer->next->next;

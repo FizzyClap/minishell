@@ -6,32 +6,34 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:52:21 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 08:36:35 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 10:53:32 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	sort_and_print(t_env *env, char **args)
+static void	sort_and_print(t_env *env, char *cmd, char **args)
 {
 	t_env	*sorted_env;
+	int		nb_args;
 
-	if (!args[1])
+	nb_args = ft_count_args(args);
+	if (ft_strcmp(cmd, "export") == 0 && nb_args == 0)
 	{
 		sorted_env = copy_env(env);
 		sort_env(sorted_env);
-		builtin_env(sorted_env, args[0]);
+		builtin_env(sorted_env, cmd);
 		free_env(sorted_env);
 	}
 }
 
-void	builtin_export(t_env *env, char **args)
+void	builtin_export(t_env *env, char *cmd, char **args)
 {
 	t_env	*current;
 	bool	var_exist;
 	int		i;
 
-	i = 0;
+	i = -1;
 	while (args[++i])
 	{
 		var_exist = false;
@@ -51,7 +53,7 @@ void	builtin_export(t_env *env, char **args)
 			current = current->next;
 		}
 	}
-	sort_and_print(env, args);
+	sort_and_print(env, cmd, args);
 }
 
 void	builtin_unset(t_env *env, char **args)
@@ -61,7 +63,7 @@ void	builtin_unset(t_env *env, char **args)
 	t_env	*temp;
 	int		i;
 
-	i = 0;
+	i = -1;
 	while (args[++i])
 	{
 		current = env;

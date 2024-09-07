@@ -43,6 +43,7 @@ SRCS =	srcs/ft_atoi.c\
 		srcs/ft_substr.c\
 		srcs/ft_strmapi.c\
 		srcs/ft_striteri.c\
+		srcs/ft_strisnum.c\
 		srcs/ft_strtrim.c\
 		srcs/ft_strjoin.c\
 		srcs/ft_lstadd_back.c\

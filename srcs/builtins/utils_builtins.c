@@ -6,27 +6,27 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 08:36:35 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 10:40:44 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_builtins(char *command)
+int	is_builtins(t_cmd *command)
 {
-	if ((ft_strncmp(command, "cd", ft_strlen("cd")) == 0))
+	if ((ft_strncmp(command->cmd, "cd", ft_strlen("cd")) == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command, "echo", ft_strlen("echo")) == 0))
+	if ((ft_strncmp(command->cmd, "echo", ft_strlen("echo")) == 0))
 		return (ISBUILTINS);
-	if ((ft_strcmp(command, "pwd") == 0))
+	if ((ft_strcmp(command->cmd, "pwd") == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command, "export", ft_strlen("export")) == 0))
+	if ((ft_strncmp(command->cmd, "export", ft_strlen("export")) == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command, "unset", ft_strlen("unset")) == 0))
+	if ((ft_strncmp(command->cmd, "unset", ft_strlen("unset")) == 0))
 		return (ISBUILTINS);
-	if ((ft_strcmp(command, "env") == 0))
+	if ((ft_strcmp(command->cmd, "env") == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command, "exit", ft_strlen("exit")) == 0))
+	if ((ft_strncmp(command->cmd, "exit", ft_strlen("exit")) == 0))
 		return (ISBUILTINS);
 	return (ISNOTBUILTINS);
 }

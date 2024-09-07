@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:07:53 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 10:08:55 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static int	find_token(char *element)
 		return (HEREDOC);
 	else if (ft_strcmp(element, ">>") == 0)
 		return (APPEND);
-	else if (ft_strcmp(element, "$") == 0)
-		return (DOLLAR);
+	//else if (ft_strcmp(element, "$") == 0)
+	//	return (DOLLAR);
 	else if (ft_strcmp(element, "?") == 0)
 		return (QUESTION);
 	else if (ft_strcmp(element, "||") == 0)

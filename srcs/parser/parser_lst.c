@@ -6,17 +6,18 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:41:51 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:11:46 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:50:51 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_cmd	*cmd_new(char *cmd, char **args, t_lexer *out)
+t_cmd	*cmd_new(char *line, char *cmd, char **args, t_lexer *out)
 {
 	t_cmd	*tcmd;
 
 	tcmd = malloc(sizeof(t_cmd));
+	tcmd->line = line;
 	tcmd->cmd = cmd;
 	tcmd->args = args;
 	tcmd->output_redirection = out;

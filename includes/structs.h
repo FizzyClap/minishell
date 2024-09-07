@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 10:48:07 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:12:06 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 10:22:45 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_env
 	char			*line;
 	char			*var;
 	char			*args;
+	char			*prev_path;
 	int				token;
 	struct s_env	*next;
 }	t_env;
@@ -47,6 +48,7 @@ typedef struct s_pipex
 	char		*limiter;
 	pid_t		*child;
 	t_env		*env;
+	t_cmd		*cmd;
 }	t_pipex;
 
 typedef struct s_split_cmd

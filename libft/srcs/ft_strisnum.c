@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                           :+:      :+:    :+:   */
+/*   ft_strisnum.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/02 09:23:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 09:49:09 by roespici         ###   ########.fr       */
+/*   Created: 2024/09/07 09:27:51 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/07 09:51:13 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#include "../include/libft.h"
 
-# define PROMPT "Fraudistan> "
-# define SUCCESS 0
-# define FAILURE -1
-# define ISBUILTINS 1
-# define ISNOTBUILTINS 0
-//TOKEN
-# define WORD 0
-# define PIPE 1
-# define IN 2
-# define OUT 3
-# define HEREDOC 4
-# define APPEND 5
-//# define DOLLAR 6
-# define QUESTION 7
-# define OR 8
-# define AND 9
+int	ft_strisnum(char *str)
+{
+	int	i;
 
-#endif
+	i = -1;
+	while (str[++i])
+	{
+		if ((str[i] == '+' || str[i] == '-') && i == 0)
+			continue ;
+		if (!ft_isdigit(str[i]))
+			return (0);
+	}
+	return (1);
+}
