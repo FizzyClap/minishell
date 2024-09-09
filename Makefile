@@ -21,6 +21,7 @@ SRCS =	srcs/main.c\
 		srcs/lexer/lexer.c\
 		srcs/lexer/lexer_lst.c\
 		srcs/lexer/lexer_redir.c\
+		srcs/parser/free_utils.c\
 		srcs/parser/parser.c\
 		srcs/parser/parser_lst.c\
 		srcs/parser/split_cmd.c\

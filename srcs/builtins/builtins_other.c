@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_other.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:51:23 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:02:48 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,10 @@ void	builtin_exit(t_env *env, t_cmd *command)
 	}
 	else if (nb_args == 2)
 	{
-		command->exit_code = ft_atoi(command->args[0]) % 256;
+		command->exit_code = ft_atoi(command->args[1]) % 256;
 		if (!ft_strisnum(command->args[1]))
 		{
-			printf("bash: exit: %s: numeric argument required\n", \
+			printf("bash: exit: %s: numeric argument required\n",
 				command->args[1]);
 			command->exit_code = 2;
 		}

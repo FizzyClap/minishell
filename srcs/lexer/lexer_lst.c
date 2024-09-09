@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_lst.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:34:04 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:06:03 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 09:54:54 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,9 @@ static t_lexer	*lexer_last(t_lexer *lst)
 {
 	if (!lst)
 		return (NULL);
-	while (lst)
-	{
-		if (lst->next == NULL)
-			return (lst);
+	while (lst && lst->next)
 		lst = lst->next;
-	}
-	return (NULL);
+	return (lst);
 }
 
 void	lexer_add_back(t_lexer **lst, t_lexer *new)

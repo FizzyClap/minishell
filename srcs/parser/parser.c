@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:40:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 16:01:12 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:04:55 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,38 +26,54 @@ static int	count_args(t_lexer *cmd)
 	return (i);
 }
 
+static void	title_cmd(t_split_cmd **split, t_cmd **new)
+{
+	(*new)->cmd = ft_strdup((*split)->cmd->element);
+	(*new)->exit_code = 0;
+}
+
+static int	trim_args(t_split_cmd **split, t_cmd **new, int arg)
+{
+	if ((*new)->args == NULL)
+		(*new)->args = ft_calloc(count_args((*split)->cmd) + 1, sizeof(char *));
+	(*new)->args[++arg] = ft_strdup((*split)->cmd->element);
+	(*split)->cmd = (*split)->cmd->next;
+	return (arg);
+	
+}
+
+void	cmd_node(t_split_cmd *split, int arg, t_cmd **new)
+{
+	t_lexer *ntm;
+
+	ntm = split->cmd;
+	while (split->cmd)
+	{
+		if (split->cmd->token == WORD && (*new)->cmd == NULL)
+			title_cmd(&split, new);
+		else if (split->cmd->token == WORD)
+			arg = trim_args(&split, new, arg);
+		else
+		{
+			lexer_add_back(&(*new)->redir, lexer_new(ft_strdup(split->cmd->element), split->cmd->token));
+			split->cmd = split->cmd->next;
+		}
+	}
+	split->cmd = ntm;
+}
+
 t_cmd	*make_cmd(t_split_cmd *split)
 {
-	t_cmd	*final;
-	t_cmd	*new;
-	t_lexer	*tmp;
-	int		arg;
+	t_cmd		*final;
+	t_cmd		*new;
 
 	final = NULL;
 	while (split)
 	{
 		new = cmd_new(NULL, NULL, NULL, NULL);
-		arg = -1;
-		while (split->cmd)
-		{
-			if (split->cmd->token == WORD && new->cmd == NULL)
-				new->cmd = ft_strdup(split->cmd->element);
-			else if (split->cmd->token == WORD && count_args(split->cmd))
-			{
-				if (new->args == NULL)
-					new->args = ft_calloc(count_args(split->cmd) + 1, sizeof(char *));
-				new->args[++arg] = ft_strdup(split->cmd->element);
-				split->cmd = split->cmd->next;
-			}
-			else if (split->cmd->token != WORD)
-			{
-				tmp = lexer_new(split->cmd->element, split->cmd->token);
-				lexer_add_back(&new->redir, tmp);
-				split->cmd = split->cmd->next;
-			}
-		}
-		cmd_add_back(&final, new);
+		cmd_node(split, -1, &new);
 		split = split->next;
+		cmd_add_back(&final, new);
 	}
 	return (final);
 }

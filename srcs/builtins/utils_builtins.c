@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:15:09 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:04:11 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,18 @@ void	free_env(t_env *head)
 		free(head->args);
 		free(head);
 		head = temp;
+	}
+}
+
+void	free_split(char **args)
+{
+	int	i;
+
+	i = -1;
+	if (args)
+	{
+		while (args[++i])
+			free(args[i]);
+		free(args);
 	}
 }

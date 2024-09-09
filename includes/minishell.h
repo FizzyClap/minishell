@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 08:34:06 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:03:28 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_cmd		*cmd_new(char *line, char *cmd, char **args, t_lexer *out);
 void		cmd_add_back(t_cmd **lst, t_cmd *new);
 //PARSER/PARSER
 t_cmd		*make_cmd(t_split_cmd *split);
+void		make_lines(t_lexer *lexer, t_cmd **final);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
 //PIPEX/PATH BUILDING
@@ -85,5 +86,9 @@ void		close_pipes(t_pipex *pipex);
 int			open_and_exec(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 void		execute_builtins(t_env *env, t_cmd *command);
+//FREE_UTILS
+void		free_cmd(t_cmd *cmd);
+void		free_split_cmd(t_split_cmd *split);
+void		free_lexer(t_lexer *lexer);
 
 #endif
