@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:15:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:05:58 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	chose_pipe(t_pipex *pipex, int i)
 			if (pipex->nb_pipes == 0 && pipex->outfile_open)
 				exec(pipex, STDIN_FILENO, pipex->outfile);
 			else if (pipex->nb_pipes == 0)
-				exec(pipex, STDIN_FILENO, STDOUT_FILENO);
+				exec(pipex, STDIN_FILENO, STDOUT_FILENO); //BUILTINS
 			else
 				exec(pipex, STDIN_FILENO, pipex->pipefd[i][1]);
 		}
@@ -58,6 +58,15 @@ static void	chose_pipe(t_pipex *pipex, int i)
 	}
 }
 
+void	exec_builtin_in_pipex(t_pipex *pipex)
+{
+	if (is_builtins(pipex->cmd))
+	{
+		execute_builtins(pipex->env, pipex->cmd);
+		return ;
+	}
+}
+
 void	execute_pipes(t_pipex *pipex)
 {
 	int	i;
@@ -69,6 +78,11 @@ void	execute_pipes(t_pipex *pipex)
 		{
 			if (pipe(pipex->pipefd[i]) == FAILURE)
 				error_exit("Pipe error");
+		}
+		if (is_builtins(pipex->cmd))
+		{
+			exec_builtin_in_pipex(pipex);
+			continue ;
 		}
 		pipex->child[i] = fork_child();
 		if (pipex->child[i] == 0)
@@ -96,7 +110,8 @@ void	exec_command(t_pipex *pipex)
 	if (!path)
 	{
 		free_pipex(pipex);
-		error_exit("Command not found in path");
+		printf("bash: command not found: %s\n", pipex->cmd->cmd);
+		exit(COMMAND_NOT_FOUND);
 	}
 	free(pipex->cmd->args[0]);
 	pipex->cmd->args[0] = path;

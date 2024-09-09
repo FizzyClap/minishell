@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 13:06:14 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 14:52:16 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	execute_builtins(t_env *env, t_cmd *command)
 		builtin_exit(env, command);
 	else
 		printf("%s: command not found\n", command->cmd);
-	// free_split(command->args);
 }
 
 void print_lexer(t_lexer *lex)
@@ -99,17 +98,9 @@ int	main(void)
 		{
 			command = prompt_loop(line);
 			add_history(line);
-		}
-		if (command)
-		{
 			execute_pipex(command, env);
 			free_cmd(command);
 		}
-		//else
-		//{
-		//	init_pipex(&pipex, &command, env);
-		//	free_split(command.args);
-		//}
 		free(line);
 	}
 }

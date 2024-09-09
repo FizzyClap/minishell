@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:23:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 09:49:09 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:31:31 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define FAILURE -1
 # define ISBUILTINS 1
 # define ISNOTBUILTINS 0
+# define COMMAND_NOT_FOUND 127
 //TOKEN
 # define WORD 0
 # define PIPE 1
