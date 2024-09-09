@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:32:31 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:27:11 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int	open_infile(t_pipex *pipex)
 	}
 	else
 		return (FAILURE);
-	if (pipex->cmd->redir->next)
-	{
-		pipex->cmd->redir = pipex->cmd->redir->next;
-		open_infile(pipex);
-	}
+	//if (pipex->cmd->redir->next)
+	//{
+	//	pipex->cmd->redir = pipex->cmd->redir->next;
+	//	open_infile(pipex);
+	//}
 	return (SUCCESS);
 }
 
@@ -74,11 +74,11 @@ int	open_outfile(t_pipex *pipex)
 	}
 	else
 		return (FAILURE);
-	if (pipex->cmd->redir->next)
-	{
-		pipex->cmd->redir = pipex->cmd->redir->next;
-		open_outfile(pipex);
-	}
+	//if (pipex->cmd->redir->next)
+	//{
+		//pipex->cmd->redir = pipex->cmd->redir->next;
+		//open_outfile(pipex);
+	//}
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:48:01 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 17:12:58 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,13 @@ static int	check_valid_lex(t_lexer *lexer)
 	tmp = lexer;
 	while (tmp)
 	{
-		if (tmp->next && tmp->token > 0 && tmp->next->token > 0)
+		if (tmp->next && tmp->token == 1 && tmp->next->token == 1)
+		{
+			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
+				tmp->next->element);
+			return (0);
+		}
+		else if (tmp->next && tmp->token > 1 && tmp->next->token > 0)
 		{
 			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
 				tmp->next->element);
@@ -126,7 +132,6 @@ static int	check_valid_lex(t_lexer *lexer)
 			printf("Frausdistan: syntax error near unexpected token `newline'\n");
 			return (0);
 		}
-		else 
 		tmp = tmp->next;
 	}
 	return (1);
