@@ -6,7 +6,7 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:28:39 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 17:31:10 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	main(void)
 			add_history(line);
 			execute_pipex(command, env);
 			free_cmd(command);
-			}
 		}
 		free(line);
+	}
 }
