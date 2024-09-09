@@ -6,15 +6,13 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:14:22 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 17:26:00 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_exit_code;
-
-void	execute_builtins(t_env *env, t_cmd *command)
+static void	execute_builtins(t_env *env, t_cmd *command)
 {
 	if (ft_strcmp(command->cmd, "echo") == 0)
 		builtin_echo(command);
@@ -127,17 +125,13 @@ int	main(void)
 		{
 			command = prompt_loop(line);
 			add_history(line);
+			if (command)
+			{
+				if (is_builtins(command))
+					execute_builtins(env, command);
+				free_cmd(command);
+			}
 		}
-		if (command)
-		{
-			execute_pipex(command, env);
-			free_cmd(command);
-		}
-		//else
-		//{
-		//	init_pipex(&pipex, &command, env);
-		//	free_split(command.args);
-		//}
 		free(line);
 	}
 }
