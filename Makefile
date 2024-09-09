@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
+FLAGS = -Wall -Werror -Wextra -g3 #-fsanitize=address
 LIBFT = libft/libft.a
 LIBFT_PATH = ./libft
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
@@ -24,6 +24,10 @@ SRCS =	srcs/main.c\
 		srcs/parser/parser.c\
 		srcs/parser/parser_lst.c\
 		srcs/parser/split_cmd.c\
+		srcs/pipex/here_doc.c\
+		srcs/pipex/path_building.c\
+		srcs/pipex/pipex.c\
+		srcs/pipex/utils_pipex.c\
 
 OBJS = $(SRCS:.c=.o)
 

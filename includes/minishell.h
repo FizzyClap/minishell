@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 16:32:03 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 08:34:06 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 
 //INIT
 void		init_minishell(t_env **env);
-void		init_pipex(t_pipex *pipex, t_env *env);
+void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 //BUILTINS/BUILTINS ENV
 void		builtin_env(t_env *head, char *command);
 void		builtin_export(t_env *env, char *cmd, char **args);
@@ -71,13 +71,19 @@ t_cmd		*make_cmd(t_split_cmd *split);
 t_split_cmd	*split_cmd(t_lexer *lexer);
 //PIPEX/PATH BUILDING
 char		*get_path(t_pipex *pipex);
+void		tab_env(t_env *env);
 //PIPEX/PIPEX
+void		execute_pipes(t_pipex *pipex);
 void		exec_command(t_pipex *pipex);
 void		exec(t_pipex *pipex, int inputfd, int outputfd);
+void		execute_pipex (t_cmd *command, t_env *env);
 //PIPEX/UTILS PIPEX
 void		error_exit(const char *msg);
 int			open_infile(t_pipex *pipex);
 int			open_outfile(t_pipex *pipex);
 void		close_pipes(t_pipex *pipex);
+int			open_and_exec(t_pipex *pipex);
+void		free_pipex(t_pipex *pipex);
+void		execute_builtins(t_env *env, t_cmd *command);
 
 #endif

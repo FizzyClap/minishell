@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:25:55 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 16:30:53 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:46:59 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,19 @@ char	*get_path(t_pipex *pipex)
 	char	**paths;
 	char	*full_path;
 	char	*path_env;
+	char	*cmd;
 
-	path_env = get_path(pipex);
+	path_env = get_env(pipex->env);
 	paths = ft_split(path_env, ':');
 	if (!paths)
+	{
+		free(path_env);
+		free_pipex(pipex);
 		error_exit("Split error");
-	full_path = build_path(paths, pipex->cmd->cmd);
+	}
+	cmd = ft_strdup(pipex->cmd->cmd);
+	full_path = build_path(paths, cmd);
+	free(path_env);
 	return (full_path);
 }
 
