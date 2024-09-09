@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 10:39:41 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/09 12:43:43 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	execute_builtins(t_env *env, t_cmd *command)
 		builtin_exit(env, command);
 	else
 		printf("%s: command not found\n", command->cmd);
-	free_split(command->args);
+	// free_split(command->args);
 }
 
 void print_lexer(t_lexer *lex)
@@ -71,6 +71,8 @@ static t_cmd	*prompt_loop(char *line)
 
 	final = NULL;
 	lexer = make_lexer(line);
+	if (lexer == NULL)
+		return (NULL);
 	lex_redir = clean_redir(lexer);
 	free_lexer(lexer);
 	split = split_cmd(lex_redir);
@@ -96,9 +98,13 @@ int	main(void)
 		if (ft_strlen(line))
 		{
 			command = prompt_loop(line);
-			add_history(command->line);
-			if (is_builtins(command))
-				execute_builtins(env, command);
+			add_history(line);
+			if (command)
+			{
+				if (is_builtins(command))
+					execute_builtins(env, command);
+				free_cmd(command);
+			}
 		}
 		//else
 		//{
@@ -106,6 +112,5 @@ int	main(void)
 		//	free_split(command.args);
 		//}
 		free(line);
-		free_cmd(command);
 	}
 }

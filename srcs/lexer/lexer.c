@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 09:06:11 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/09 12:42:26 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static char	*lexer_dup(char *input, int start)
 	len = lexer_len(input, start);
 	line = ft_calloc(len + 1, sizeof(char));
 	start--;
+	// printf("len: %i\n", len);
 	while (input[++start] && i < len)
 	{
 		if (input[start] && input[start] == '\"' && quote == false)
@@ -107,6 +108,28 @@ static char	*lexer_dup(char *input, int start)
 		}
 	}
 	return (line);
+}
+static int	check_valid_lex(t_lexer *lexer)
+{
+	t_lexer	*tmp;
+
+	tmp = lexer;
+	while (tmp)
+	{
+		if (tmp->next && tmp->token > 0 && tmp->next->token > 0)
+		{
+			printf("Frausdistan: syntax error near unexpected token `%s'\n", tmp->next->element);
+			return (0);
+		}
+		else if (!tmp->next && tmp->token > 1 && tmp->token < 6)
+		{
+			printf("Frausdistan: syntax error near unexpected token `newline'\n");
+			return (0);
+		}
+		else 
+		tmp = tmp->next;
+	}
+	return (1);
 }
 
 t_lexer	*make_lexer(char *input)
@@ -129,6 +152,11 @@ t_lexer	*make_lexer(char *input)
 			lexer_add_back(&lexer, new);
 			start = lexer_progress(input, start);
 		}
+	}
+	if (check_valid_lex(lexer) == 0)
+	{
+		free_lexer(lexer);
+		return (NULL);
 	}
 	return (lexer);
 }

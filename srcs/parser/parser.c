@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:40:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 10:38:09 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/09 10:55:08 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,5 @@ t_cmd	*make_cmd(t_split_cmd *split)
 		split = split->next;
 		cmd_add_back(&final, new);
 	}
-	// free_split_cmd(split);
 	return (final);
 }
