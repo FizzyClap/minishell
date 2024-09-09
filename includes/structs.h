@@ -6,7 +6,7 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 10:48:07 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 13:37:15 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/07 16:07:38 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_env
 	char			*args;
 	char			*prev_path;
 	int				token;
+	char			**tab_env;
 	struct s_env	*next;
 }	t_env;
 

@@ -6,7 +6,7 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 10:02:12 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 16:49:22 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 13:03:38 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void				*ft_calloc(size_t nmemb, size_t size);
 bool				ft_change_bool(bool quote);
 int					ft_count_args(char **args);
 int					ft_chrinstr(char *str, int c);
+void				ft_free_tab(char **args);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);

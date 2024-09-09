@@ -25,6 +25,10 @@ SRCS =	srcs/main.c\
 		srcs/parser/parser.c\
 		srcs/parser/parser_lst.c\
 		srcs/parser/split_cmd.c\
+		srcs/pipex/here_doc.c\
+		srcs/pipex/path_building.c\
+		srcs/pipex/pipex.c\
+		srcs/pipex/utils_pipex.c\
 
 OBJS = $(SRCS:.c=.o)
 
