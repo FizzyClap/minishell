@@ -6,7 +6,7 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 13:01:35 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 13:06:14 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static t_cmd	*prompt_loop(char *line)
 	t_lexer		*lex_redir;
 	t_split_cmd	*split;
 	t_cmd		*final;
-	t_cmd		*tmp;
 
 	final = NULL;
 	lexer = make_lexer(line);
