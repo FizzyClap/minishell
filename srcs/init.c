@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:40:31 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:36:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 09:07:41 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,20 @@ static void	init_env(t_env **env)
 	(*env)->prev_path = getcwd(NULL, 0);
 }
 
-void	init_pipex(t_pipex *pipex, t_env *env)
+void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)
 {
 	int	i;
 
-	pipex->i = -1;
 	pipex->env = env;
-	pipex->infile_exist = 1;
-	pipex->infile_open = 1;
-	pipex->outfile_open = 1;
+	pipex->cmd = command;
+	pipex->i = -1;
+	pipex->infile_exist = 0;
+	pipex->infile_open = 0;
+	pipex->outfile_open = 0;
 	pipex->limiter = NULL;
 	pipex->nb_pipes = 0;
 	i = -1;
-	while (pipex->cmd->args[++i])
+	while (pipex->cmd && pipex->cmd->args && pipex->cmd->args[++i])
 		if (ft_strcmp(pipex->cmd->args[i], "|") == 0)
 			pipex->nb_pipes++;
 	pipex->exit_status = 0;

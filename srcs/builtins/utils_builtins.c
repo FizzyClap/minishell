@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:40:44 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:04:11 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	is_builtins(t_cmd *command)
 {
-	if ((ft_strncmp(command->cmd, "cd", ft_strlen("cd")) == 0))
+	if ((ft_strcmp(command->cmd, "cd") == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command->cmd, "echo", ft_strlen("echo")) == 0))
+	if ((ft_strcmp(command->cmd, "echo") == 0))
 		return (ISBUILTINS);
 	if ((ft_strcmp(command->cmd, "pwd") == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command->cmd, "export", ft_strlen("export")) == 0))
+	if ((ft_strcmp(command->cmd, "export") == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command->cmd, "unset", ft_strlen("unset")) == 0))
+	if ((ft_strcmp(command->cmd, "unset") == 0))
 		return (ISBUILTINS);
 	if ((ft_strcmp(command->cmd, "env") == 0))
 		return (ISBUILTINS);
-	if ((ft_strncmp(command->cmd, "exit", ft_strlen("exit")) == 0))
+	if ((ft_strcmp(command->cmd, "exit") == 0))
 		return (ISBUILTINS);
 	return (ISNOTBUILTINS);
 }
@@ -89,7 +89,10 @@ void	free_split(char **args)
 	int	i;
 
 	i = -1;
-	while (args[++i])
-		free(args[i]);
-	free(args);
+	if (args)
+	{
+		while (args[++i])
+			free(args[i]);
+		free(args);
+	}
 }

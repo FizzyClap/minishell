@@ -1,38 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_redir.c                                      :+:      :+:    :+:   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/06 08:34:23 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 10:36:15 by ggoy             ###   ########.fr       */
+/*   Created: 2024/09/07 16:38:31 by gartan            #+#    #+#             */
+/*   Updated: 2024/09/09 10:38:50 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_lexer	*clean_redir(t_lexer *lexer)
+void	free_lexer(t_lexer *lexer)
 {
-	t_lexer	*clean;
-	char	*itoa;
+	t_lexer	*tmp;
 
-	clean = NULL;
 	while (lexer)
 	{
-		itoa = ft_itoa(lexer->token);
-		if (ft_chrinstr("2345", itoa[0]) == 0)
-		{
-			// if !lexer->next->next = FIN DU MONDE
-			lexer_add_back(&clean, lexer_new(ft_strdup(lexer->next->element), lexer->token));
-			lexer = lexer->next->next;
-		}
-		else
-		{
-			lexer_add_back(&clean, lexer_new(ft_strdup(lexer->element), lexer->token));
-			lexer = lexer->next;
-		}
-		free(itoa);
+		tmp = lexer->next;
+		free(lexer->element);
+		free(lexer);
+		lexer = tmp;
 	}
-	return (clean);
+}
+
+void	free_split_cmd(t_split_cmd *split)
+{
+	t_split_cmd	*tmp;
+
+	while (split)
+	{
+		tmp = split->next;
+		free_lexer(split->cmd);
+		free(split);
+		split = tmp;
+	}
+}
+
+void	free_cmd(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	tmp = cmd;
+	while (tmp)
+	{
+		free(tmp->cmd);
+		ft_free_tab(tmp->args);
+		free_lexer(tmp->redir);
+		tmp = tmp->next;
+	}
+	free(cmd);
 }

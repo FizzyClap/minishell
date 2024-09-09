@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:27:38 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/09 13:06:14 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	execute_builtins(t_env *env, t_cmd *command)
+void	execute_builtins(t_env *env, t_cmd *command)
 {
 	if (ft_strcmp(command->cmd, "echo") == 0)
 		builtin_echo(command);
@@ -30,7 +30,36 @@ static void	execute_builtins(t_env *env, t_cmd *command)
 		builtin_exit(env, command);
 	else
 		printf("%s: command not found\n", command->cmd);
-	free_split(command->args);
+	// free_split(command->args);
+}
+
+void print_lexer(t_lexer *lex)
+{
+	while (lex)
+	{
+		printf("%i %s\n", lex->token, lex->element);
+		lex = lex->next;
+	}
+}
+
+void print_split(t_split_cmd *split)
+{
+	t_lexer *lex;
+	int		i;
+
+	i = 0;
+	while (split)
+	{
+		printf("Split %d:\n", i);
+		lex = split->cmd;
+		while (lex)
+		{
+			printf("   %i %s\n", lex->token, lex->element);
+			lex = lex->next;
+		}
+		split = split->next;
+		i++;
+	}
 }
 
 static t_cmd	*prompt_loop(char *line)
@@ -42,11 +71,14 @@ static t_cmd	*prompt_loop(char *line)
 
 	final = NULL;
 	lexer = make_lexer(line);
+	if (lexer == NULL)
+		return (NULL);
 	lex_redir = clean_redir(lexer);
+	free_lexer(lexer);
 	split = split_cmd(lex_redir);
+	free_lexer(lex_redir);
 	final = make_cmd(split);
-	final->line = ft_strdup(line);
-	final->exit_code = 0;
+	free_split_cmd(split);
 	return (final);
 }
 
@@ -63,10 +95,16 @@ int	main(void)
 		line = readline(PROMPT);
 		if (!line)
 			break ;
-		command = prompt_loop(line);
-		add_history(command->line);
-		if (is_builtins(command))
-			execute_builtins(env, command);
+		if (ft_strlen(line))
+		{
+			command = prompt_loop(line);
+			add_history(line);
+		}
+		if (command)
+		{
+			execute_pipex(command, env);
+			free_cmd(command);
+		}
 		//else
 		//{
 		//	init_pipex(&pipex, &command, env);

@@ -11,8 +11,9 @@ SRCS =	srcs/ft_atoi.c\
 		srcs/ft_bzero.c\
 		srcs/ft_calloc.c\
 		srcs/ft_change_bool.c\
-		srcs/ft_count_args.c\
 		srcs/ft_chrinstr.c\
+		srcs/ft_count_args.c\
+		srcs/ft_free_tab.c\
 		srcs/ft_isalnum.c\
 		srcs/ft_isalpha.c\
 		srcs/ft_isascii.c\
@@ -55,6 +56,7 @@ SRCS =	srcs/ft_atoi.c\
 		srcs/ft_lstmap.c\
 		srcs/ft_lstnew.c\
 		srcs/ft_lstsize.c\
+		srcs/ft_free_tab.c\
 		printf/ft_printf_utils.c\
 		printf/ft_printf.c\
 		gnl/get_next_line.c\

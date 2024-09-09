@@ -21,9 +21,14 @@ SRCS =	srcs/main.c\
 		srcs/lexer/lexer.c\
 		srcs/lexer/lexer_lst.c\
 		srcs/lexer/lexer_redir.c\
+		srcs/parser/free_utils.c\
 		srcs/parser/parser.c\
 		srcs/parser/parser_lst.c\
 		srcs/parser/split_cmd.c\
+		srcs/pipex/here_doc.c\
+		srcs/pipex/path_building.c\
+		srcs/pipex/pipex.c\
+		srcs/pipex/utils_pipex.c\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -76,7 +81,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-#@make -s -C libft fclean
+	@make -s -C libft fclean
 
 re: fclean all
 
