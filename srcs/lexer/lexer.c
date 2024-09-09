@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 17:52:27 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 09:06:11 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,6 @@ t_lexer	*make_lexer(char *input)
 			lexer_add_back(&lexer, new);
 			start = lexer_progress(input, start);
 		}
-		free_lexer(new);
-		new = NULL;
 	}
 	return (lexer);
 }

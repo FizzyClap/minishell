@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:40:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 17:24:00 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 10:38:09 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,39 +42,39 @@ static int	trim_args(t_split_cmd **split, t_cmd **new, int arg)
 	
 }
 
-void	cmd_node(t_split_cmd **split, int arg, t_cmd **new, t_lexer **new_lex)
+void	cmd_node(t_split_cmd *split, int arg, t_cmd **new)
 {
-	while ((*split)->cmd)
+	t_lexer *ntm;
+
+	ntm = split->cmd;
+	while (split->cmd)
 	{
-		if ((*split)->cmd->token == WORD && (*new)->cmd == NULL)
-			title_cmd(&(*split), new);
-		else if ((*split)->cmd->token == WORD)
-			arg = trim_args(&(*split), new, arg);
+		if (split->cmd->token == WORD && (*new)->cmd == NULL)
+			title_cmd(&split, new);
+		else if (split->cmd->token == WORD)
+			arg = trim_args(&split, new, arg);
 		else
 		{
-			(*new_lex) = lexer_new((*split)->cmd->element, (*split)->cmd->token);
-			lexer_add_back(&(*new)->redir, *new_lex);
-			(*split)->cmd = (*split)->cmd->next;
+			lexer_add_back(&(*new)->redir, lexer_new(ft_strdup(split->cmd->element), split->cmd->token));
+			split->cmd = split->cmd->next;
 		}
 	}
+	split->cmd = ntm;
 }
 
 t_cmd	*make_cmd(t_split_cmd *split)
 {
 	t_cmd		*final;
 	t_cmd		*new;
-	t_lexer		*new_lex;
-	int			arg;
 
 	final = NULL;
 	while (split)
 	{
 		new = cmd_new(NULL, NULL, NULL, NULL);
-		arg = -1;
-		cmd_node(&split, arg, &new, &new_lex);
+		cmd_node(split, -1, &new);
 		split = split->next;
 		cmd_add_back(&final, new);
 	}
-	free_split_cmd(split);
+	// free_split_cmd(split);
 	return (final);
 }

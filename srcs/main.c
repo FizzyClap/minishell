@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 17:48:37 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 10:39:41 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,35 @@ static void	execute_builtins(t_env *env, t_cmd *command)
 	free_split(command->args);
 }
 
+void print_lexer(t_lexer *lex)
+{
+	while (lex)
+	{
+		printf("%i %s\n", lex->token, lex->element);
+		lex = lex->next;
+	}
+}
+
+void print_split(t_split_cmd *split)
+{
+	t_lexer *lex;
+	int		i;
+
+	i = 0;
+	while (split)
+	{
+		printf("Split %d:\n", i);
+		lex = split->cmd;
+		while (lex)
+		{
+			printf("   %i %s\n", lex->token, lex->element);
+			lex = lex->next;
+		}
+		split = split->next;
+		i++;
+	}
+}
+
 static t_cmd	*prompt_loop(char *line)
 {
 	t_lexer		*lexer;
@@ -43,12 +72,11 @@ static t_cmd	*prompt_loop(char *line)
 	final = NULL;
 	lexer = make_lexer(line);
 	lex_redir = clean_redir(lexer);
+	free_lexer(lexer);
 	split = split_cmd(lex_redir);
-	final = make_cmd(split);
-	make_lines(lexer, &final);
-	// free_lexer(lexer);
 	free_lexer(lex_redir);
-	// free_split_cmd(split);
+	final = make_cmd(split);
+	free_split_cmd(split);
 	return (final);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:41:51 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 17:50:12 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 10:13:59 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,25 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new)
 void	make_lines(t_lexer *lexer, t_cmd **final)
 {
 	t_cmd	*tmp;
+	t_lexer	*temp;
 	
+	temp = lexer;
 	tmp = *final;
-	while (lexer)
+	while (temp)
 	{
-		if (lexer->token != PIPE)
+		if (temp && temp->element && temp->token != PIPE)
 		{
 			if (tmp->line == NULL)
-				tmp->line = ft_strdup(lexer->element);
+				tmp->line = ft_strdup(temp->element);
 			else
-				tmp->line = ft_strjoin(tmp->line, lexer->element);
+				tmp->line = ft_strjoin(tmp->line, temp->element);
 			tmp->line = ft_strjoin(tmp->line, " ");
-			lexer = lexer->next;
+			temp = temp->next;
 		}
-		else if (lexer->token == PIPE)
+		else if (temp && temp->element && temp->token == PIPE)
 		{
-			lexer = lexer->next;
+			temp = temp->next;
 			tmp = tmp->next;
 		}
 	}
-	// free_lexer(lexer);
 }
