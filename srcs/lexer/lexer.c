@@ -6,7 +6,7 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:42:26 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 12:48:01 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ static char	*lexer_dup(char *input, int start)
 	len = lexer_len(input, start);
 	line = ft_calloc(len + 1, sizeof(char));
 	start--;
-	// printf("len: %i\n", len);
 	while (input[++start] && i < len)
 	{
 		if (input[start] && input[start] == '\"' && quote == false)
@@ -118,7 +117,8 @@ static int	check_valid_lex(t_lexer *lexer)
 	{
 		if (tmp->next && tmp->token > 0 && tmp->next->token > 0)
 		{
-			printf("Frausdistan: syntax error near unexpected token `%s'\n", tmp->next->element);
+			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
+				tmp->next->element);
 			return (0);
 		}
 		else if (!tmp->next && tmp->token > 1 && tmp->token < 6)
