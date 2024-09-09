@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:52:21 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:14:34 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/06 10:53:32 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	sort_and_print(t_env *env, char *cmd, char **args)
 	int		nb_args;
 
 	nb_args = ft_count_args(args);
-	if (ft_strcmp(cmd, "export") == 0 && nb_args == 1)
+	if (ft_strcmp(cmd, "export") == 0 && nb_args == 0)
 	{
 		sorted_env = copy_env(env);
 		sort_env(sorted_env);
@@ -33,7 +33,7 @@ void	builtin_export(t_env *env, char *cmd, char **args)
 	bool	var_exist;
 	int		i;
 
-	i = 0;
+	i = -1;
 	while (args[++i])
 	{
 		var_exist = false;
@@ -63,7 +63,7 @@ void	builtin_unset(t_env *env, char **args)
 	t_env	*temp;
 	int		i;
 
-	i = 0;
+	i = -1;
 	while (args[++i])
 	{
 		current = env;

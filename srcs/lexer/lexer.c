@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 12:48:01 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/07 10:08:55 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,29 +108,6 @@ static char	*lexer_dup(char *input, int start)
 	}
 	return (line);
 }
-static int	check_valid_lex(t_lexer *lexer)
-{
-	t_lexer	*tmp;
-
-	tmp = lexer;
-	while (tmp)
-	{
-		if (tmp->next && tmp->token > 0 && tmp->next->token > 0)
-		{
-			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
-				tmp->next->element);
-			return (0);
-		}
-		else if (!tmp->next && tmp->token > 1 && tmp->token < 6)
-		{
-			printf("Frausdistan: syntax error near unexpected token `newline'\n");
-			return (0);
-		}
-		else 
-		tmp = tmp->next;
-	}
-	return (1);
-}
 
 t_lexer	*make_lexer(char *input)
 {
@@ -152,11 +129,6 @@ t_lexer	*make_lexer(char *input)
 			lexer_add_back(&lexer, new);
 			start = lexer_progress(input, start);
 		}
-	}
-	if (check_valid_lex(lexer) == 0)
-	{
-		free_lexer(lexer);
-		return (NULL);
 	}
 	return (lexer);
 }

@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:42:23 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 10:37:06 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/06 09:10:48 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static t_split_cmd	*split_new(void)
+static t_split_cmd	*split_new(t_lexer	*lexer)
 {
 	t_split_cmd	*split;
 
 	split = malloc(sizeof(t_split_cmd));
-	split->cmd = NULL;
+	split->cmd = lexer;
 	split->next = NULL;
 	return (split);
 }
@@ -59,10 +59,10 @@ t_split_cmd	*split_cmd(t_lexer *lexer)
 	split = NULL;
 	while (lexer)
 	{
-		new = split_new();
+		new = split_new(NULL);
 		while (lexer && lexer->token != PIPE)
 		{
-			lex = lexer_new(ft_strdup(lexer->element), lexer->token);
+			lex = lexer_new(lexer->element, lexer->token);
 			lexer_add_back(&new->cmd, lex);
 			lexer = lexer->next;
 		}
