@@ -6,11 +6,13 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 13:06:14 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 17:14:22 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	g_exit_code;
 
 void	execute_builtins(t_env *env, t_cmd *command)
 {
@@ -30,7 +32,6 @@ void	execute_builtins(t_env *env, t_cmd *command)
 		builtin_exit(env, command);
 	else
 		printf("%s: command not found\n", command->cmd);
-	// free_split(command->args);
 }
 
 void print_lexer(t_lexer *lex)
@@ -62,6 +63,31 @@ void print_split(t_split_cmd *split)
 	}
 }
 
+static void	ft_ctrl(int signum)
+{
+	if (signum == 2)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_exit_code = 130;
+	}
+	if (signum == 3)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+static void	ft_ctrld(void)
+{
+	rl_clear_history();
+	printf("exit\n");
+	exit (EXIT_SUCCESS);
+}
+
 static t_cmd	*prompt_loop(char *line)
 {
 	t_lexer		*lexer;
@@ -90,11 +116,13 @@ int	main(void)
 
 	env = NULL;
 	init_minishell(&env);
+	signal(SIGINT, ft_ctrl);
+	signal(SIGQUIT, ft_ctrl);
 	while (1)
 	{
 		line = readline(PROMPT);
-		if (!line)
-			break ;
+		if (line == NULL)
+			ft_ctrld();
 		if (ft_strlen(line))
 		{
 			command = prompt_loop(line);
