@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_other.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:22:45 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/10 11:59:12 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	builtin_echo(t_cmd *command)
+void	builtin_echo(t_cmd *command, int fd)
 {
 	int	newline;
 	int	i;
@@ -27,18 +27,18 @@ void	builtin_echo(t_cmd *command)
 	while (command->args[i])
 	{
 		if (ft_strcmp(command->args[i], "$?") == 0)
-			printf("%d", command->exit_code);
+			ft_putnbr_fd(g_exit_code, fd);
 		else
-			printf("%s", command->args[i]);
+			ft_putstr_fd(command->args[i], fd);
 		if (command->args[i + 1])
-			printf(" ");
+			ft_putchar_fd(' ', fd);
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		ft_putchar_fd('\n', fd);
 }
 
-void	builtin_cd(t_env *env, char **args)
+void	builtin_cd(t_env *env, char **args, int fd)
 {
 	char		*path_to_home;
 	char		*temp;
@@ -59,9 +59,10 @@ void	builtin_cd(t_env *env, char **args)
 		temp = getcwd(NULL, 0);
 		if (ft_strcmp(args[1], "-") == 0)
 		{
+			ft_putstr_fd(env->prev_path, fd);
+			ft_putchar_fd('\n', fd);
 			if (chdir(env->prev_path) == FAILURE)
 				perror("chdir error");
-			printf("%s\n", env->prev_path);
 		}
 		else if (chdir(args[1]) == FAILURE)
 			perror("chdir error");
@@ -70,7 +71,7 @@ void	builtin_cd(t_env *env, char **args)
 	}
 }
 
-void	builtin_pwd(char **args)
+void	builtin_pwd(char **args, int fd)
 {
 	char	*cwd;
 	int		nb_args;
@@ -78,13 +79,14 @@ void	builtin_pwd(char **args)
 	nb_args = ft_count_args(args);
 	if (nb_args > 1)
 	{
-		printf("pwd: too many arguments\n");
+		ft_putstr_fd("pwd: too many arguments\n", fd);
 		return ;
 	}
 	cwd = getcwd(NULL, 0);
 	if (cwd)
 	{
-		printf("%s\n", cwd);
+		ft_putstr_fd(cwd, fd);
+		ft_putchar_fd('\n', fd);
 		free(cwd);
 	}
 	else
@@ -100,19 +102,19 @@ void	builtin_exit(t_env *env, t_cmd *command)
 	if (nb_args > 2)
 	{
 		printf("bash: exit: too many arguments\n");
-		command->exit_code = 1;
+		g_exit_code = 1;
 		return ;
 	}
 	else if (nb_args == 2)
 	{
-		command->exit_code = ft_atoi(command->args[1]) % 256;
+		g_exit_code = ft_atoi(command->args[1]) % 256;
 		if (!ft_strisnum(command->args[1]))
 		{
 			printf("bash: exit: %s: numeric argument required\n",
 				command->args[1]);
-			command->exit_code = 2;
+			g_exit_code = 2;
 		}
 	}
 	free_env(env);
-	exit(command->exit_code);
+	exit(g_exit_code);
 }

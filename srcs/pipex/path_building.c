@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:25:55 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 10:46:59 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/10 08:12:16 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,29 +79,4 @@ char	*get_path(t_pipex *pipex)
 	full_path = build_path(paths, cmd);
 	free(path_env);
 	return (full_path);
-}
-
-void	tab_env(t_env *env)
-{
-	t_env	*current;
-	int		size;
-	int		i;
-
-	size = 0;
-	current = env;
-	while (current)
-	{
-		size++;
-		current = current->next;
-	}
-	env->tab_env = malloc(sizeof(char *) * (size + 1));
-	if (!env->tab_env)
-		return ;
-	current = env;
-	i = -1;
-	while (current)
-	{
-		current->tab_env[++i] = ft_strdup(current->line);
-		current = current->next;
-	}
 }

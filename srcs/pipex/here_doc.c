@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:56:05 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 17:09:02 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/10 10:01:35 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	fill_here_doc(t_pipex *pipex)
 		error_exit("Here_doc error");
 	while (1)
 	{
-		ft_putstr(">");
+		ft_putstr("> ");
 		line = get_next_line(STDIN_FILENO);
 		if (ft_strcmp(line, pipex->limiter) == 10)
 		{
@@ -49,6 +49,8 @@ static void	close_here_doc(t_pipex *pipex)
 
 void	here_doc(t_pipex *pipex)
 {
+	if (pipex->cmd->redir->element)
+		pipex->limiter = pipex->cmd->redir->element;
 	open_outfile(pipex);
 	fill_here_doc(pipex);
 	if (!pipex->outfile_open)

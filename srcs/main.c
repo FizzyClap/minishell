@@ -3,36 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:31:10 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/10 12:10:50 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	execute_builtins(t_env *env, t_cmd *command)
+int	g_exit_code = 0;
+
+void	execute_builtins(t_env *env, t_cmd *command, int fd)
 {
 	if (ft_strcmp(command->cmd, "echo") == 0)
-		builtin_echo(command);
+		builtin_echo(command, fd);
 	else if (ft_strcmp(command->cmd, "cd") == 0)
-		builtin_cd(env, command->args);
+		builtin_cd(env, command->args, fd);
 	else if (ft_strcmp(command->cmd, "pwd") == 0)
-		builtin_pwd(command->args);
+		builtin_pwd(command->args, fd);
 	else if (ft_strcmp(command->cmd, "export") == 0)
-		builtin_export(env, command->cmd, command->args);
+		builtin_export(env, command, fd);
 	else if (ft_strcmp(command->cmd, "unset") == 0)
 		builtin_unset(env, command->args);
 	else if (ft_strcmp(command->cmd, "env") == 0)
-		builtin_env(env, command->cmd);
+		builtin_env(env, command->cmd, fd);
 	else if (ft_strcmp(command->cmd, "exit") == 0)
 		builtin_exit(env, command);
 	else
 		printf("%s: command not found\n", command->cmd);
 }
 
-void print_lexer(t_lexer *lex)
+void	print_lexer(t_lexer *lex)
 {
 	while (lex)
 	{
@@ -41,9 +43,9 @@ void print_lexer(t_lexer *lex)
 	}
 }
 
-void print_split(t_split_cmd *split)
+void	print_split(t_split_cmd *split)
 {
-	t_lexer *lex;
+	t_lexer	*lex;
 	int		i;
 
 	i = 0;

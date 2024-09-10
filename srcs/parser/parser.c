@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:40:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 13:04:55 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/09 18:00:39 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static int	count_args(t_lexer *cmd)
 static void	title_cmd(t_split_cmd **split, t_cmd **new)
 {
 	(*new)->cmd = ft_strdup((*split)->cmd->element);
-	(*new)->exit_code = 0;
 }
 
 static int	trim_args(t_split_cmd **split, t_cmd **new, int arg)
@@ -39,7 +38,7 @@ static int	trim_args(t_split_cmd **split, t_cmd **new, int arg)
 	(*new)->args[++arg] = ft_strdup((*split)->cmd->element);
 	(*split)->cmd = (*split)->cmd->next;
 	return (arg);
-	
+
 }
 
 void	cmd_node(t_split_cmd *split, int arg, t_cmd **new)

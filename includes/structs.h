@@ -18,7 +18,6 @@ typedef struct s_cmd
 	char			*line;
 	char			*cmd;
 	char			**args;
-	int				exit_code;
 	struct s_lexer	*redir;
 	struct s_cmd	*next;
 }	t_cmd;

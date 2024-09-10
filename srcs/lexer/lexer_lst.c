@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_lst.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:34:04 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 09:54:54 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/10 09:06:46 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void	lexer_add_back(t_lexer **lst, t_lexer *new)
 	last_element->next = new;
 }
 
-int	lexer_size(t_lexer *lst)
+int	list_cmd_size(t_cmd *lst)
 {
-	size_t	count;
+	int	count;
 
-	if (!lst)
-		return (0);
 	count = 0;
+	if (!lst)
+		return (count);
 	while (lst)
 	{
 		count++;

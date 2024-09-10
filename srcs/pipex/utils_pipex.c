@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:27:11 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/10 10:56:11 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	error_exit(const char *msg)
 
 int	open_infile(t_pipex *pipex)
 {
-	if (pipex->cmd->redir && pipex->cmd->redir->token && pipex->cmd->redir->token == IN)
+	while (pipex->cmd->redir && pipex->cmd->redir->token == IN)
 	{
 		pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
 		if (access(pipex->cmd->redir->element, F_OK) == FAILURE)
@@ -37,23 +37,25 @@ int	open_infile(t_pipex *pipex)
 				pipex->cmd->redir->element);
 			return (FAILURE);
 		}
-		pipex->infile_open = 1;
-		pipex->infile_exist = 1;
+		if (pipex->cmd->redir && pipex->cmd->redir->next && pipex->cmd->redir->next->token == IN)
+		{
+			close(pipex->infile);
+			pipex->cmd->redir = pipex->cmd->redir->next;
+		}
+		else
+			break ;
 	}
-	else
-		return (FAILURE);
-	//if (pipex->cmd->redir->next)
-	//{
-	//	pipex->cmd->redir = pipex->cmd->redir->next;
-	//	open_infile(pipex);
-	//}
+	if (!pipex->cmd->redir)
+		pipex->infile = STDIN_FILENO;
+	pipex->infile_open = 1;
 	return (SUCCESS);
 }
 
 int	open_outfile(t_pipex *pipex)
 {
-	if (pipex->cmd->redir && pipex->cmd->redir->token && \
-		(pipex->cmd->redir->token == OUT || pipex->cmd->redir->token == APPEND))
+	if (pipex->cmd->redir && pipex->cmd->redir->next)
+		pipex->cmd->redir = pipex->cmd->redir->next;
+	while (pipex->cmd->redir && (pipex->cmd->redir->token == OUT || pipex->cmd->redir->token == APPEND))
 	{
 		if (pipex->cmd->redir->token == OUT)
 			pipex->outfile = open(pipex->cmd->redir->element, \
@@ -70,15 +72,17 @@ int	open_outfile(t_pipex *pipex)
 			printf("bash: %s: Permission denied\n", pipex->cmd->redir->element);
 			return (FAILURE);
 		}
-		pipex->outfile_open = 1;
+		if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->next->token == OUT || pipex->cmd->redir->next->token == APPEND))
+		{
+			close(pipex->outfile);
+			pipex->cmd->redir = pipex->cmd->redir->next;
+		}
+		else
+			break ;
 	}
-	else
-		return (FAILURE);
-	//if (pipex->cmd->redir->next)
-	//{
-		//pipex->cmd->redir = pipex->cmd->redir->next;
-		//open_outfile(pipex);
-	//}
+	if (!pipex->cmd->redir || (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
+		pipex->outfile = STDOUT_FILENO;
+	pipex->outfile_open = 1;
 	return (SUCCESS);
 }
 
