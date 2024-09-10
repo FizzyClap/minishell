@@ -6,13 +6,15 @@
 /*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:28:39 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/10 14:54:40 by gartan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	execute_builtins(t_env *env, t_cmd *command)
+int	g_exit_code = 0;
+
+void	execute_builtins(t_env *env, t_cmd *command)
 {
 	if (ft_strcmp(command->cmd, "echo") == 0)
 		builtin_echo(command);
