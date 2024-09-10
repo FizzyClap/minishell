@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 10:56:11 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:42:31 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	open_infile(t_pipex *pipex)
 		else
 			break ;
 	}
-	if (!pipex->cmd->redir)
+	if (!pipex->cmd->redir || pipex->cmd->redir->token != IN)
 		pipex->infile = STDIN_FILENO;
 	pipex->infile_open = 1;
 	return (SUCCESS);
@@ -53,8 +53,15 @@ int	open_infile(t_pipex *pipex)
 
 int	open_outfile(t_pipex *pipex)
 {
-	if (pipex->cmd->redir && pipex->cmd->redir->next)
-		pipex->cmd->redir = pipex->cmd->redir->next;
+	t_lexer	*tmp = pipex->cmd->redir;
+
+	if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
+	{
+		tmp = pipex->cmd->redir->next;
+		//free(pipex->cmd->redir->element);
+		//free(pipex->cmd->redir);
+		pipex->cmd->redir = tmp;
+	}
 	while (pipex->cmd->redir && (pipex->cmd->redir->token == OUT || pipex->cmd->redir->token == APPEND))
 	{
 		if (pipex->cmd->redir->token == OUT)
@@ -123,4 +130,5 @@ void	free_pipex(t_pipex *pipex)
 	}
 	free(pipex->pipefd);
 	free(pipex->child);
+	free(pipex);
 }

@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 11:33:24 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:12:11 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void	chose_pipe(t_pipex *pipex, int i)
 			close(pipex->pipefd[i][0]);
 		if (i == pipex->nb_pipes)
 			exec(pipex, pipex->infile, pipex->outfile);
+		else if (pipex->outfile)
+			exec(pipex, pipex->infile, pipex->outfile);
 		else
 			exec(pipex, pipex->infile, pipex->pipefd[i][1]);
 	}
@@ -41,6 +43,7 @@ static void	chose_pipe(t_pipex *pipex, int i)
 	else
 	{
 		close(pipex->pipefd[i][0]);
+		close(pipex->pipefd[i - 1][1]);
 		exec(pipex, pipex->pipefd[i - 1][0], pipex->pipefd[i][1]);
 	}
 }
@@ -72,8 +75,6 @@ void	execute_pipes(t_pipex *pipex)
 		if (pipex->cmd && pipex->cmd->next)
 		{
 			pipex->cmd = pipex->cmd->next;
-			close(pipex->infile);
-			close(pipex->outfile);
 			open_and_exec(pipex);
 		}
 	}
@@ -86,8 +87,8 @@ void	exec_command(t_pipex *pipex)
 	path = get_path(pipex);
 	if (!path)
 	{
-		free_pipex(pipex);
 		printf("bash: command not found: %s\n", pipex->cmd->cmd);
+		free_pipex(pipex);
 		g_exit_code = COMMAND_NOT_FOUND;
 		exit(g_exit_code);
 	}
@@ -106,7 +107,8 @@ void	exec(t_pipex *pipex, int inputfd, int outputfd)
 		error_exit("Dup2 input error");
 	if (dup2(outputfd, STDOUT_FILENO) == FAILURE)
 		error_exit("Dup2 output error");
-	close(inputfd);
+	if (inputfd != STDIN_FILENO)
+		close(inputfd);
 	if (outputfd != STDOUT_FILENO)
 		close(outputfd);
 	exec_command(pipex);
@@ -144,5 +146,5 @@ void	execute_pipex (t_cmd *command, t_env *env)
 	i = -1;
 	while (++i <= pipex->nb_pipes)
 		waitpid(pipex->child[i], &pipex->status, 0);
-	//free_pipex(pipex);
+	free_pipex(pipex);
 }
