@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 13:25:08 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 14:47:01 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,23 @@
 
 int	is_builtins(t_cmd *command)
 {
-	if ((ft_strcmp(command->cmd, "cd") == 0))
-		return (ISBUILTINS);
-	if ((ft_strcmp(command->cmd, "echo") == 0))
-		return (ISBUILTINS);
-	if ((ft_strcmp(command->cmd, "pwd") == 0))
-		return (ISBUILTINS);
-	if ((ft_strcmp(command->cmd, "export") == 0))
-		return (ISBUILTINS);
-	if ((ft_strcmp(command->cmd, "unset") == 0))
-		return (ISBUILTINS);
-	if ((ft_strcmp(command->cmd, "env") == 0))
-		return (ISBUILTINS);
-	if ((ft_strcmp(command->cmd, "exit") == 0))
-		return (ISBUILTINS);
+	if (command->cmd)
+	{
+		if ((ft_strcmp(command->cmd, "cd") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "echo") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "pwd") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "export") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "unset") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "env") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "exit") == 0))
+			return (ISBUILTINS);
+	}
 	return (ISNOTBUILTINS);
 }
 
