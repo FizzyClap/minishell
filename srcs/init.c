@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:40:31 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 09:00:22 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:14:00 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	init_env(t_env **env)
 	i = -1;
 	while (__environ[++i])
 		add_node(env, __environ[i]);
-	(*env)->prev_path = getcwd(NULL, 0);
 }
 
 void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)

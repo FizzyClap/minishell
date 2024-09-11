@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 15:42:31 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:22:59 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	open_infile(t_pipex *pipex)
 {
 	while (pipex->cmd->redir && pipex->cmd->redir->token == IN)
 	{
-		pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
 		if (access(pipex->cmd->redir->element, F_OK) == FAILURE)
 		{
 			pipex->nb_pipes--;
@@ -35,6 +34,12 @@ int	open_infile(t_pipex *pipex)
 			pipex->nb_pipes--;
 			ft_printf("bash: %s: Permission denied\n", \
 				pipex->cmd->redir->element);
+			return (FAILURE);
+		}
+		pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
+		if (pipex->infile == FAILURE)
+		{
+			perror("Error opening infiile");
 			return (FAILURE);
 		}
 		if (pipex->cmd->redir && pipex->cmd->redir->next && pipex->cmd->redir->next->token == IN)
@@ -70,6 +75,11 @@ int	open_outfile(t_pipex *pipex)
 		else if (pipex->cmd->redir->token == APPEND)
 			pipex->outfile = open(pipex->cmd->redir->element, \
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (pipex->outfile == FAILURE)
+		{
+			perror("Error opening outfile");
+			return (FAILURE);
+		}
 		if (access(pipex->cmd->redir->element, W_OK) == FAILURE)
 		{
 			if (pipex->infile_open)

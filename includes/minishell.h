@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 13:15:13 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/11 15:13:24 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ void		builtin_unset(t_env *env, char **args);
 //BUILTINS/BUILTINS OTHER
 void		builtin_echo(t_cmd *command, int fd);
 void		builtin_cd(t_env *env, char **args, int fd);
-void		builtin_pwd(char **args, int fd);
+void		builtin_pwd(t_env *env, char **args, int fd);
 void		builtin_exit(t_env *env, t_cmd *command);
+void		set_env(t_env *env, char *var_name, char *new_path);
 //BUILTINS/CHAIN LIST UTILS
 t_env		*create_node(char *env_line);
 void		modify_node(t_env *env, char *env_line);
@@ -57,6 +58,7 @@ int			is_builtins(t_cmd *command);
 void		sort_env(t_env *env);
 t_env		*copy_env(t_env *env);
 void		free_env(t_env *head);
+char		*get_env(t_env *env, char *var_name);
 //LEXER/LEXER LST
 t_lexer		*lexer_new(char *element, int token);
 void		lexer_add_back(t_lexer **lst, t_lexer *new);

@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 14:41:34 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/11 15:17:50 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_builtins(t_env *env, t_cmd *command, int fd)
 	else if (ft_strcmp(command->cmd, "cd") == 0)
 		builtin_cd(env, command->args, fd);
 	else if (ft_strcmp(command->cmd, "pwd") == 0)
-		builtin_pwd(command->args, fd);
+		builtin_pwd(env, command->args, fd);
 	else if (ft_strcmp(command->cmd, "export") == 0)
 		builtin_export(env, command, fd);
 	else if (ft_strcmp(command->cmd, "unset") == 0)
@@ -47,7 +47,7 @@ static void	ft_ctrl_c(int signum)
 	}
 }
 
-static void ft_ctrl_bs(int signum)
+static void	ft_ctrl_bs(int signum)
 {
 	set_termios(false);
 	if (signum == 3)

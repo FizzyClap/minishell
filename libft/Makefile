@@ -59,6 +59,8 @@ SRCS =	srcs/ft_atoi.c\
 		srcs/ft_free_tab.c\
 		printf/ft_printf_utils.c\
 		printf/ft_printf.c\
+		printf/ft_fprintf_utils.c\
+		printf/ft_fprintf.c\
 		gnl/get_next_line.c\
 		gnl/get_next_line_utils.c\
 

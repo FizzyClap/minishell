@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:56:05 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 14:38:55 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:20:50 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	fill_here_doc(t_pipex *pipex)
 static void	exec_here_doc(t_pipex *pipex)
 {
 	pipex->infile = open("here_doc.tmp", O_RDONLY);
-	execute_pipes(pipex);
+	if (pipex->cmd->cmd)
+		execute_pipes(pipex);
 }
 
 static void	close_here_doc(t_pipex *pipex)
@@ -62,10 +63,5 @@ void	here_doc(t_pipex *pipex)
 	}
 	exec_here_doc(pipex);
 	close_here_doc(pipex);
-	printf("cmd = %s\n", pipex->cmd->cmd);
-	if (pipex->cmd->args)
-		for (int i = 0; pipex->cmd->args[i]; i++)
-			printf("args[%d] = %s\n", i, pipex->cmd->args[i]);
-	printf("redir = %s\n", pipex->cmd->redir->element);
 	free(pipex->limiter);
 }
