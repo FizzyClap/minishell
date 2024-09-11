@@ -27,9 +27,7 @@ typedef struct s_env
 	char			*line;
 	char			*var;
 	char			*args;
-	char			*prev_path;
 	int				token;
-	char			**tab_env;
 	struct s_env	*next;
 }	t_env;
 

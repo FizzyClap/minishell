@@ -1,52 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_fprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 07:53:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 13:45:00 by roespici         ###   ########.fr       */
+/*   Created: 2024/09/11 13:45:07 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/11 14:03:39 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-static int	ft_typep(unsigned long nb, char *format)
+static int	ft_ftypep(int fd, unsigned long nb, char *format)
 {
 	int	count;
 
 	count = 0;
 	if (nb == 0)
-		return (ft_putstr("(nil)"));
-	count += ft_putstr("0x");
-	count += ft_puthexa(nb, (char *)format);
+		return (ft_fputstr(fd, "(nil)"));
+	count += ft_fputstr(fd, "0x");
+	count += ft_fputhexa(fd, nb, (char *)format);
 	return (count);
 }
 
-int	ft_type(va_list args, char *format)
+int	ft_ftype(int fd, va_list args, char *format)
 {
 	int	count;
 
 	count = 0;
 	if (*format == 'c')
-		count += ft_putchar(va_arg(args, int));
+		count += ft_fputchar(fd, va_arg(args, int));
 	else if (*format == 's')
-		count += ft_putstr(va_arg(args, char *));
+		count += ft_fputstr(fd, va_arg(args, char *));
 	else if (*format == 'p')
-		count += ft_typep(va_arg(args, unsigned long), (char *)format);
+		count += ft_ftypep(fd, va_arg(args, unsigned long), (char *)format);
 	else if (*format == 'd' || *format == 'i')
-		count += ft_putnbr(va_arg(args, int));
+		count += ft_fputnbr(fd, va_arg(args, int));
 	else if (*format == 'u')
-		count += ft_putnbr(va_arg(args, unsigned int));
+		count += ft_fputnbr(fd, va_arg(args, unsigned int));
 	else if (*format == 'x' || *format == 'X')
-		count += ft_puthexa(va_arg(args, unsigned int), (char *)format);
+		count += ft_fputhexa(fd, va_arg(args, unsigned int), (char *)format);
 	else if (*format == '%')
-		count += ft_putchar('%');
+		count += ft_fputchar(fd, '%');
 	return (count);
 }
 
-int	ft_printf(char *str, ...)
+int	ft_fprintf(int fd, char *str, ...)
 {
 	va_list	args;
 	int		i;
@@ -60,10 +60,10 @@ int	ft_printf(char *str, ...)
 		if (str[i] == '%')
 		{
 			i++;
-			count += ft_type(args, (char *)str + i);
+			count += ft_ftype(fd, args, (char *)str + i);
 		}
 		else
-			count += ft_putchar(str[i]);
+			count += ft_fputchar(fd, str[i]);
 		i++;
 	}
 	va_end(args);

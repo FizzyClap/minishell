@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 08:34:24 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 14:29:48 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,20 @@ void	execute_pipes(t_pipex *pipex)
 	while (++pipex->i <= pipex->nb_pipes)
 	{
 		if (pipex->i < pipex->nb_pipes)
-		{
 			if (pipe(pipex->pipefd[pipex->i]) == FAILURE)
 				error_exit("Pipe error");
-		}
-		if (is_builtins(pipex->cmd))
+		if (pipex->nb_pipes == 0 && is_builtins(pipex->cmd))
 			execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
 		else
-		{
 			pipex->child[pipex->i] = fork_child();
-			if (pipex->child[pipex->i] == 0)
-				chose_pipe(pipex, pipex->i);
-			else
-			{
-				if (pipex->i > 0)
-					close(pipex->pipefd[pipex->i - 1][0]);
-				if (pipex->i < pipex->nb_pipes)
-					close(pipex->pipefd[pipex->i][1]);
-			}
+		if (pipex->child[pipex->i] == 0)
+			chose_pipe(pipex, pipex->i);
+		else
+		{
+			if (pipex->i > 0)
+				close(pipex->pipefd[pipex->i - 1][0]);
+			if (pipex->i < pipex->nb_pipes)
+				close(pipex->pipefd[pipex->i][1]);
 		}
 		if (pipex->cmd && pipex->cmd->next)
 		{
@@ -81,10 +77,15 @@ void	exec_command(t_pipex *pipex)
 {
 	char	*path;
 
+	if (is_builtins(pipex->cmd))
+	{
+		execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
+		exit(0);
+	}
 	path = get_path(pipex);
 	if (!path)
 	{
-		printf("bash: command not found: %s\n", pipex->cmd->cmd);
+		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
 		free_pipex(pipex);
 		g_exit_code = COMMAND_NOT_FOUND;
 		exit(g_exit_code);

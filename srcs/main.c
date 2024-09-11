@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 14:36:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 14:27:47 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_builtins(t_env *env, t_cmd *command, int fd)
 	else if (ft_strcmp(command->cmd, "cd") == 0)
 		builtin_cd(env, command->args, fd);
 	else if (ft_strcmp(command->cmd, "pwd") == 0)
-		builtin_pwd(command->args, fd);
+		builtin_pwd(env, command->args, fd);
 	else if (ft_strcmp(command->cmd, "export") == 0)
 		builtin_export(env, command, fd);
 	else if (ft_strcmp(command->cmd, "unset") == 0)
@@ -63,23 +63,23 @@ void	print_split(t_split_cmd *split)
 	}
 }
 
-static void	ft_ctrl(int signum)
-{
-	if (signum == 2)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		g_exit_code = 130;
-	}
-	if (signum == 3)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
+//static void	ft_ctrl(int signum)
+//{
+//	if (signum == 2)
+//	{
+//		printf("\n");
+//		rl_on_new_line();
+//		rl_replace_line("", 0);
+//		rl_redisplay();
+//		g_exit_code = 130;
+//	}
+//	if (signum == 3)
+//	{
+//		rl_on_new_line();
+//		rl_replace_line("", 0);
+//		rl_redisplay();
+//	}
+//}
 
 static void	ft_ctrld(void)
 {
@@ -116,8 +116,6 @@ int	main(void)
 
 	env = NULL;
 	init_minishell(&env);
-	signal(SIGINT, ft_ctrl);
-	signal(SIGQUIT, ft_ctrl);
 	while (1)
 	{
 		line = readline(PROMPT);

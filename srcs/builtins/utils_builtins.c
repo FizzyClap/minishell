@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 12:27:56 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:25:08 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	free_env(t_env *head)
 {
 	t_env	*temp;
 
-	free(head->prev_path);
 	while (head)
 	{
 		temp = head->next;
@@ -96,4 +95,16 @@ void	free_split(char **args)
 			free(args[i]);
 		free(args);
 	}
+}
+
+char	*get_env(t_env *env, char *var_name)
+{
+
+	while (env)
+	{
+		if (ft_strcmp(env->var, var_name) == 0)
+			return (env->args);
+		env = env->next;
+	}
+	return (NULL);
 }

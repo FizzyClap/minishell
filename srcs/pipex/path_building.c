@@ -6,13 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:25:55 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 08:12:16 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 13:14:11 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*get_env(t_env *env)
+static char	*get_path_in_env(t_env *env)
 {
 	t_env	*current;
 	char	*path_env;
@@ -67,7 +67,7 @@ char	*get_path(t_pipex *pipex)
 	char	*path_env;
 	char	*cmd;
 
-	path_env = get_env(pipex->env);
+	path_env = get_path_in_env(pipex->env);
 	paths = ft_split(path_env, ':');
 	if (!paths)
 	{

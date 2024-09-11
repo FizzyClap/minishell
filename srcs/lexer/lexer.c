@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:12:58 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/11 09:58:25 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ t_lexer	*make_lexer(char *input)
 		new = lexer_new(NULL, 0);
 		while (input[start] == ' ')
 			start++;
-		if (input[start] != ' ')
+		if (input[start] && input[start] != ' ')
 		{
 			new->element = lexer_dup(input, start);
 			new->token = find_token(new->element);

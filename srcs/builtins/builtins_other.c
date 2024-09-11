@@ -6,11 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 11:59:12 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 14:36:42 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static void	cd_2_args(t_env *env, char **args, int fd);
 
 void	builtin_echo(t_cmd *command, int fd)
 {
@@ -46,34 +48,65 @@ void	builtin_cd(t_env *env, char **args, int fd)
 
 	path_to_home = NULL;
 	nb_args = ft_count_args(args);
-	if (nb_args == 1)
+	if (nb_args > 2)
+		printf("bash: cd: too many arguments\n");
+	if (nb_args == 1 || (nb_args == 2 && ft_strcmp(args[1], "--") == 0))
 	{
 		path_to_home = getenv("HOME");
-		env->prev_path = getcwd(NULL, 0);
-		if (path_to_home)
-			if (chdir(path_to_home) == FAILURE)
-				perror("chdir error");
-	}
-	else if (nb_args == 2)
-	{
 		temp = getcwd(NULL, 0);
-		if (ft_strcmp(args[1], "-") == 0)
-		{
-			ft_putstr_fd(env->prev_path, fd);
-			ft_putchar_fd('\n', fd);
-			if (chdir(env->prev_path) == FAILURE)
-				perror("chdir error");
-		}
-		else if (chdir(args[1]) == FAILURE)
-			perror("chdir error");
-		env->prev_path = ft_strdup(temp);
+		if (!temp)
+			return ;
+		if (path_to_home && chdir(path_to_home) == FAILURE)
+			perror("bash: cd: ");
+		set_env(env, "PWD", path_to_home);
+		set_env(env, "OLDPWD", temp);
 		free(temp);
 	}
+	else if (nb_args == 2)
+		cd_2_args(env, args, fd);
 }
 
-void	builtin_pwd(char **args, int fd)
+static void	cd_2_args(t_env *env, char **args, int fd)
+{
+	char	*temp;
+	char	*prev_path;
+
+	temp = getcwd(NULL, 0);
+	if (!temp)
+		temp = ft_strdup(get_env(env, "PWD"));
+	if (ft_strcmp(args[1], "-") == 0)
+	{
+		prev_path = get_env(env, "OLDPWD");
+		if (prev_path)
+		{
+			if (chdir(prev_path) == FAILURE)
+			{
+				ft_fprintf(STDERR_FILENO, "bash: cd: %s: ", prev_path);
+				g_exit_code = 1;
+				return (perror(""));
+			}
+			ft_fprintf(fd, "%s\n", prev_path);
+			set_env(env, "PWD", prev_path);
+		}
+	}
+	else
+	{
+		if (chdir(args[1]) == FAILURE)
+		{
+			ft_fprintf(STDERR_FILENO, "bash: cd: %s: ", args[1]);
+			g_exit_code = 1;
+			return (perror(""));
+		}
+		set_env(env, "PWD", getcwd(NULL, 0));
+	}
+	set_env(env, "OLDPWD", temp);
+	free(temp);
+}
+
+void	builtin_pwd(t_env *env, char **args, int fd)
 {
 	char	*cwd;
+	char	*path_pwd;
 	int		nb_args;
 
 	nb_args = ft_count_args(args);
@@ -85,12 +118,12 @@ void	builtin_pwd(char **args, int fd)
 	cwd = getcwd(NULL, 0);
 	if (cwd)
 	{
-		ft_putstr_fd(cwd, fd);
-		ft_putchar_fd('\n', fd);
-		free(cwd);
+		ft_fprintf(fd, "%s\n", cwd);
+		return (free(cwd));
 	}
-	else
-		perror("getcwd error");
+	path_pwd = get_env(env, "PWD");
+	if (path_pwd)
+		ft_fprintf(fd, "%s\n", path_pwd);
 }
 
 void	builtin_exit(t_env *env, t_cmd *command)
