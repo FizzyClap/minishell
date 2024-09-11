@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:56:05 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 14:38:55 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 08:35:34 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,5 @@ void	here_doc(t_pipex *pipex)
 	}
 	exec_here_doc(pipex);
 	close_here_doc(pipex);
-	printf("cmd = %s\n", pipex->cmd->cmd);
-	if (pipex->cmd->args)
-		for (int i = 0; pipex->cmd->args[i]; i++)
-			printf("args[%d] = %s\n", i, pipex->cmd->args[i]);
-	printf("redir = %s\n", pipex->cmd->redir->element);
 	free(pipex->limiter);
 }
