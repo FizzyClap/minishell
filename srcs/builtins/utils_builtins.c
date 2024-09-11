@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 13:04:11 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/10 12:27:56 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	free_env(t_env *head)
 {
 	t_env	*temp;
 
+	free(head->prev_path);
 	while (head)
 	{
 		temp = head->next;

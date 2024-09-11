@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 #-fsanitize=address
+FLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
 LIBFT = libft/libft.a
 LIBFT_PATH = ./libft
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
@@ -81,7 +81,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-	@make -s -C libft fclean
+#@make -s -C libft fclean
 
 re: fclean all
 

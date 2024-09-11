@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:22:03 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/10 12:14:37 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@
 void		init_minishell(t_env **env);
 void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 //BUILTINS/BUILTINS ENV
-void		builtin_env(t_env *head, char *command);
-void		builtin_export(t_env *env, char *cmd, char **args);
+void		builtin_env(t_env *head, char *command, int fd);
+void		builtin_export(t_env *env, t_cmd *cmd, int fd);
 void		builtin_unset(t_env *env, char **args);
 //BUILTINS/BUILTINS OTHER
-void		builtin_echo(t_cmd *command);
-void		builtin_cd(t_env *env, char **args);
-void		builtin_pwd(char **args);
+void		builtin_echo(t_cmd *command, int fd);
+void		builtin_cd(t_env *env, char **args, int fd);
+void		builtin_pwd(char **args, int fd);
 void		builtin_exit(t_env *env, t_cmd *command);
 //BUILTINS/CHAIN LIST UTILS
 t_env		*create_node(char *env_line);
@@ -59,6 +59,7 @@ void		free_env(t_env *head);
 //LEXER/LEXER LST
 t_lexer		*lexer_new(char *element, int token);
 void		lexer_add_back(t_lexer **lst, t_lexer *new);
+int			list_cmd_size(t_cmd *lst);
 //LEXER/LEXER REDIR
 t_lexer		*clean_redir(t_lexer *lexer);
 //LEXER/LEXER
@@ -71,9 +72,10 @@ t_cmd		*make_cmd(t_split_cmd *split);
 void		make_lines(t_lexer *lexer, t_cmd **final);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
+//PIPEX/HERE DOC
+void	here_doc(t_pipex *pipex);
 //PIPEX/PATH BUILDING
 char		*get_path(t_pipex *pipex);
-void		tab_env(t_env *env);
 //PIPEX/PIPEX
 void		execute_pipes(t_pipex *pipex);
 void		exec_command(t_pipex *pipex);
@@ -84,9 +86,9 @@ void		error_exit(const char *msg);
 int			open_infile(t_pipex *pipex);
 int			open_outfile(t_pipex *pipex);
 void		close_pipes(t_pipex *pipex);
-int			open_and_exec(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
-void		execute_builtins(t_env *env, t_cmd *command);
+void		execute_builtins(t_env *env, t_cmd *command, int fd);
+void		open_and_exec(t_pipex *pipex);
 //FREE_UTILS
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);

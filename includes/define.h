@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   define.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:23:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:22:09 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/10 12:14:40 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_H
 # define DEFINE_H
+
+extern int	g_exit_code;
 
 # define PROMPT "Fraudistan> "
 # define SUCCESS 0
