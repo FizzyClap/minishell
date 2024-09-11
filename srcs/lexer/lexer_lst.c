@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:34:04 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 09:06:03 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/10 09:06:46 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,9 @@ static t_lexer	*lexer_last(t_lexer *lst)
 {
 	if (!lst)
 		return (NULL);
-	while (lst)
-	{
-		if (lst->next == NULL)
-			return (lst);
+	while (lst && lst->next)
 		lst = lst->next;
-	}
-	return (NULL);
+	return (lst);
 }
 
 void	lexer_add_back(t_lexer **lst, t_lexer *new)
@@ -51,13 +47,13 @@ void	lexer_add_back(t_lexer **lst, t_lexer *new)
 	last_element->next = new;
 }
 
-int	lexer_size(t_lexer *lst)
+int	list_cmd_size(t_cmd *lst)
 {
-	size_t	count;
+	int	count;
 
-	if (!lst)
-		return (0);
 	count = 0;
+	if (!lst)
+		return (count);
 	while (lst)
 	{
 		count++;

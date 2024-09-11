@@ -1,12 +1,12 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 10:48:07 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:22:45 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:07:38 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ typedef struct s_cmd
 	char			*line;
 	char			*cmd;
 	char			**args;
-	int				exit_code;
-	struct s_lexer	*output_redirection;
+	struct s_lexer	*redir;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -28,7 +27,6 @@ typedef struct s_env
 	char			*line;
 	char			*var;
 	char			*args;
-	char			*prev_path;
 	int				token;
 	struct s_env	*next;
 }	t_env;

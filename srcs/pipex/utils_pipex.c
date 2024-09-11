@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:19:49 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:10:22 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ void	error_exit(const char *msg)
 
 int	open_infile(t_pipex *pipex)
 {
-	if (pipex->cmd->redir && pipex->cmd->redir->token && pipex->cmd->redir->token == IN)
+	while (pipex->cmd->redir && pipex->cmd->redir->token == IN)
 	{
-		pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
 		if (access(pipex->cmd->redir->element, F_OK) == FAILURE)
 		{
 			pipex->nb_pipes--;
@@ -37,23 +36,38 @@ int	open_infile(t_pipex *pipex)
 				pipex->cmd->redir->element);
 			return (FAILURE);
 		}
-		pipex->infile_open = 1;
-		pipex->infile_exist = 1;
+		pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
+		if (pipex->infile == FAILURE)
+		{
+			perror("Error opening infiile");
+			return (FAILURE);
+		}
+		if (pipex->cmd->redir && pipex->cmd->redir->next && pipex->cmd->redir->next->token == IN)
+		{
+			close(pipex->infile);
+			pipex->cmd->redir = pipex->cmd->redir->next;
+		}
+		else
+			break ;
 	}
-	else
-		return (FAILURE);
-	//if (pipex->cmd->redir->next)
-	//{
-	//	pipex->cmd->redir = pipex->cmd->redir->next;
-	//	open_infile(pipex);
-	//}
+	if (!pipex->cmd->redir || pipex->cmd->redir->token != IN)
+		pipex->infile = STDIN_FILENO;
+	pipex->infile_open = 1;
 	return (SUCCESS);
 }
 
 int	open_outfile(t_pipex *pipex)
 {
-	if (pipex->cmd->redir && pipex->cmd->redir->token && \
-		(pipex->cmd->redir->token == OUT || pipex->cmd->redir->token == APPEND))
+	t_lexer	*tmp = pipex->cmd->redir;
+
+	if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
+	{
+		tmp = pipex->cmd->redir->next;
+		//free(pipex->cmd->redir->element);
+		//free(pipex->cmd->redir);
+		pipex->cmd->redir = tmp;
+	}
+	while (pipex->cmd->redir && (pipex->cmd->redir->token == OUT || pipex->cmd->redir->token == APPEND))
 	{
 		if (pipex->cmd->redir->token == OUT)
 			pipex->outfile = open(pipex->cmd->redir->element, \
@@ -61,6 +75,11 @@ int	open_outfile(t_pipex *pipex)
 		else if (pipex->cmd->redir->token == APPEND)
 			pipex->outfile = open(pipex->cmd->redir->element, \
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (pipex->outfile == FAILURE)
+		{
+			perror("Error opening outfile");
+			return (FAILURE);
+		}
 		if (access(pipex->cmd->redir->element, W_OK) == FAILURE)
 		{
 			if (pipex->infile_open)
@@ -70,15 +89,17 @@ int	open_outfile(t_pipex *pipex)
 			printf("bash: %s: Permission denied\n", pipex->cmd->redir->element);
 			return (FAILURE);
 		}
-		pipex->outfile_open = 1;
+		if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->next->token == OUT || pipex->cmd->redir->next->token == APPEND))
+		{
+			close(pipex->outfile);
+			pipex->cmd->redir = pipex->cmd->redir->next;
+		}
+		else
+			break ;
 	}
-	else
-		return (FAILURE);
-	//if (pipex->cmd->redir->next)
-	//{
-		//pipex->cmd->redir = pipex->cmd->redir->next;
-		//open_outfile(pipex);
-	//}
+	if (!pipex->cmd->redir || (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
+		pipex->outfile = STDOUT_FILENO;
+	pipex->outfile_open = 1;
 	return (SUCCESS);
 }
 
@@ -119,4 +140,5 @@ void	free_pipex(t_pipex *pipex)
 	}
 	free(pipex->pipefd);
 	free(pipex->child);
+	free(pipex);
 }

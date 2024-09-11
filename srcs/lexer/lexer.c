@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:08:55 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 09:58:25 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,34 @@ static char	*lexer_dup(char *input, int start)
 	}
 	return (line);
 }
+static int	check_valid_lex(t_lexer *lexer)
+{
+	t_lexer	*tmp;
+
+	tmp = lexer;
+	while (tmp)
+	{
+		if (tmp->next && tmp->token == 1 && tmp->next->token == 1)
+		{
+			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
+				tmp->next->element);
+			return (0);
+		}
+		else if (tmp->next && tmp->token > 1 && tmp->next->token > 0)
+		{
+			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
+				tmp->next->element);
+			return (0);
+		}
+		else if (!tmp->next && tmp->token > 1 && tmp->token < 6)
+		{
+			printf("Frausdistan: syntax error near unexpected token `newline'\n");
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
 
 t_lexer	*make_lexer(char *input)
 {
@@ -122,13 +150,18 @@ t_lexer	*make_lexer(char *input)
 		new = lexer_new(NULL, 0);
 		while (input[start] == ' ')
 			start++;
-		if (input[start] != ' ')
+		if (input[start] && input[start] != ' ')
 		{
 			new->element = lexer_dup(input, start);
 			new->token = find_token(new->element);
 			lexer_add_back(&lexer, new);
 			start = lexer_progress(input, start);
 		}
+	}
+	if (check_valid_lex(lexer) == 0)
+	{
+		free_lexer(lexer);
+		return (NULL);
 	}
 	return (lexer);
 }

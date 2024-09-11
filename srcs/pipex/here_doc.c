@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:56:05 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 17:09:02 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:10:03 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	fill_here_doc(t_pipex *pipex)
 		error_exit("Here_doc error");
 	while (1)
 	{
-		ft_putstr(">");
+		ft_putstr("> ");
 		line = get_next_line(STDIN_FILENO);
 		if (ft_strcmp(line, pipex->limiter) == 10)
 		{
@@ -38,7 +38,8 @@ static void	fill_here_doc(t_pipex *pipex)
 static void	exec_here_doc(t_pipex *pipex)
 {
 	pipex->infile = open("here_doc.tmp", O_RDONLY);
-	execute_pipes(pipex);
+	if (pipex->cmd->cmd)
+		execute_pipes(pipex);
 }
 
 static void	close_here_doc(t_pipex *pipex)
@@ -49,14 +50,18 @@ static void	close_here_doc(t_pipex *pipex)
 
 void	here_doc(t_pipex *pipex)
 {
+	if (pipex->cmd->redir->element)
+		pipex->limiter = ft_strdup(pipex->cmd->redir->element);
 	open_outfile(pipex);
 	fill_here_doc(pipex);
 	if (!pipex->outfile_open)
 	{
 		printf("bash: %s: Permission denied\n", pipex->cmd->redir->element);
 		unlink("here_doc.tmp");
+		free(pipex->limiter);
 		return ;
 	}
 	exec_here_doc(pipex);
 	close_here_doc(pipex);
+	free(pipex->limiter);
 }

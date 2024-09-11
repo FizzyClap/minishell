@@ -6,31 +6,86 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:27:38 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 14:27:47 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	execute_builtins(t_env *env, t_cmd *command)
+int	g_exit_code = 0;
+
+void	execute_builtins(t_env *env, t_cmd *command, int fd)
 {
 	if (ft_strcmp(command->cmd, "echo") == 0)
-		builtin_echo(command);
+		builtin_echo(command, fd);
 	else if (ft_strcmp(command->cmd, "cd") == 0)
-		builtin_cd(env, command->args);
+		builtin_cd(env, command->args, fd);
 	else if (ft_strcmp(command->cmd, "pwd") == 0)
-		builtin_pwd(command->args);
+		builtin_pwd(env, command->args, fd);
 	else if (ft_strcmp(command->cmd, "export") == 0)
-		builtin_export(env, command->cmd, command->args);
+		builtin_export(env, command, fd);
 	else if (ft_strcmp(command->cmd, "unset") == 0)
 		builtin_unset(env, command->args);
 	else if (ft_strcmp(command->cmd, "env") == 0)
-		builtin_env(env, command->cmd);
+		builtin_env(env, command->cmd, fd);
 	else if (ft_strcmp(command->cmd, "exit") == 0)
 		builtin_exit(env, command);
 	else
 		printf("%s: command not found\n", command->cmd);
-	free_split(command->args);
+}
+
+void	print_lexer(t_lexer *lex)
+{
+	while (lex)
+	{
+		printf("%i %s\n", lex->token, lex->element);
+		lex = lex->next;
+	}
+}
+
+void	print_split(t_split_cmd *split)
+{
+	t_lexer	*lex;
+	int		i;
+
+	i = 0;
+	while (split)
+	{
+		printf("Split %d:\n", i);
+		lex = split->cmd;
+		while (lex)
+		{
+			printf("   %i %s\n", lex->token, lex->element);
+			lex = lex->next;
+		}
+		split = split->next;
+		i++;
+	}
+}
+
+//static void	ft_ctrl(int signum)
+//{
+//	if (signum == 2)
+//	{
+//		printf("\n");
+//		rl_on_new_line();
+//		rl_replace_line("", 0);
+//		rl_redisplay();
+//		g_exit_code = 130;
+//	}
+//	if (signum == 3)
+//	{
+//		rl_on_new_line();
+//		rl_replace_line("", 0);
+//		rl_redisplay();
+//	}
+//}
+
+static void	ft_ctrld(void)
+{
+	rl_clear_history();
+	printf("exit\n");
+	exit (EXIT_SUCCESS);
 }
 
 static t_cmd	*prompt_loop(char *line)
@@ -42,11 +97,14 @@ static t_cmd	*prompt_loop(char *line)
 
 	final = NULL;
 	lexer = make_lexer(line);
+	if (lexer == NULL)
+		return (NULL);
 	lex_redir = clean_redir(lexer);
+	free_lexer(lexer);
 	split = split_cmd(lex_redir);
+	free_lexer(lex_redir);
 	final = make_cmd(split);
-	final->line = ft_strdup(line);
-	final->exit_code = 0;
+	free_split_cmd(split);
 	return (final);
 }
 
@@ -61,17 +119,15 @@ int	main(void)
 	while (1)
 	{
 		line = readline(PROMPT);
-		if (!line)
-			break ;
-		command = prompt_loop(line);
-		add_history(command->line);
-		if (is_builtins(command))
-			execute_builtins(env, command);
-		//else
-		//{
-		//	init_pipex(&pipex, &command, env);
-		//	free_split(command.args);
-		//}
+		if (line == NULL)
+			ft_ctrld();
+		if (ft_strlen(line))
+		{
+			command = prompt_loop(line);
+			add_history(line);
+			execute_pipex(command, env);
+			free_cmd(command);
+		}
 		free(line);
 	}
 }

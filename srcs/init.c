@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:40:31 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 10:36:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 11:03:10 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,23 @@ static void	init_env(t_env **env)
 	i = -1;
 	while (__environ[++i])
 		add_node(env, __environ[i]);
-	(*env)->prev_path = getcwd(NULL, 0);
 }
 
-void	init_pipex(t_pipex *pipex, t_env *env)
+void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)
 {
-	int	i;
+	t_cmd	*size;
+	int		i;
 
-	pipex->i = -1;
 	pipex->env = env;
-	pipex->infile_exist = 1;
-	pipex->infile_open = 1;
-	pipex->outfile_open = 1;
+	pipex->cmd = command;
+	pipex->i = -1;
+	pipex->infile_exist = 0;
+	pipex->infile_open = 0;
+	pipex->outfile_open = 0;
 	pipex->limiter = NULL;
-	pipex->nb_pipes = 0;
+	size = pipex->cmd;
+	pipex->nb_pipes = list_cmd_size(size) - 1;
 	i = -1;
-	while (pipex->cmd->args[++i])
-		if (ft_strcmp(pipex->cmd->args[i], "|") == 0)
-			pipex->nb_pipes++;
 	pipex->exit_status = 0;
 	pipex->status = 1;
 	pipex->pipefd = malloc(sizeof(int *) * pipex->nb_pipes);
