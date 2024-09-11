@@ -4,7 +4,7 @@ FLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
 LIBFT = libft/libft.a
 LIBFT_PATH = ./libft
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
-LDFLAGS = $(LIBFT_FLAGS) -lreadline -lhistory -lncurses
+LDFLAGS = $(LIBFT_FLAGS) -lreadline -lhistory -lncurses -lncurses
 INCLUDES = -I./includes -I$(LIBFT_PATH)/includes
 RM = rm -rf
 GREEN = \033[0;32m
@@ -29,6 +29,8 @@ SRCS =	srcs/main.c\
 		srcs/pipex/path_building.c\
 		srcs/pipex/pipex.c\
 		srcs/pipex/utils_pipex.c\
+		srcs/debug/print.c\
+		srcs/signals/signals.c\
 
 OBJS = $(SRCS:.c=.o)
 

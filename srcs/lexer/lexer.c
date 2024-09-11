@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 17:12:58 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/11 13:51:25 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,19 +115,19 @@ static int	check_valid_lex(t_lexer *lexer)
 	tmp = lexer;
 	while (tmp)
 	{
-		if (tmp->next && tmp->token == 1 && tmp->next->token == 1)
+		if (tmp->next && tmp->token == PIPE && tmp->next->token == PIPE)
 		{
 			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
 				tmp->next->element);
 			return (0);
 		}
-		else if (tmp->next && tmp->token > 1 && tmp->next->token > 0)
+		else if (tmp->next && tmp->token > PIPE && tmp->next->token > WORD)
 		{
 			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
 				tmp->next->element);
 			return (0);
 		}
-		else if (!tmp->next && tmp->token > 1 && tmp->token < 6)
+		else if (!tmp->next && tmp->token > PIPE && tmp->token < 7)
 		{
 			printf("Frausdistan: syntax error near unexpected token `newline'\n");
 			return (0);
@@ -147,11 +147,11 @@ t_lexer	*make_lexer(char *input)
 	lexer = NULL;
 	while (input[start])
 	{
-		new = lexer_new(NULL, 0);
 		while (input[start] == ' ')
 			start++;
-		if (input[start] != ' ')
+		if (input[start] && input[start] != ' ')
 		{
+			new = lexer_new(NULL, 0);
 			new->element = lexer_dup(input, start);
 			new->token = find_token(new->element);
 			lexer_add_back(&lexer, new);

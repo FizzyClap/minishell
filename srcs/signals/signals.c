@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:46:28 by gartan            #+#    #+#             */
-/*   Updated: 2024/09/10 17:48:54 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/11 14:26:40 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,38 @@
 	
 	//	int tcgetattr(int fd, struct termios *termios_p);
 	//	int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
+
+
+	// CTRL-C :
+	// 	- prompt vide: ^C + retour a la ligne + code 130;
+	// 	- prompt rempli: ``                  ``         ;
+	// 	- heredoc en cours: ^C + sorti du heredoc + code 130;
+	// 	- processus en cours: ^C + sorti du processus + code 130;
+
+	// CTRL-D :
+	// 	- prompt vide: \nexit + code 0;
+	// 	- prompt rempli: nothing;
+	// 	- heredoc en cours: sorti du heredoc + juste la 1re ligne en historique + 
+	// 																		code 0;
+	// 	- processus en cours: nothing;
 	
+	// CTRL-\ :
+	// 	- prompt vide: nothing;
+	// 	- prompt rempli: nothing;
+	// 	- heredoc en cours: nothing;
+	// 	- processus en cours: sorti du processus + "^\Quit  (core dumped)" + code 131;
+
+
+
+		
+void	set_termios(bool set)
+{
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	if (set == true)
+		term.c_lflag |= ECHOCTL;
+	else if (set == false)
+		term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}

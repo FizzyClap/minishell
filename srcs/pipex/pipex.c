@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 16:12:11 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 09:15:41 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,20 @@ static void	chose_pipe(t_pipex *pipex, int i)
 	{
 		if (pipex->nb_pipes > 0)
 			close(pipex->pipefd[i][0]);
-		if (i == pipex->nb_pipes)
-			exec(pipex, pipex->infile, pipex->outfile);
-		else if (pipex->outfile)
+		if (i == pipex->nb_pipes || pipex->outfile != STDOUT_FILENO)
 			exec(pipex, pipex->infile, pipex->outfile);
 		else
 			exec(pipex, pipex->infile, pipex->pipefd[i][1]);
 	}
 	else if (i == pipex->nb_pipes)
-	{
-		close(pipex->pipefd[i - 1][1]);
 		exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
-	}
 	else
 	{
 		close(pipex->pipefd[i][0]);
-		close(pipex->pipefd[i - 1][1]);
-		exec(pipex, pipex->pipefd[i - 1][0], pipex->pipefd[i][1]);
+		if (pipex->outfile != STDOUT_FILENO)
+			exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
+		else
+			exec(pipex, pipex->pipefd[i - 1][0], pipex->pipefd[i][1]);
 	}
 }
 

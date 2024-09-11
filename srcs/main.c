@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 16:45:45 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/11 14:41:34 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,52 +34,29 @@ void	execute_builtins(t_env *env, t_cmd *command, int fd)
 		printf("%s: command not found\n", command->cmd);
 }
 
-void	print_lexer(t_lexer *lex)
+static void	ft_ctrl_c(int signum)
 {
-	while (lex)
+	// set_termios(true);
+	if (signum == 2)
 	{
-		printf("%i %s\n", lex->token, lex->element);
-		lex = lex->next;
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_exit_code = 130;
 	}
 }
 
-void	print_split(t_split_cmd *split)
+static void ft_ctrl_bs(int signum)
 {
-	t_lexer	*lex;
-	int		i;
-
-	i = 0;
-	while (split)
+	set_termios(false);
+	if (signum == 3)
 	{
-		printf("Split %d:\n", i);
-		lex = split->cmd;
-		while (lex)
-		{
-			printf("   %i %s\n", lex->token, lex->element);
-			lex = lex->next;
-		}
-		split = split->next;
-		i++;
+		rl_on_new_line();
+		// rl_replace_line("", 0);
+		rl_redisplay();
 	}
 }
-
-// static void	ft_ctrl(int signum)
-// {
-// 	if (signum == 2)
-// 	{
-// 		printf("\n");
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-// 		g_exit_code = 130;
-// 	}
-// 	if (signum == 3)
-// 	{
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-// 	}
-// }
 
 static void	ft_ctrld(void)
 {
@@ -100,6 +77,8 @@ static t_cmd	*prompt_loop(char *line)
 	if (lexer == NULL)
 		return (NULL);
 	lex_redir = clean_redir(lexer);
+	if (lex_redir == NULL)
+		return (NULL);
 	free_lexer(lexer);
 	split = split_cmd(lex_redir);
 	free_lexer(lex_redir);
@@ -116,10 +95,11 @@ int	main(void)
 
 	env = NULL;
 	init_minishell(&env);
-	// signal(SIGINT, ft_ctrl);
-	// signal(SIGQUIT, ft_ctrl);
+	signal(SIGINT, ft_ctrl_c);
+	signal(SIGQUIT, ft_ctrl_bs);
 	while (1)
 	{
+		set_termios(true);
 		line = readline(PROMPT);
 		if (line == NULL)
 			ft_ctrld();
@@ -127,7 +107,8 @@ int	main(void)
 		{
 			command = prompt_loop(line);
 			add_history(line);
-			execute_pipex(command, env);
+			if (command)
+				execute_pipex(command, env);
 			free_cmd(command);
 		}
 		free(line);
