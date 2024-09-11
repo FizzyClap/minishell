@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 14:27:35 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:13:24 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <curses.h>
 
 //INIT
 void		init_minishell(t_env **env);
@@ -95,5 +96,12 @@ void		open_and_exec(t_pipex *pipex);
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);
 void		free_lexer(t_lexer *lexer);
+//SIGNALS
+void		set_termios(bool set);
+//DEBUG
+void		print_tab(char **tab);
+void		print_lexer(t_lexer *lexer);
+void		print_split(t_split_cmd *split);
+void		print_cmd(t_cmd *cmd);
 
 #endif
