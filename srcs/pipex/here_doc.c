@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:56:05 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 08:35:34 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/11 15:03:21 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	fill_here_doc(t_pipex *pipex)
 static void	exec_here_doc(t_pipex *pipex)
 {
 	pipex->infile = open("here_doc.tmp", O_RDONLY);
-	execute_pipes(pipex);
+	if (pipex->cmd->cmd)
+		execute_pipes(pipex);
 }
 
 static void	close_here_doc(t_pipex *pipex)
