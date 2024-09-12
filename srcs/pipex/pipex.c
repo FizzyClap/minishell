@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:22:35 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 09:05:05 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,11 @@ void	execute_pipes(t_pipex *pipex)
 {
 	while (++pipex->i <= pipex->nb_pipes)
 	{
-		if (pipex->i < pipex->nb_pipes)
+		if (pipex->cmd && pipex->cmd->next)
+		{
 			if (pipe(pipex->pipefd[pipex->i]) == FAILURE)
 				error_exit("Pipe error");
+		}
 		if (pipex->nb_pipes == 0 && is_builtins(pipex->cmd))
 			execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
 		else
@@ -68,7 +70,8 @@ void	execute_pipes(t_pipex *pipex)
 		if (pipex->cmd && pipex->cmd->next)
 		{
 			pipex->cmd = pipex->cmd->next;
-			open_and_exec(pipex);
+			if (open_and_exec(pipex) == FAILURE)
+				return ;
 		}
 	}
 }
@@ -80,7 +83,7 @@ void	exec_command(t_pipex *pipex)
 	if (is_builtins(pipex->cmd))
 	{
 		execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 	path = get_path(pipex);
 	if (!path)
@@ -113,24 +116,12 @@ void	exec(t_pipex *pipex, int inputfd, int outputfd)
 	error_exit("Execve error");
 }
 
-void	open_and_exec(t_pipex *pipex)
+int	open_and_exec(t_pipex *pipex)
 {
-	if (pipex->cmd->redir && pipex->cmd->redir->token == HEREDOC)
-	{
-		here_doc(pipex);
-		return ;
-	}
-	if (open_infile(pipex) == FAILURE)
-	{
-		if (open_outfile(pipex) == FAILURE)
-			return ;
-		execute_pipes(pipex);
-	}
-	else
-	{
-		open_outfile(pipex);
-		execute_pipes(pipex);
-	}
+	if (open_infile(pipex) == FAILURE || open_outfile(pipex) == FAILURE)
+		return (FAILURE);
+	execute_pipes(pipex);
+	return (SUCCESS);
 }
 
 void	execute_pipex (t_cmd *command, t_env *env)
@@ -140,9 +131,13 @@ void	execute_pipex (t_cmd *command, t_env *env)
 
 	pipex = malloc(sizeof(t_pipex));
 	init_pipex(pipex, command, env);
-	open_and_exec(pipex);
+	while (open_and_exec(pipex) == FAILURE && pipex->nb_pipes > 0)
+	{
+		--pipex->nb_pipes;
+		pipex->cmd = pipex->cmd->next;
+	}
 	i = -1;
 	while (++i <= pipex->nb_pipes)
 		waitpid(pipex->child[i], &pipex->status, 0);
-	free_pipex(pipex);
+	//free_pipex(pipex);
 }

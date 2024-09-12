@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:40:31 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:14:00 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 07:47:09 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)
 	pipex->env = env;
 	pipex->cmd = command;
 	pipex->i = -1;
-	pipex->infile_exist = 0;
-	pipex->infile_open = 0;
-	pipex->outfile_open = 0;
+	pipex->infile_exist = false;
+	pipex->infile_open = false;
+	pipex->outfile_open = false;
 	pipex->limiter = NULL;
 	size = pipex->cmd;
 	pipex->nb_pipes = list_cmd_size(size) - 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:19:34 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/11 17:59:23 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,16 @@ t_env	*copy_env(t_env *env)
 
 void	free_env(t_env *head)
 {
-	t_env	*temp;
+	t_env	*tmp;
 
 	while (head)
 	{
-		temp = head->next;
+		tmp = head->next;
 		free(head->line);
 		free(head->var);
 		free(head->args);
 		free(head);
-		head = temp;
+		head = tmp;
 	}
 }
 
@@ -103,7 +103,6 @@ void	free_split(char **args)
 
 char	*get_env(t_env *env, char *var_name)
 {
-
 	while (env)
 	{
 		if (ft_strcmp(env->var, var_name) == 0)

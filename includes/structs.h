@@ -40,9 +40,9 @@ typedef struct s_pipex
 	int			status;
 	int			exit_status;
 	int			**pipefd;
-	int			infile_open;
-	int			infile_exist;
-	int			outfile_open;
+	bool		infile_open;
+	bool		infile_exist;
+	bool		outfile_open;
 	char		*limiter;
 	pid_t		*child;
 	t_env		*env;

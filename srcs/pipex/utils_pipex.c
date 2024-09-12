@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:22:59 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 10:00:19 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,35 @@ void	error_exit(const char *msg)
 
 int	open_infile(t_pipex *pipex)
 {
-	while (pipex->cmd->redir && pipex->cmd->redir->token == IN)
+	t_lexer	*parse;
+
+	parse = pipex->cmd->redir;
+	while (pipex->cmd->redir && (pipex->cmd->redir->token == IN || pipex->cmd->redir->token == HEREDOC))
 	{
-		if (access(pipex->cmd->redir->element, F_OK) == FAILURE)
+		if (pipex->cmd->redir->token == HEREDOC)
+			here_doc(pipex);
+		else if (access(pipex->cmd->redir->element, F_OK) == FAILURE)
 		{
-			pipex->nb_pipes--;
 			ft_printf("bash: %s: No such file or directory\n", \
 				pipex->cmd->redir->element);
 			return (FAILURE);
 		}
 		else if (access(pipex->cmd->redir->element, R_OK) == FAILURE)
 		{
-			pipex->nb_pipes--;
 			ft_printf("bash: %s: Permission denied\n", \
 				pipex->cmd->redir->element);
 			return (FAILURE);
 		}
-		pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
-		if (pipex->infile == FAILURE)
+		if (pipex->cmd->redir->token == IN)
 		{
-			perror("Error opening infiile");
-			return (FAILURE);
+			pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
+			if (pipex->infile == FAILURE)
+			{
+				perror("Error opening infile");
+				return (FAILURE);
+			}
 		}
-		if (pipex->cmd->redir && pipex->cmd->redir->next && pipex->cmd->redir->next->token == IN)
+		if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->next->token == IN || pipex->cmd->redir->next->token == HEREDOC))
 		{
 			close(pipex->infile);
 			pipex->cmd->redir = pipex->cmd->redir->next;
@@ -52,21 +58,14 @@ int	open_infile(t_pipex *pipex)
 	}
 	if (!pipex->cmd->redir || pipex->cmd->redir->token != IN)
 		pipex->infile = STDIN_FILENO;
-	pipex->infile_open = 1;
+	pipex->infile_open = true;
 	return (SUCCESS);
 }
 
 int	open_outfile(t_pipex *pipex)
 {
-	t_lexer	*tmp = pipex->cmd->redir;
-
-	if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
-	{
-		tmp = pipex->cmd->redir->next;
-		//free(pipex->cmd->redir->element);
-		//free(pipex->cmd->redir);
-		pipex->cmd->redir = tmp;
-	}
+	if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->token == IN || pipex->cmd->redir->token == HEREDOC))
+		pipex->cmd->redir = pipex->cmd->redir->next;
 	while (pipex->cmd->redir && (pipex->cmd->redir->token == OUT || pipex->cmd->redir->token == APPEND))
 	{
 		if (pipex->cmd->redir->token == OUT)
@@ -75,15 +74,8 @@ int	open_outfile(t_pipex *pipex)
 		else if (pipex->cmd->redir->token == APPEND)
 			pipex->outfile = open(pipex->cmd->redir->element, \
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (pipex->outfile == FAILURE)
-		{
-			perror("Error opening outfile");
-			return (FAILURE);
-		}
 		if (access(pipex->cmd->redir->element, W_OK) == FAILURE)
 		{
-			if (pipex->infile_open)
-				pipex->nb_pipes--;
 			if (pipex->limiter)
 				return (FAILURE);
 			printf("bash: %s: Permission denied\n", pipex->cmd->redir->element);
@@ -99,7 +91,7 @@ int	open_outfile(t_pipex *pipex)
 	}
 	if (!pipex->cmd->redir || (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
 		pipex->outfile = STDOUT_FILENO;
-	pipex->outfile_open = 1;
+	pipex->outfile_open = true;
 	return (SUCCESS);
 }
 

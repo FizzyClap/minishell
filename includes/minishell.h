@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:13:24 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 09:52:29 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ void		make_lines(t_lexer *lexer, t_cmd **final);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
 //PIPEX/HERE DOC
-void	here_doc(t_pipex *pipex);
+void		here_doc(t_pipex *pipex);
+t_lexer		*find_last_redir(t_cmd *cmd, int token);
 //PIPEX/PATH BUILDING
 char		*get_path(t_pipex *pipex);
 //PIPEX/PIPEX
@@ -91,7 +92,7 @@ int			open_outfile(t_pipex *pipex);
 void		close_pipes(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 void		execute_builtins(t_env *env, t_cmd *command, int fd);
-void		open_and_exec(t_pipex *pipex);
+int			open_and_exec(t_pipex *pipex);
 //FREE_UTILS
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);
