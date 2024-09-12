@@ -31,6 +31,8 @@ SRCS =	srcs/main.c\
 		srcs/pipex/utils_pipex.c\
 		srcs/debug/print.c\
 		srcs/signals/signals.c\
+		srcs/var_env/parsing_env.c\
+		srcs/var_env/var_env_lst.c\
 
 OBJS = $(SRCS:.c=.o)
 

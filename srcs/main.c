@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:17:50 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 15:41:46 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,9 @@ int	main(void)
 			ft_ctrld();
 		if (ft_strlen(line))
 		{
-			command = prompt_loop(line);
 			add_history(line);
+			line = parsing_env(line, env);
+			command = prompt_loop(line);
 			if (command)
 				execute_pipex(command, env);
 			free_cmd(command);

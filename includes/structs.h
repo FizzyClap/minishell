@@ -31,6 +31,13 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_var
+{
+	char			*variable;
+	bool			exist;
+	struct s_var	*next;
+}	t_var;
+
 typedef struct s_pipex
 {
 	int			infile;

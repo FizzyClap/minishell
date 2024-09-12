@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 09:20:52 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/11 09:46:17 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 12:53:37 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,23 @@ void	print_cmd(t_cmd *cmd)
 		print_tab(tmp->args);
 		printf("redir:\n");
 		print_lexer(tmp->redir);
+		printf("\n");
+		i++;
+		tmp = tmp->next;
+	}
+}
+
+void	print_vars(t_var *var)
+{
+	t_var	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = var;
+	while (tmp)
+	{
+		printf("variable %i:\n", i);
+		printf("var: %s\nTrue?: %i\n", tmp->variable, tmp->exist);
 		printf("\n");
 		i++;
 		tmp = tmp->next;
