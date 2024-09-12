@@ -31,24 +31,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_pipex
-{
-	int			infile;
-	int			outfile;
-	int			i;
-	int			nb_pipes;
-	int			status;
-	int			exit_status;
-	int			**pipefd;
-	bool		infile_open;
-	bool		infile_exist;
-	bool		outfile_open;
-	char		*limiter;
-	pid_t		*child;
-	t_env		*env;
-	t_cmd		*cmd;
-}	t_pipex;
-
 typedef struct s_split_cmd
 {
 	struct s_lexer		*cmd;
@@ -61,5 +43,25 @@ typedef struct s_lexer
 	int				token;
 	struct s_lexer	*next;
 }	t_lexer;
+
+typedef struct s_pipex
+{
+	int			infile;
+	int			outfile;
+	int			i;
+	int			nb_pipes;
+	int			start_pipes;
+	int			status;
+	int			exit_status;
+	int			**pipefd;
+	bool		print_msg;
+	char		*limiter;
+	t_lexer		*last_infile;
+	pid_t		*child;
+	t_env		*env;
+	t_cmd		*cmd;
+}	t_pipex;
+
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:56:05 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 09:58:25 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:22:55 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,18 @@ static void	fill_here_doc(t_pipex *pipex)
 	close(pipex->infile);
 }
 
-static void	exec_here_doc(t_pipex *pipex)
+static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc)
 {
-	if (pipex->cmd->redir->next)
-	{
-		find_last_redir(pipex->cmd, IN);
-		open_infile(pipex);
-	}
-	else
+	if (ft_strcmp(pipex->last_infile->element, last_heredoc->element) == 0)
 		pipex->infile = open("here_doc.tmp", O_RDONLY);
-
+	else
+	{
+		free(pipex->limiter);
+		unlink("here_doc.tmp");
+		return (FAILURE);
+	}
 	execute_pipes(pipex);
+	return (SUCCESS);
 }
 
 t_lexer	*find_last_redir(t_cmd *cmd, int token)
@@ -61,44 +62,40 @@ t_lexer	*find_last_redir(t_cmd *cmd, int token)
 			if (redir->token == OUT || redir->token == APPEND)
 				last = redir;
 		}
-		else if (redir->token == token)
-			last = redir;
+		else if (token == IN)
+		{
+			if (redir->token == IN || redir->token == HEREDOC)
+				last = redir;
+		}
+		else if (token == HEREDOC)
+			if (redir->token == token)
+				last = redir;
 		redir = redir->next;
 	}
-	printf("last = %s\n", last->element);
 	return (last);
 }
 
-void	here_doc(t_pipex *pipex)
+void	here_doc(t_pipex *pipex, t_lexer *redir)
 {
 	t_lexer	*last;
-
 	last = find_last_redir(pipex->cmd, HEREDOC);
-	last = find_last_redir(pipex->cmd, OUT);
-	last = find_last_redir(pipex->cmd, APPEND);
-	last = find_last_redir(pipex->cmd, IN);
-	if (!last)
-		return ;
-	pipex->limiter = ft_strdup(pipex->cmd->redir->element);
+	pipex->limiter = ft_strdup(redir->element);
 	fill_here_doc(pipex);
-	if (pipex->cmd->redir->next && pipex->cmd->redir != last)
+	if (redir != last)
 	{
-		pipex->cmd->redir = pipex->cmd->redir->next;
 		free(pipex->limiter);
 		unlink("here_doc.tmp");
-		open_infile(pipex);
+		return ;
 	}
 	if (open_outfile(pipex) == FAILURE)
 	{
-		printf("bash: %s: Permission denied\n", last->element);
 		free(pipex->limiter);
 		unlink("here_doc.tmp");
 		return ;
 	}
-	if (pipex->cmd->cmd && pipex->cmd->redir == last)
-	{
-		exec_here_doc(pipex);
-		close_pipes(pipex);
-		unlink("here_doc.tmp");
-	}
+	if (exec_here_doc(pipex, last) == FAILURE)
+		return ;
+	close_pipes(pipex);
+	free(pipex->limiter);
+	unlink("here_doc.tmp");
 }

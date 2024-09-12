@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 09:52:29 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:01:19 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void		make_lines(t_lexer *lexer, t_cmd **final);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
 //PIPEX/HERE DOC
-void		here_doc(t_pipex *pipex);
+void		here_doc(t_pipex *pipex, t_lexer *redir);
 t_lexer		*find_last_redir(t_cmd *cmd, int token);
 //PIPEX/PATH BUILDING
 char		*get_path(t_pipex *pipex);
