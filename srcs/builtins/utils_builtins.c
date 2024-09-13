@@ -6,34 +6,13 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/13 10:03:16 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:10:08 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-
 
 #include "../../includes/minishell.h"
 
 int	is_builtins(t_cmd *command)
-{
-	if (command->cmd)
-	{
-		if ((ft_strcmp(command->cmd, "cd") == 0))
-			return (ISBUILTINS);
-		if ((ft_strcmp(command->cmd, "echo") == 0))
-			return (ISBUILTINS);
-		if ((ft_strcmp(command->cmd, "pwd") == 0))
-			return (ISBUILTINS);
-		if ((ft_strcmp(command->cmd, "export") == 0))
-			return (ISBUILTINS);
-		if ((ft_strcmp(command->cmd, "unset") == 0))
-			return (ISBUILTINS);
-		if ((ft_strcmp(command->cmd, "env") == 0))
-			return (ISBUILTINS);
-		if ((ft_strcmp(command->cmd, "exit") == 0))
-			return (ISBUILTINS);
-	}
 {
 	if (command->cmd)
 	{
