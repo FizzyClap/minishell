@@ -69,6 +69,4 @@ typedef struct s_pipex
 	t_cmd		*cmd;
 }	t_pipex;
 
-
-
 #endif

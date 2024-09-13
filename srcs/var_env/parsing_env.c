@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 16:31:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 16:38:36 by roespici         ###   ########.fr       */
+/*   Created: 2024/09/11 16:07:00 by ggoy              #+#    #+#             */
+/*   Updated: 2024/09/13 10:04:26 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_var	*add_var(t_env *env, char *line, int i)
 	char	*tmp;
 	int		dup;
 	int		temp;
-
+	
 	dup = 0;
 	i++;
 	temp = i;
@@ -38,7 +38,7 @@ static t_var	*add_var(t_env *env, char *line, int i)
 	new = var_new(get_env(env, tmp), true);
 	if (!new->variable)
 		new->exist = ft_change_bool(new->exist);
-	return (new);
+	return (free(tmp), new);
 }
 
 static t_var	*get_vars(char *line, t_env *env)
@@ -124,11 +124,13 @@ char	*parsing_env(char *line, t_env *env)
 	t_var	*vars;
 	t_var	*tmp;
 
+	tmp = NULL;
+	vars = NULL;
 	result = NULL;
 	vars = get_vars(line, env);
 	tmp = vars;
 	result = replace_vars(line, vars);
-	free(line);
-	free_vars(tmp);
+	// free(line);
+	// free_vars(tmp);
 	return (result);
 }

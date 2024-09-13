@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:38:31 by gartan            #+#    #+#             */
-/*   Updated: 2024/09/12 16:34:31 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:03:54 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ void	free_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
-	while (cmd)
+	tmp = NULL;
+	while (tmp)
 	{
 		tmp = cmd->next;
-		free(cmd->cmd);
-		ft_free_tab(cmd->args);
-		free_lexer(cmd->redir);
+		free(tmp->cmd);
+		ft_free_tab(tmp->args);
+		free_lexer(tmp->redir);
 		free(cmd);
 		cmd = tmp;
 	}
@@ -57,11 +58,11 @@ void	free_vars(t_var *var)
 {
 	t_var	*tmp;
 
-	tmp = NULL;
 	while (var)
 	{
 		tmp = var->next;
-		free(var->variable);
+		if (var->variable)
+			free(var->variable);
 		free(var);
 		var = tmp;
 	}

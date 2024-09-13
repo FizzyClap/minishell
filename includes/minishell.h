@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 09:10:23 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:01:46 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ char		*get_env(t_env *env, char *var_name);
 t_lexer		*lexer_new(char *element, int token);
 void		lexer_add_back(t_lexer **lst, t_lexer *new);
 int			list_cmd_size(t_cmd *lst);
+//VAR_ENV/VAR_ENV_LST
+char		*parsing_env(char *line, t_env *env);
+t_var		*var_new(char *variable, bool exist);
+void		var_add_back(t_var **lst, t_var *new);
+int			list_var_size(t_cmd *lst);
+
 //LEXER/LEXER REDIR
 t_lexer		*clean_redir(t_lexer *lexer);
 //LEXER/LEXER
@@ -110,5 +116,6 @@ char		*parsing_env(char *line, t_env *env);
 t_var		*var_new(char *variable, bool exist);
 void		var_add_back(t_var **lst, t_var *new);
 int			list_var_size(t_cmd *lst);
+void		print_vars(t_var *var);
 
 #endif

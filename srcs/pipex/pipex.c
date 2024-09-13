@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 09:53:20 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:11:15 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	exec_command(t_pipex *pipex)
 	path = get_path(pipex);
 	if (!path)
 	{
+		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
 		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
 		free_pipex(pipex);
 		g_exit_code = COMMAND_NOT_FOUND;
