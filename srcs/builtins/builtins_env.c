@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/13 10:03:08 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:10:47 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,22 +99,7 @@ void	builtin_env(t_env *head, char *command, int fd)
 			ft_fprintf(fd, "%s=\"%s\"\n", current->var, current->args);
 		else if (ft_strcmp(command, "export") == 0)
 			ft_fprintf(fd, "%s\n", current->var);
-			ft_fprintf(fd, "%s\n", current->var);
 		current = current->next;
-	}
-}
-
-void	set_env(t_env *env, char *var_name, char *new_path)
-{
-	while (env)
-	{
-		if (ft_strcmp(env->var, var_name) == 0)
-		{
-			free(env->args);
-			env->args = ft_strdup(new_path);
-			return ;
-		}
-		env = env->next;
 	}
 }
 
