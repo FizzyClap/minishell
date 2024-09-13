@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 16:22:57 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:01:46 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void		make_lines(t_lexer *lexer, t_cmd **final);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
 //PIPEX/HERE DOC
-void	here_doc(t_pipex *pipex);
+void		here_doc(t_pipex *pipex, t_lexer *redir);
+t_lexer		*find_last_redir(t_cmd *cmd, int token);
 //PIPEX/PATH BUILDING
 char		*get_path(t_pipex *pipex);
 //PIPEX/PIPEX
@@ -97,7 +98,7 @@ int			open_outfile(t_pipex *pipex);
 void		close_pipes(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 void		execute_builtins(t_env *env, t_cmd *command, int fd);
-void		open_and_exec(t_pipex *pipex);
+int			open_and_exec(t_pipex *pipex);
 //FREE_UTILS
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);
@@ -110,6 +111,11 @@ void		print_tab(char **tab);
 void		print_lexer(t_lexer *lexer);
 void		print_split(t_split_cmd *split);
 void		print_cmd(t_cmd *cmd);
+//VAR_ENV/VAR_ENV_LST
+char		*parsing_env(char *line, t_env *env);
+t_var		*var_new(char *variable, bool exist);
+void		var_add_back(t_var **lst, t_var *new);
+int			list_var_size(t_cmd *lst);
 void		print_vars(t_var *var);
 
 #endif

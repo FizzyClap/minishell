@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/07 16:56:05 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:20:50 by ggoy             ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/09/13 10:04:02 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 
@@ -28,40 +29,74 @@ static void	fill_here_doc(t_pipex *pipex)
 			free(line);
 			break ;
 		}
-		if (pipex->outfile_open)
-			ft_putstr_fd(line, pipex->infile);
+		ft_putstr_fd(line, pipex->infile);
 		free(line);
 	}
 	close(pipex->infile);
 }
 
-static void	exec_here_doc(t_pipex *pipex)
+static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc)
 {
-	pipex->infile = open("here_doc.tmp", O_RDONLY);
-	if (pipex->cmd->cmd)
-		execute_pipes(pipex);
-}
-
-static void	close_here_doc(t_pipex *pipex)
-{
-	close_pipes(pipex);
-	unlink("here_doc.tmp");
-}
-
-void	here_doc(t_pipex *pipex)
-{
-	if (pipex->cmd->redir->element)
-		pipex->limiter = ft_strdup(pipex->cmd->redir->element);
-	open_outfile(pipex);
-	fill_here_doc(pipex);
-	if (!pipex->outfile_open)
+	if (ft_strcmp(pipex->last_infile->element, last_heredoc->element) == 0)
+		pipex->infile = open("here_doc.tmp", O_RDONLY);
+	else
 	{
-		printf("bash: %s: Permission denied\n", pipex->cmd->redir->element);
-		unlink("here_doc.tmp");
 		free(pipex->limiter);
+		unlink("here_doc.tmp");
+		return (FAILURE);
+	}
+	execute_pipes(pipex);
+	return (SUCCESS);
+}
+
+t_lexer	*find_last_redir(t_cmd *cmd, int token)
+{
+	t_lexer	*last;
+	t_lexer	*redir;
+
+	last = NULL;
+	redir = cmd->redir;
+	while (redir)
+	{
+		if (token == OUT || token == APPEND)
+		{
+			if (redir->token == OUT || redir->token == APPEND)
+				last = redir;
+		}
+		else if (token == IN)
+		{
+			if (redir->token == IN || redir->token == HEREDOC)
+				last = redir;
+		}
+		else if (token == HEREDOC)
+			if (redir->token == token)
+				last = redir;
+		redir = redir->next;
+	}
+	return (last);
+}
+
+void	here_doc(t_pipex *pipex, t_lexer *redir)
+{
+	t_lexer	*last;
+	last = find_last_redir(pipex->cmd, HEREDOC);
+	pipex->limiter = ft_strdup(redir->element);
+	fill_here_doc(pipex);
+	if (redir != last)
+	{
+		free(pipex->limiter);
+		unlink("here_doc.tmp");
 		return ;
 	}
-	exec_here_doc(pipex);
-	close_here_doc(pipex);
+	if (open_outfile(pipex) == FAILURE)
+	{
+		free(pipex->limiter);
+		unlink("here_doc.tmp");
+		return ;
+	}
+	if (exec_here_doc(pipex, last) == FAILURE)
+		return ;
+	close_pipes(pipex);
 	free(pipex->limiter);
+	unlink("here_doc.tmp");
 }

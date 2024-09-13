@@ -5,15 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 16:43:41 by ggoy             ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/09/13 10:03:16 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 
 #include "../../includes/minishell.h"
 
 int	is_builtins(t_cmd *command)
+{
+	if (command->cmd)
+	{
+		if ((ft_strcmp(command->cmd, "cd") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "echo") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "pwd") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "export") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "unset") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "env") == 0))
+			return (ISBUILTINS);
+		if ((ft_strcmp(command->cmd, "exit") == 0))
+			return (ISBUILTINS);
+	}
 {
 	if (command->cmd)
 	{
@@ -75,16 +95,16 @@ t_env	*copy_env(t_env *env)
 
 void	free_env(t_env *head)
 {
-	t_env	*temp;
+	t_env	*tmp;
 
 	while (head)
 	{
-		temp = head->next;
+		tmp = head->next;
 		free(head->line);
 		free(head->var);
 		free(head->args);
 		free(head);
-		head = temp;
+		head = tmp;
 	}
 }
 
@@ -103,14 +123,11 @@ void	free_split(char **args)
 
 char	*get_env(t_env *env, char *var_name)
 {
-	t_env	*tmp;
-
-	tmp = env;
-	while (tmp)
+	while (env)
 	{
-		if (ft_strcmp(tmp->var, var_name) == 0)
-			return (tmp->args);
-		tmp = tmp->next;
+		if (ft_strcmp(env->var, var_name) == 0)
+			return (env->args);
+		env = env->next;
 	}
 	return (NULL);
 }

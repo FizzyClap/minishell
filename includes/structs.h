@@ -69,4 +69,24 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 }	t_lexer;
 
+typedef struct s_pipex
+{
+	int			infile;
+	int			outfile;
+	int			i;
+	int			nb_pipes;
+	int			status;
+	int			exit_status;
+	int			**pipefd;
+	bool		print_msg;
+	char		*limiter;
+	bool		outfile_open;
+	t_lexer		*last_infile;
+	pid_t		*child;
+	t_env		*env;
+	t_cmd		*cmd;
+}	t_pipex;
+
+
+
 #endif
