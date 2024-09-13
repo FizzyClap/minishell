@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:22:59 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 09:59:00 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,86 +20,73 @@ void	error_exit(const char *msg)
 
 int	open_infile(t_pipex *pipex)
 {
-	while (pipex->cmd->redir && pipex->cmd->redir->token == IN)
+	t_lexer	*parse;
+
+	parse = pipex->cmd->redir;
+	pipex->last_infile = find_last_redir(pipex->cmd, IN);
+	if (!pipex->last_infile)
 	{
-		if (access(pipex->cmd->redir->element, F_OK) == FAILURE)
-		{
-			pipex->nb_pipes--;
-			ft_printf("bash: %s: No such file or directory\n", \
-				pipex->cmd->redir->element);
-			return (FAILURE);
-		}
-		else if (access(pipex->cmd->redir->element, R_OK) == FAILURE)
-		{
-			pipex->nb_pipes--;
-			ft_printf("bash: %s: Permission denied\n", \
-				pipex->cmd->redir->element);
-			return (FAILURE);
-		}
-		pipex->infile = open(pipex->cmd->redir->element, O_RDONLY);
-		if (pipex->infile == FAILURE)
-		{
-			perror("Error opening infiile");
-			return (FAILURE);
-		}
-		if (pipex->cmd->redir && pipex->cmd->redir->next && pipex->cmd->redir->next->token == IN)
-		{
-			close(pipex->infile);
-			pipex->cmd->redir = pipex->cmd->redir->next;
-		}
-		else
-			break ;
-	}
-	if (!pipex->cmd->redir || pipex->cmd->redir->token != IN)
 		pipex->infile = STDIN_FILENO;
-	pipex->infile_open = 1;
+		return (SUCCESS);
+	}
+	while (parse)
+	{
+		if (parse->token == HEREDOC)
+			here_doc(pipex, parse);
+		if (parse->token == IN)
+		{
+			pipex->infile = open(parse->element, O_RDONLY);
+			if (pipex->infile == FAILURE)
+			{
+				ft_fprintf(STDERR_FILENO, "bash: %s: ", parse->element);
+				perror("");
+				pipex->infile = STDIN_FILENO;
+				return (FAILURE);
+			}
+			if (ft_strcmp(parse->element, pipex->last_infile->element) == 0)
+				return (SUCCESS);
+			close(pipex->infile);
+		}
+		parse = parse->next;
+	}
 	return (SUCCESS);
 }
 
 int	open_outfile(t_pipex *pipex)
 {
-	t_lexer	*tmp = pipex->cmd->redir;
+	t_lexer	*parse;
+	t_lexer	*last;
 
-	if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
+	parse = pipex->cmd->redir;
+	last = find_last_redir(pipex->cmd, OUT);
+	if (!last)
 	{
-		tmp = pipex->cmd->redir->next;
-		//free(pipex->cmd->redir->element);
-		//free(pipex->cmd->redir);
-		pipex->cmd->redir = tmp;
-	}
-	while (pipex->cmd->redir && (pipex->cmd->redir->token == OUT || pipex->cmd->redir->token == APPEND))
-	{
-		if (pipex->cmd->redir->token == OUT)
-			pipex->outfile = open(pipex->cmd->redir->element, \
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (pipex->cmd->redir->token == APPEND)
-			pipex->outfile = open(pipex->cmd->redir->element, \
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (pipex->outfile == FAILURE)
-		{
-			perror("Error opening outfile");
-			return (FAILURE);
-		}
-		if (access(pipex->cmd->redir->element, W_OK) == FAILURE)
-		{
-			if (pipex->infile_open)
-				pipex->nb_pipes--;
-			if (pipex->limiter)
-				return (FAILURE);
-			printf("bash: %s: Permission denied\n", pipex->cmd->redir->element);
-			return (FAILURE);
-		}
-		if (pipex->cmd->redir && pipex->cmd->redir->next && (pipex->cmd->redir->next->token == OUT || pipex->cmd->redir->next->token == APPEND))
-		{
-			close(pipex->outfile);
-			pipex->cmd->redir = pipex->cmd->redir->next;
-		}
-		else
-			break ;
-	}
-	if (!pipex->cmd->redir || (pipex->cmd->redir->token != OUT && pipex->cmd->redir->token != APPEND))
 		pipex->outfile = STDOUT_FILENO;
-	pipex->outfile_open = 1;
+		return (SUCCESS);
+	}
+	while (parse)
+	{
+		if (parse->token == OUT || parse->token == APPEND)
+		{
+			if (parse->token == OUT)
+				pipex->outfile = open(parse->element, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			else if (parse->token == APPEND)
+				pipex->outfile = open(parse->element, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (access(parse->element, W_OK) == FAILURE)
+			{
+				if (pipex->print_msg == false)
+					ft_fprintf(STDERR_FILENO, "bash: %s: Permission denied\n", \
+						parse->element);
+				pipex->print_msg = true;
+				pipex->outfile = STDOUT_FILENO;
+				return (FAILURE);
+			}
+			if (ft_strcmp(parse->element, last->element) == 0)
+				return (SUCCESS);
+			close(pipex->outfile);
+		}
+		parse = parse->next;
+	}
 	return (SUCCESS);
 }
 
@@ -122,15 +109,7 @@ void	free_pipex(t_pipex *pipex)
 	if (pipex->nb_pipes > 0)
 		close_pipes(pipex);
 	i = -1;
-	if ((!pipex->infile_open || !pipex->outfile_open) && pipex->nb_pipes)
-	{
-		while (++i <= pipex->nb_pipes)
-		{
-			free(pipex->pipefd[i]);
-			pipex->pipefd[i] = NULL;
-		}
-	}
-	else if (pipex->nb_pipes)
+	if (pipex->nb_pipes)
 	{
 		while (++i < pipex->nb_pipes)
 		{

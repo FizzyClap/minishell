@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:52:21 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:18:31 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 09:58:19 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	builtin_env(t_env *head, char *command, int fd)
 		if (ft_strcmp(command, "export") == 0)
 			ft_putstr_fd("declare -x ", fd);
 		if (current->token)
-			ft_fprintf(fd, "%s=%s\n", current->var, current->args);
+			ft_fprintf(fd, "%s=\"%s\"\n", current->var, current->args);
 		else if (ft_strcmp(command, "export") == 0)
 			ft_fprintf(fd, "%s\n", current->var);
 		current = current->next;
