@@ -6,19 +6,17 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:34:23 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:57:13 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 11:33:08 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static t_lexer	*long_line(t_lexer *lexer)
+static void	long_line(t_lexer *clean, char *itoa)
 {
-	t_lexer	*lex;
-
-	lex = lexer;
-	lex = lexer_new(lex->next->element, lex->token);
-	return (lex);
+	printf("syntax error near unexpected token `newline'\n");
+	free_lexer(clean);
+	free(itoa);
 }
 
 t_lexer	*clean_redir(t_lexer *lexer)
@@ -33,16 +31,15 @@ t_lexer	*clean_redir(t_lexer *lexer)
 		if (ft_chrinstr("2345", itoa[0]) == 0)
 		{
 			if (!lexer->next)
-			{
-				printf("syntax error near unexpected token `newline'\n");
-				return (free_lexer(clean), free(itoa), NULL);
-			}
-			lexer_add_back(&clean, long_line(lexer));
+				return (long_line(clean, itoa), NULL);
+			lexer_add_back(&clean, \
+				lexer_new(ft_strdup(lexer->next->element), lexer->token));
 			lexer = lexer->next->next;
 		}
 		else
 		{
-			lexer_add_back(&clean, long_line(lexer));
+			lexer_add_back(&clean, \
+				lexer_new(ft_strdup(lexer->element), lexer->token));
 			lexer = lexer->next;
 		}
 		free(itoa);

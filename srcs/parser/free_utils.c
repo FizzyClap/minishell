@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:38:31 by gartan            #+#    #+#             */
-/*   Updated: 2024/09/13 10:36:12 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 11:39:04 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,12 @@ void	free_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
-	tmp = NULL;
-	while (tmp)
+	while (cmd)
 	{
 		tmp = cmd->next;
-		free(tmp->cmd);
-		ft_free_tab(tmp->args);
-		free_lexer(tmp->redir);
+		free(cmd->cmd);
+		ft_free_tab(cmd->args);
+		free_lexer(cmd->redir);
 		free(cmd);
 		cmd = tmp;
 	}

@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:44:18 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 11:46:48 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	execute_child(t_pipex *pipex, int i)
 	}
 }
 
-void	execute_pipes(t_pipex *pipex)
+void	execute_pipes(t_pipex *pipex, char *line)
 {
 	while (++pipex->i <= pipex->nb_pipes)
 	{
@@ -61,7 +61,7 @@ void	execute_pipes(t_pipex *pipex)
 			if (pipe(pipex->pipefd[pipex->i]) == FAILURE)
 				error_exit("Pipe error");
 		if (pipex->nb_pipes == 0 && is_builtins(pipex->cmd))
-			execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
+			execute_builtins(pipex->env, pipex->cmd, pipex->outfile, line);
 		else
 			pipex->child[pipex->i] = fork_child();
 		if (pipex->child[pipex->i] == 0)
@@ -76,7 +76,7 @@ void	execute_pipes(t_pipex *pipex)
 		if (pipex->cmd && pipex->cmd->next)
 		{
 			pipex->cmd = pipex->cmd->next;
-			open_and_exec(pipex);
+			open_and_exec(pipex, line);
 		}
 	}
 }
@@ -87,7 +87,7 @@ void	exec_command(t_pipex *pipex)
 
 	if (is_builtins(pipex->cmd))
 	{
-		execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
+		execute_builtins(pipex->env, pipex->cmd, pipex->outfile, NULL);
 		exit(EXIT_SUCCESS);
 	}
 	path = get_path(pipex);
@@ -122,22 +122,22 @@ void	exec(t_pipex *pipex, int inputfd, int outputfd)
 	error_exit("Execve error");
 }
 
-int	open_and_exec(t_pipex *pipex)
+int	open_and_exec(t_pipex *pipex, char *line)
 {
 	open_infile(pipex);
 	open_outfile(pipex);
-	execute_pipes(pipex);
+	execute_pipes(pipex, line);
 	return (SUCCESS);
 }
 
-void	execute_pipex (t_cmd *command, t_env *env)
+void	execute_pipex (t_cmd *command, t_env *env, char *line)
 {
 	t_pipex *pipex;
 	int		i;
 
 	pipex = malloc(sizeof(t_pipex));
 	init_pipex(pipex, command, env);
-	open_and_exec(pipex);
+	open_and_exec(pipex, line);
 	i = -1;
 	while (++i <= pipex->nb_pipes)
 		waitpid(pipex->child[i], &pipex->status, 0);

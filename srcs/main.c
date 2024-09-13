@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:57:02 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 12:04:34 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit_code = 0;
 
-void	execute_builtins(t_env *env, t_cmd *command, int fd)
+void	execute_builtins(t_env *env, t_cmd *command, int fd, char *line)
 {
 	if (ft_strcmp(command->cmd, "echo") == 0)
 		builtin_echo(command, fd);
@@ -29,7 +29,7 @@ void	execute_builtins(t_env *env, t_cmd *command, int fd)
 	else if (ft_strcmp(command->cmd, "env") == 0)
 		builtin_env(env, command->cmd, fd);
 	else if (ft_strcmp(command->cmd, "exit") == 0)
-		builtin_exit(env, command);
+		builtin_exit(env, command, line);
 	else
 		printf("%s: command not found\n", command->cmd);
 }
@@ -48,7 +48,7 @@ static void	ft_ctrl_c(int signum)
 
 static void	ft_ctrl_bs(int signum)
 {
-	set_termios(false);
+	// set_termios(false);
 	if (signum == 3)
 	{
 		rl_on_new_line();
@@ -57,8 +57,9 @@ static void	ft_ctrl_bs(int signum)
 	}
 }
 
-static void	ft_ctrld(void)
+static void	ft_ctrld(char *line)
 {
+	free(line);
 	rl_clear_history();
 	printf("exit\n");
 	exit (EXIT_SUCCESS);
@@ -80,6 +81,7 @@ static t_cmd	*prompt_loop(char *line)
 		return (NULL);
 	free_lexer(lexer);
 	split = split_cmd(lex_redir);
+	free_lexer(lex_redir);
 	final = make_cmd(split);
 	free_split_cmd(split);
 	return (final);
@@ -97,17 +99,17 @@ int	main(void)
 	signal(SIGQUIT, ft_ctrl_bs);
 	while (1)
 	{
-		set_termios(true);
+		// set_termios(true);
 		line = readline(PROMPT);
 		if (line == NULL)
-			ft_ctrld();
+			ft_ctrld(line);
 		if (ft_strlen(line))
 		{
 			add_history(line);
 			line = parsing_env(line, env);
 			command = prompt_loop(line);
 			if (command)
-				execute_pipex(command, env);
+				execute_pipex(command, env, line);
 			free_cmd(command);
 		}
 		free(line);
