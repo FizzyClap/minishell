@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:11:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:19:34 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 16:43:41 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,14 @@ void	free_split(char **args)
 
 char	*get_env(t_env *env, char *var_name)
 {
+	t_env	*tmp;
 
-	while (env)
+	tmp = env;
+	while (tmp)
 	{
-		if (ft_strcmp(env->var, var_name) == 0)
-			return (env->args);
-		env = env->next;
+		if (ft_strcmp(tmp->var, var_name) == 0)
+			return (tmp->args);
+		tmp = tmp->next;
 	}
 	return (NULL);
 }

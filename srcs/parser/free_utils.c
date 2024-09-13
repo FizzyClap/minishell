@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:38:31 by gartan            #+#    #+#             */
-/*   Updated: 2024/09/12 16:22:37 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 16:47:27 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ void	free_vars(t_var *var)
 {
 	t_var	*tmp;
 
-	tmp = NULL;
 	while (var)
 	{
 		tmp = var->next;
-		free(var->variable);
+		if (var->variable)
+			free(var->variable);
 		free(var);
 		var = tmp;
 	}

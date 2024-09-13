@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:07:00 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/12 16:24:59 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/12 16:49:49 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,13 @@ char	*parsing_env(char *line, t_env *env)
 	t_var	*vars;
 	t_var	*tmp;
 
+	tmp = NULL;
+	vars = NULL;
 	result = NULL;
 	vars = get_vars(line, env);
 	tmp = vars;
 	result = replace_vars(line, vars);
-	free(line);
-	free_vars(tmp);
+	// free(line);
+	// free_vars(tmp);
 	return (result);
 }
