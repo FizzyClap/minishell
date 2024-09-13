@@ -38,6 +38,24 @@ typedef struct s_var
 	struct s_var	*next;
 }	t_var;
 
+typedef struct s_pipex
+{
+	int			infile;
+	int			outfile;
+	int			i;
+	int			nb_pipes;
+	int			status;
+	int			exit_status;
+	int			**pipefd;
+	int			infile_open;
+	int			infile_exist;
+	int			outfile_open;
+	char		*limiter;
+	pid_t		*child;
+	t_env		*env;
+	t_cmd		*cmd;
+}	t_pipex;
+
 typedef struct s_split_cmd
 {
 	struct s_lexer		*cmd;

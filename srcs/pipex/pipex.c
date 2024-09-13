@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 09:58:51 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:04:13 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	execute_pipes(t_pipex *pipex)
 			if (pipe(pipex->pipefd[pipex->i]) == FAILURE)
 				error_exit("Pipe error");
 		if (pipex->nb_pipes == 0 && is_builtins(pipex->cmd))
+		if (pipex->nb_pipes == 0 && is_builtins(pipex->cmd))
 			execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
 		else
 			pipex->child[pipex->i] = fork_child();
@@ -93,6 +94,7 @@ void	exec_command(t_pipex *pipex)
 	path = get_path(pipex);
 	if (!path)
 	{
+		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
 		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
 		free_pipex(pipex);
 		g_exit_code = COMMAND_NOT_FOUND;
