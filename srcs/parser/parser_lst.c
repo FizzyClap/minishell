@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:41:51 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 13:04:16 by gartan           ###   ########.fr       */
+/*   Updated: 2024/09/13 10:36:26 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	make_lines(t_lexer *lexer, t_cmd **final)
 {
 	t_cmd	*tmp;
 	t_lexer	*temp;
-	
+
 	temp = lexer;
 	tmp = *final;
 	while (temp)

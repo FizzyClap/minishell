@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:20:26 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:42:15 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static int	find_token(char *element)
 		return (HEREDOC);
 	else if (ft_strcmp(element, ">>") == 0)
 		return (APPEND);
-	//else if (ft_strcmp(element, "$") == 0)
-	//	return (DOLLAR);
 	else if (ft_strcmp(element, "?") == 0)
 		return (QUESTION);
 	else if (ft_strcmp(element, "||") == 0)
@@ -107,34 +105,6 @@ static char	*lexer_dup(char *input, int start)
 		}
 	}
 	return (line);
-}
-static int	check_valid_lex(t_lexer *lexer)
-{
-	t_lexer	*tmp;
-
-	tmp = lexer;
-	while (tmp)
-	{
-		if (tmp->next && tmp->token == PIPE && tmp->next->token == PIPE)
-		{
-			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
-				tmp->next->element);
-			return (0);
-		}
-		else if (tmp->next && tmp->token > PIPE && tmp->next->token > WORD)
-		{
-			printf("Frausdistan: syntax error near unexpected token `%s'\n",\
-				tmp->next->element);
-			return (0);
-		}
-		else if (!tmp->next && tmp->token > PIPE && tmp->token < 7)
-		{
-			printf("Frausdistan: syntax error near unexpected token `newline'\n");
-			return (0);
-		}
-		tmp = tmp->next;
-	}
-	return (1);
 }
 
 t_lexer	*make_lexer(char *input)

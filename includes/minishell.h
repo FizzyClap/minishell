@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:01:46 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:58:12 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int			list_var_size(t_cmd *lst);
 t_lexer		*clean_redir(t_lexer *lexer);
 //LEXER/LEXER
 t_lexer		*make_lexer(char *input);
+int			check_valid_lex(t_lexer *lexer);
 //PARSER/PARSER LST
 t_cmd		*cmd_new(char *line, char *cmd, char **args, t_lexer *out);
 void		cmd_add_back(t_cmd **lst, t_cmd *new);
@@ -90,7 +91,7 @@ char		*get_path(t_pipex *pipex);
 void		execute_pipes(t_pipex *pipex);
 void		exec_command(t_pipex *pipex);
 void		exec(t_pipex *pipex, int inputfd, int outputfd);
-void		execute_pipex (t_cmd *command, t_env *env);
+void		execute_pipex(t_cmd *command, t_env *env);
 //PIPEX/UTILS PIPEX
 void		error_exit(const char *msg);
 int			open_infile(t_pipex *pipex);

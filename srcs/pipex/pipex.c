@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:11:15 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:44:18 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	execute_pipex (t_cmd *command, t_env *env)
 	init_pipex(pipex, command, env);
 	open_and_exec(pipex);
 	i = -1;
-	while (++i < pipex->nb_pipes)
+	while (++i <= pipex->nb_pipes)
 		waitpid(pipex->child[i], &pipex->status, 0);
 	free_pipex(pipex);
 }

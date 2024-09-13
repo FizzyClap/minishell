@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:02:30 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 10:57:02 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	execute_builtins(t_env *env, t_cmd *command, int fd)
 
 static void	ft_ctrl_c(int signum)
 {
-	// set_termios(true);
 	if (signum == 2)
 	{
 		printf("\n");
@@ -53,7 +52,7 @@ static void	ft_ctrl_bs(int signum)
 	if (signum == 3)
 	{
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -81,7 +80,6 @@ static t_cmd	*prompt_loop(char *line)
 		return (NULL);
 	free_lexer(lexer);
 	split = split_cmd(lex_redir);
-	free_lexer(lex_redir);
 	final = make_cmd(split);
 	free_split_cmd(split);
 	return (final);

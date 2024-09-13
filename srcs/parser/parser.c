@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:40:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/09 18:00:39 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:37:52 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ static int	trim_args(t_split_cmd **split, t_cmd **new, int arg)
 	(*new)->args[++arg] = ft_strdup((*split)->cmd->element);
 	(*split)->cmd = (*split)->cmd->next;
 	return (arg);
-
 }
 
 void	cmd_node(t_split_cmd *split, int arg, t_cmd **new)
 {
-	t_lexer *ntm;
+	t_lexer	*ntm;
 
 	ntm = split->cmd;
 	while (split->cmd)
@@ -54,7 +53,8 @@ void	cmd_node(t_split_cmd *split, int arg, t_cmd **new)
 			arg = trim_args(&split, new, arg);
 		else
 		{
-			lexer_add_back(&(*new)->redir, lexer_new(ft_strdup(split->cmd->element), split->cmd->token));
+			lexer_add_back(&(*new)->redir, \
+				lexer_new(ft_strdup(split->cmd->element), split->cmd->token));
 			split->cmd = split->cmd->next;
 		}
 	}
