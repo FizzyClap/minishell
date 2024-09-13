@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 13:01:19 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:10:23 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int			open_and_exec(t_pipex *pipex);
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);
 void		free_lexer(t_lexer *lexer);
+void		free_vars(t_var *var);
 //SIGNALS
 void		set_termios(bool set);
 //DEBUG
@@ -104,5 +105,10 @@ void		print_tab(char **tab);
 void		print_lexer(t_lexer *lexer);
 void		print_split(t_split_cmd *split);
 void		print_cmd(t_cmd *cmd);
+//VAR_ENV/VAR_ENV_LST
+char		*parsing_env(char *line, t_env *env);
+t_var		*var_new(char *variable, bool exist);
+void		var_add_back(t_var **lst, t_var *new);
+int			list_var_size(t_cmd *lst);
 
 #endif

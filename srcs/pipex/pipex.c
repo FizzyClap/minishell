@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 14:35:32 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:53:20 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ pid_t	fork_child(void)
 	return (child);
 }
 
-static void	chose_pipe(t_pipex *pipex, int i)
+static void	execute_child(t_pipex *pipex, int i)
 {
 	if (i == 0)
 	{
@@ -34,7 +34,15 @@ static void	chose_pipe(t_pipex *pipex, int i)
 			exec(pipex, pipex->infile, pipex->pipefd[i][1]);
 	}
 	else if (i == pipex->nb_pipes)
-		exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
+	{
+		if (pipex->infile != STDIN_FILENO)
+		{
+			close(pipex->pipefd[i - 1][1]);
+			exec(pipex, pipex->infile, pipex->outfile);
+		}
+		else
+			exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
+	}
 	else
 	{
 		close(pipex->pipefd[i][0]);
@@ -57,7 +65,7 @@ void	execute_pipes(t_pipex *pipex)
 		else
 			pipex->child[pipex->i] = fork_child();
 		if (pipex->child[pipex->i] == 0)
-			chose_pipe(pipex, pipex->i);
+			execute_child(pipex, pipex->i);
 		else
 		{
 			if (pipex->i > 0)
@@ -68,8 +76,7 @@ void	execute_pipes(t_pipex *pipex)
 		if (pipex->cmd && pipex->cmd->next)
 		{
 			pipex->cmd = pipex->cmd->next;
-			if (open_and_exec(pipex) == FAILURE)
-				return ;
+			open_and_exec(pipex);
 		}
 	}
 }
@@ -116,8 +123,8 @@ void	exec(t_pipex *pipex, int inputfd, int outputfd)
 
 int	open_and_exec(t_pipex *pipex)
 {
-	if (open_infile(pipex) == FAILURE || open_outfile(pipex) == FAILURE)
-		return (FAILURE);
+	open_infile(pipex);
+	open_outfile(pipex);
 	execute_pipes(pipex);
 	return (SUCCESS);
 }
@@ -129,13 +136,9 @@ void	execute_pipex (t_cmd *command, t_env *env)
 
 	pipex = malloc(sizeof(t_pipex));
 	init_pipex(pipex, command, env);
-	while (open_and_exec(pipex) == FAILURE && pipex->nb_pipes > 0)
-	{
-		--pipex->nb_pipes;
-		pipex->cmd = pipex->cmd->next;
-	}
+	open_and_exec(pipex);
 	i = -1;
-	while (++i <= pipex->nb_pipes)
+	while (++i < pipex->nb_pipes)
 		waitpid(pipex->child[i], &pipex->status, 0);
 	free_pipex(pipex);
 }

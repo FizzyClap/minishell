@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 14:21:03 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 14:24:20 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:09:33 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	open_infile(t_pipex *pipex)
 			{
 				ft_fprintf(STDERR_FILENO, "bash: %s: ", parse->element);
 				perror("");
+				pipex->infile = STDIN_FILENO;
 				return (FAILURE);
 			}
 			if (ft_strcmp(parse->element, pipex->last_infile->element) == 0)
@@ -68,15 +69,16 @@ int	open_outfile(t_pipex *pipex)
 		if (parse->token == OUT || parse->token == APPEND)
 		{
 			if (parse->token == OUT)
-				pipex->outfile = open(parse->element,O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				pipex->outfile = open(parse->element, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			else if (parse->token == APPEND)
-				pipex->outfile = open(parse->element,O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				pipex->outfile = open(parse->element, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (access(parse->element, W_OK) == FAILURE)
 			{
 				if (pipex->print_msg == false)
 					ft_fprintf(STDERR_FILENO, "bash: %s: Permission denied\n", \
 						parse->element);
 				pipex->print_msg = true;
+				pipex->outfile = STDOUT_FILENO;
 				return (FAILURE);
 			}
 			if (ft_strcmp(parse->element, last->element) == 0)
@@ -104,12 +106,12 @@ void	free_pipex(t_pipex *pipex)
 {
 	int	i;
 
-	if (pipex->start_pipes > 0)
+	if (pipex->nb_pipes > 0)
 		close_pipes(pipex);
 	i = -1;
-	if (pipex->start_pipes)
+	if (pipex->nb_pipes)
 	{
-		while (++i < pipex->start_pipes)
+		while (++i < pipex->nb_pipes)
 		{
 			free(pipex->pipefd[i]);
 			pipex->pipefd[i] = NULL;

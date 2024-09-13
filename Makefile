@@ -31,6 +31,8 @@ SRCS =	srcs/main.c\
 		srcs/pipex/utils_pipex.c\
 		srcs/debug/print.c\
 		srcs/signals/signals.c\
+		srcs/var_env/parsing_env.c\
+		srcs/var_env/var_env_lst.c\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -83,7 +85,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-#@make -s -C libft fclean
+	@make -s -C libft fclean
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 16:38:31 by gartan            #+#    #+#             */
-/*   Updated: 2024/09/11 16:36:11 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:34:31 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,19 @@ void	free_cmd(t_cmd *cmd)
 		free_lexer(cmd->redir);
 		free(cmd);
 		cmd = tmp;
+	}
+}
+
+void	free_vars(t_var *var)
+{
+	t_var	*tmp;
+
+	tmp = NULL;
+	while (var)
+	{
+		tmp = var->next;
+		free(var->variable);
+		free(var);
+		var = tmp;
 	}
 }

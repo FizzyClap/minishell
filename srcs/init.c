@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:40:31 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/12 14:19:16 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 09:09:17 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)
 	pipex->limiter = NULL;
 	size = pipex->cmd;
 	pipex->nb_pipes = list_cmd_size(size) - 1;
-	pipex->start_pipes = pipex->nb_pipes;
 	i = -1;
 	pipex->exit_status = 0;
 	pipex->status = 1;
