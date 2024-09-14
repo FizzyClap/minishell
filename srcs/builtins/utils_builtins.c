@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/13 10:10:08 by ggoy             ###   ########.fr       */
+/*   Created: 2024/09/14 10:25:36 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/14 11:11:20 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,6 @@ int	is_builtins(t_cmd *command)
 			return (ISBUILTINS);
 	}
 	return (ISNOTBUILTINS);
-}
-
-void	sort_env(t_env *env)
-{
-	t_env	*current_node;
-	t_env	*next_node;
-	t_env	*min_node;
-
-	current_node = env;
-	while (current_node)
-	{
-		min_node = current_node;
-		next_node = current_node->next;
-		while (next_node)
-		{
-			if (ft_strcmp(next_node->var, min_node->var) < 0)
-				min_node = next_node;
-			next_node = next_node->next;
-		}
-		if (min_node != current_node)
-			swap_nodes(current_node, min_node);
-		current_node = current_node->next;
-	}
 }
 
 t_env	*copy_env(t_env *env)
@@ -84,19 +61,6 @@ void	free_env(t_env *head)
 		free(head->args);
 		free(head);
 		head = tmp;
-	}
-}
-
-void	free_split(char **args)
-{
-	int	i;
-
-	i = -1;
-	if (args)
-	{
-		while (args[++i])
-			free(args[i]);
-		free(args);
 	}
 }
 

@@ -14,6 +14,7 @@ NC = \033[0m
 
 SRCS =	srcs/main.c\
 		srcs/init.c\
+		srcs/builtins/builtins_cd.c\
 		srcs/builtins/utils_builtins.c\
 		srcs/builtins/builtins_env.c\
 		srcs/builtins/builtins_other.c\
@@ -25,9 +26,10 @@ SRCS =	srcs/main.c\
 		srcs/parser/parser.c\
 		srcs/parser/parser_lst.c\
 		srcs/parser/split_cmd.c\
+		srcs/pipex/execution.c\
 		srcs/pipex/here_doc.c\
+		srcs/pipex/open_files.c\
 		srcs/pipex/path_building.c\
-		srcs/pipex/pipex.c\
 		srcs/pipex/utils_pipex.c\
 		srcs/debug/print.c\
 		srcs/signals/signals.c\

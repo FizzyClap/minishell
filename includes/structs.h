@@ -1,12 +1,12 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gartan <gartan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 10:48:07 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/07 16:07:38 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 11:03:04 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ typedef struct s_lexer
 typedef struct s_pipex
 {
 	int			infile;
+	char		*infile_error;
+	bool		infile_exist;
 	int			outfile;
+	char		*outfile_error;
 	int			i;
 	int			nb_pipes;
 	int			status;
