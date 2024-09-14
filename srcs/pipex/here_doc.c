@@ -5,13 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/13 10:04:02 by ggoy             ###   ########.fr       */
+/*   Created: 2024/09/14 10:24:48 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/14 11:51:39 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../includes/minishell.h"
+
+static void	fill_here_doc(t_pipex *pipex);
+static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc);
+
+void	here_doc(t_pipex *pipex, t_lexer *redir)
+{
+	t_lexer	*last;
+
+	last = find_last_redir(pipex->cmd, HEREDOC);
+	pipex->limiter = ft_strdup(redir->element);
+	fill_here_doc(pipex);
+	if (redir != last)
+	{
+		free(pipex->limiter);
+		unlink("here_doc.tmp");
+		return ;
+	}
+	if (open_outfile(pipex) == FAILURE)
+	{
+		free(pipex->limiter);
+		unlink("here_doc.tmp");
+		return ;
+	}
+	if (exec_here_doc(pipex, last) == FAILURE)
+		return ;
+	close_pipes(pipex);
+	free(pipex->limiter);
+	unlink("here_doc.tmp");
+}
 
 static void	fill_here_doc(t_pipex *pipex)
 {
@@ -47,56 +76,4 @@ static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc)
 	}
 	execute_pipes(pipex);
 	return (SUCCESS);
-}
-
-t_lexer	*find_last_redir(t_cmd *cmd, int token)
-{
-	t_lexer	*last;
-	t_lexer	*redir;
-
-	last = NULL;
-	redir = cmd->redir;
-	while (redir)
-	{
-		if (token == OUT || token == APPEND)
-		{
-			if (redir->token == OUT || redir->token == APPEND)
-				last = redir;
-		}
-		else if (token == IN)
-		{
-			if (redir->token == IN || redir->token == HEREDOC)
-				last = redir;
-		}
-		else if (token == HEREDOC)
-			if (redir->token == token)
-				last = redir;
-		redir = redir->next;
-	}
-	return (last);
-}
-
-void	here_doc(t_pipex *pipex, t_lexer *redir)
-{
-	t_lexer	*last;
-	last = find_last_redir(pipex->cmd, HEREDOC);
-	pipex->limiter = ft_strdup(redir->element);
-	fill_here_doc(pipex);
-	if (redir != last)
-	{
-		free(pipex->limiter);
-		unlink("here_doc.tmp");
-		return ;
-	}
-	if (open_outfile(pipex) == FAILURE)
-	{
-		free(pipex->limiter);
-		unlink("here_doc.tmp");
-		return ;
-	}
-	if (exec_here_doc(pipex, last) == FAILURE)
-		return ;
-	close_pipes(pipex);
-	free(pipex->limiter);
-	unlink("here_doc.tmp");
 }

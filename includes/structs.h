@@ -6,9 +6,12 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 10:48:07 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:14:38 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 11:48:24 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
@@ -54,7 +57,10 @@ typedef struct s_lexer
 typedef struct s_pipex
 {
 	int			infile;
+	char		*infile_error;
+	bool		infile_exist;
 	int			outfile;
+	char		*outfile_error;
 	int			i;
 	int			nb_pipes;
 	int			status;

@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/07 16:38:31 by gartan            #+#    #+#             */
-/*   Updated: 2024/09/14 11:44:56 by ggoy             ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/09/14 11:51:03 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 
@@ -42,12 +43,13 @@ void	free_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
-	while (cmd)
+	tmp = NULL;
+	while (tmp)
 	{
 		tmp = cmd->next;
-		free(cmd->cmd);
-		ft_free_tab(cmd->args);
-		free_lexer(cmd->redir);
+		free(tmp->cmd);
+		ft_free_tab(tmp->args);
+		free_lexer(tmp->redir);
 		free(cmd);
 		cmd = tmp;
 	}

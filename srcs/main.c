@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 11:44:27 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 11:49:23 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	main(void)
 	char	*line;
 
 	env = NULL;
-	init_minishell(&env);
+	init_env(&env);
 	signal(SIGINT, ft_ctrl_c);
 	signal(SIGQUIT, ft_ctrl_bs);
 	while (1)
