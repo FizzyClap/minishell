@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 09:20:52 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/12 12:53:37 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 11:50:41 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -26,8 +26,8 @@ void	print_tab(char **tab)
 
 void	print_lexer(t_lexer *lexer)
 {
-	t_lexer *tmp;
-	int  i;
+	t_lexer	*tmp;
+	int		i;
 
 	i = 0;
 	tmp = lexer;
@@ -42,8 +42,8 @@ void	print_lexer(t_lexer *lexer)
 
 void	print_split(t_split_cmd *split)
 {
-	t_split_cmd *tmp;
-	int   i;
+	t_split_cmd	*tmp;
+	int			i;
 
 	tmp = split;
 	i = 0;
@@ -59,8 +59,8 @@ void	print_split(t_split_cmd *split)
 
 void	print_cmd(t_cmd *cmd)
 {
-	t_cmd   *tmp;
-	int  i;
+	t_cmd	*tmp;
+	int		i;
 
 	tmp = cmd;
 	i = 0;

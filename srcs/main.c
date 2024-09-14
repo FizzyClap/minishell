@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 09:50:53 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 12:00:21 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,37 +32,6 @@ void	execute_builtins(t_env *env, t_cmd *command, int fd)
 		builtin_exit(env, command);
 	else
 		printf("%s: command not found\n", command->cmd);
-}
-
-static void	ft_ctrl_c(int signum)
-{
-	// set_termios(true);
-	if (signum == 2)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		g_exit_code = 130;
-	}
-}
-
-static void	ft_ctrl_bs(int signum)
-{
-	set_termios(false);
-	if (signum == 3)
-	{
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
-static void	ft_ctrld(void)
-{
-	rl_clear_history();
-	printf("exit\n");
-	exit (EXIT_SUCCESS);
 }
 
 static t_cmd	*prompt_loop(char *line)
@@ -99,10 +68,9 @@ int	main(void)
 	signal(SIGQUIT, ft_ctrl_bs);
 	while (1)
 	{
-		set_termios(true);
 		line = readline(PROMPT);
 		if (line == NULL)
-			ft_ctrld();
+			ft_ctrld(line);
 		if (ft_strlen(line))
 		{
 			add_history(line);

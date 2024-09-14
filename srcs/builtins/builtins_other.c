@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_other.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 10:36:32 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 12:00:39 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	builtin_exit(t_env *env, t_cmd *command)
 			g_exit_code = 2;
 		}
 	}
+	free_cmd(command);
 	free_env(env);
 	exit(g_exit_code);
 }
