@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 13:59:34 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 16:20:40 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	execute_pipes(t_pipex *pipex)
 			execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
 		else
 			pipex->child[pipex->i] = fork_child();
-		if (pipex->child[pipex->i] == 0)
+		if (!(pipex->nb_pipes == 0 && is_builtins(pipex->cmd)) && \
+			pipex->child[pipex->i] == 0)
 			execute_child(pipex, pipex->i);
 		else
 		{

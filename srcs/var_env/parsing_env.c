@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 11:53:28 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/14 14:59:50 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 17:25:04 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,5 @@ char	*parsing_env(char *line, t_env *env)
 	tmp = vars;
 	result = replace_vars(line, vars);
 	free_vars(tmp);
-	free(line);
 	return (result);
 }
