@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:19:10 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 12:00:01 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	builtin_pwd(t_env *env, char **args, int fd)
 		ft_fprintf(fd, "%s\n", path_pwd);
 }
 
-void	builtin_exit(t_env *env, t_cmd *command)
+void	builtin_exit(t_env *env, t_cmd *command, char *line)
 {
 	int	nb_args;
 
@@ -148,6 +148,8 @@ void	builtin_exit(t_env *env, t_cmd *command)
 			g_exit_code = 2;
 		}
 	}
+	free_cmd(command);
 	free_env(env);
+	free(line);
 	exit(g_exit_code);
 }

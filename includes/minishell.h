@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:01:46 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 11:44:11 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		builtin_unset(t_env *env, char **args);
 void		builtin_echo(t_cmd *command, int fd);
 void		builtin_cd(t_env *env, char **args, int fd);
 void		builtin_pwd(t_env *env, char **args, int fd);
-void		builtin_exit(t_env *env, t_cmd *command);
+void		builtin_exit(t_env *env, t_cmd *command, char *line);
 void		set_env(t_env *env, char *var_name, char *new_path);
 //BUILTINS/CHAIN LIST UTILS
 t_env		*create_node(char *env_line);
@@ -73,6 +73,7 @@ int			list_var_size(t_cmd *lst);
 t_lexer		*clean_redir(t_lexer *lexer);
 //LEXER/LEXER
 t_lexer		*make_lexer(char *input);
+int			check_valid_lex(t_lexer *lexer);
 //PARSER/PARSER LST
 t_cmd		*cmd_new(char *line, char *cmd, char **args, t_lexer *out);
 void		cmd_add_back(t_cmd **lst, t_cmd *new);
@@ -87,18 +88,18 @@ t_lexer		*find_last_redir(t_cmd *cmd, int token);
 //PIPEX/PATH BUILDING
 char		*get_path(t_pipex *pipex);
 //PIPEX/PIPEX
-void		execute_pipes(t_pipex *pipex);
+void		execute_pipes(t_pipex *pipex, char *line);
 void		exec_command(t_pipex *pipex);
 void		exec(t_pipex *pipex, int inputfd, int outputfd);
-void		execute_pipex (t_cmd *command, t_env *env);
+void		execute_pipex(t_cmd *command, t_env *env, char *line);
 //PIPEX/UTILS PIPEX
 void		error_exit(const char *msg);
 int			open_infile(t_pipex *pipex);
 int			open_outfile(t_pipex *pipex);
 void		close_pipes(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
-void		execute_builtins(t_env *env, t_cmd *command, int fd);
-int			open_and_exec(t_pipex *pipex);
+void		execute_builtins(t_env *env, t_cmd *command, int fd, char *line);
+int			open_and_exec(t_pipex *pipex, char *line);
 //FREE_UTILS
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);

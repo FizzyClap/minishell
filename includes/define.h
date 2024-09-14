@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   define.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:23:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/10 12:14:40 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:24:47 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ extern int	g_exit_code;
 # define OUT 3
 # define HEREDOC 4
 # define APPEND 5
-//# define DOLLAR 6
 # define QUESTION 7
 # define OR 8
 # define AND 9
+//ERROR MESSAGES
+# define ERR_SYNT "Frausdistan: syntax error near unexpected token"
 
 #endif
