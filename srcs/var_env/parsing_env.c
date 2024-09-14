@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 11:53:28 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/14 11:55:37 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 14:59:50 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,27 +66,23 @@ static t_var	*get_vars(char *line, t_env *env)
 	return (vars);
 }
 
-static char	*join_char(char *s, char c)
+static char	*join_char(char *str, char c)
 {
 	char	*new;
 	int		i;
 
-	i = 0;
-	if (!s)
+	i = -1;
+	if (!str)
 	{
-		new = ft_calloc(2, sizeof(char));
+		new = ft_calloc(sizeof(char), 2);
 		new[0] = c;
 		return (new);
 	}
-	new = ft_calloc(ft_strlen(s) + 2, sizeof(char));
-	while (s[i])
-	{
-		new[i] = s[i];
-		i++;
-	}
+	new = ft_calloc(sizeof(char), ft_strlen(str) + 2);
+	while (str[++i])
+		new[i] = str[i];
 	new[i] = c;
-	free(s);
-	return (new);
+	return (free(str), new);
 }
 
 static char	*replace_vars(char *line, t_var *vars)
@@ -130,5 +126,7 @@ char	*parsing_env(char *line, t_env *env)
 	vars = get_vars(line, env);
 	tmp = vars;
 	result = replace_vars(line, vars);
+	free_vars(tmp);
+	free(line);
 	return (result);
 }

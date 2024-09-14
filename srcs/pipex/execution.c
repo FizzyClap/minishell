@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 11:51:13 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 13:59:34 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd)
 {
 	if (pipex->infile_exist == false || outputfd == FAILURE)
 	{
-		if (open(pipex->infile_error, O_RDONLY) == FAILURE)
+		if (!pipex->infile_exist && open(pipex->infile_error, O_RDONLY) < 0)
 		{
 			ft_fprintf(STDERR_FILENO, "bash: %s: ", pipex->infile_error);
 			perror("");
