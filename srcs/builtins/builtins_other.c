@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtins_other.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 13:13:31 by roespici         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
 void	builtin_echo(t_cmd *command, int fd)
@@ -26,6 +14,8 @@ void	builtin_echo(t_cmd *command, int fd)
 	}
 	while (command->args[i])
 	{
+		if (ft_strcmp(command->args[i], "$?") == 0)
+			ft_putnbr_fd(g_exit_code, fd);
 		ft_putstr_fd(command->args[i], fd);
 		if (command->args[i + 1])
 			ft_putchar_fd(' ', fd);
