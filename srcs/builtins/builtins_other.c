@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 08:54:38 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 12:00:39 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 18:12:28 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ void	builtin_echo(t_cmd *command, int fd)
 	{
 		if (ft_strcmp(command->args[i], "$?") == 0)
 			ft_putnbr_fd(g_exit_code, fd);
-		else
-			ft_putstr_fd(command->args[i], fd);
+		ft_putstr_fd(command->args[i], fd);
 		if (command->args[i + 1])
 			ft_putchar_fd(' ', fd);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 09:20:52 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/14 11:50:41 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 18:12:55 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	print_cmd(t_cmd *cmd)
 	while (tmp)
 	{
 		printf("cmd nbr: %i\n", i);
-		printf("line: %s\ncmd: %s\n", tmp->line, tmp->cmd);
+		printf("cmd: %s\n", tmp->cmd);
 		printf("args:\n");
 		print_tab(tmp->args);
 		printf("redir:\n");

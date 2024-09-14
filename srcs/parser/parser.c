@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:40:58 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:37:52 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 18:13:27 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_cmd	*make_cmd(t_split_cmd *split)
 	final = NULL;
 	while (split)
 	{
-		new = cmd_new(NULL, NULL, NULL, NULL);
+		new = cmd_new(NULL, NULL, NULL);
 		cmd_node(split, -1, &new);
 		split = split->next;
 		cmd_add_back(&final, new);

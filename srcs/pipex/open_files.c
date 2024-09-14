@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 10:09:01 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 11:05:17 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 14:00:40 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	open_infile(t_pipex *pipex)
 
 	parse = pipex->cmd->redir;
 	pipex->last_infile = find_last_redir(pipex->cmd, IN);
+	pipex->infile_exist = true;
 	if (!pipex->last_infile)
 	{
 		pipex->infile = STDIN_FILENO;
