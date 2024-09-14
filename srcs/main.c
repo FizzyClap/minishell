@@ -6,35 +6,13 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:42:34 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 18:12:21 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 18:15:54 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	g_exit_code = 0;
-
-static t_cmd	*prompt_loop(char *line)
-{
-	t_lexer		*lexer;
-	t_lexer		*lex_redir;
-	t_split_cmd	*split;
-	t_cmd		*final;
-
-	final = NULL;
-	lexer = make_lexer(line);
-	if (lexer == NULL)
-		return (NULL);
-	lex_redir = clean_redir(lexer);
-	if (lex_redir == NULL)
-		return (NULL);
-	free_lexer(lexer);
-	split = split_cmd(lex_redir);
-	free_lexer(lex_redir);
-	final = make_cmd(split);
-	free_split_cmd(split);
-	return (final);
-}
 
 int	main(void)
 {

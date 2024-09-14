@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:34:23 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 11:33:08 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 16:34:02 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ int	check_valid_lex(t_lexer *lexer)
 			printf("%s `%s'\n", ERR_SYNT, tmp->next->element);
 			return (0);
 		}
-		else if (tmp->next && tmp->token > PIPE && tmp->next->token > WORD)
+		else if (tmp->next && tmp->token > WORD && tmp->next->token > WORD)
 		{
 			printf("%s `%s'\n", ERR_SYNT, tmp->next->element);
 			return (0);
 		}
-		else if (!tmp->next && tmp->token > PIPE && tmp->token < 7)
+		else if (!tmp->next && tmp->token > WORD && tmp->token < 7)
 		{
 			printf("%s%s", ERR_SYNT, " `newline'\n");
 			return (0);

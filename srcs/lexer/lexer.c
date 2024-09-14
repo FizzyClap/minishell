@@ -6,13 +6,13 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:33:13 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:42:15 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 16:24:17 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	find_token(char *element)
+int	find_token(char *element)
 {
 	if (ft_strcmp(element, "|") == 0)
 		return (PIPE);
@@ -24,8 +24,6 @@ static int	find_token(char *element)
 		return (HEREDOC);
 	else if (ft_strcmp(element, ">>") == 0)
 		return (APPEND);
-	else if (ft_strcmp(element, "?") == 0)
-		return (QUESTION);
 	else if (ft_strcmp(element, "||") == 0)
 		return (OR);
 	else if (ft_strcmp(element, "&&") == 0)
@@ -78,33 +76,31 @@ static int	lexer_progress(char *input, int start)
 	return (start);
 }
 
-static char	*lexer_dup(char *input, int start)
+static t_lexer	*lexer_dup(char *input, int start)
 {
 	bool	quote;
 	bool	d_quote;
-	char	*line;
+	t_lexer	*new;
 	int		len;
 	int		i;
 
 	i = 0;
+	new = lexer_new(NULL, 0);
 	quote = false;
 	d_quote = false;
 	len = lexer_len(input, start);
-	line = ft_calloc(len + 1, sizeof(char));
+	new->element = ft_calloc(len + 1, sizeof(char));
 	start--;
 	while (input[++start] && i < len)
 	{
 		if (input[start] && input[start] == '\"' && quote == false)
-			d_quote = ft_change_bool(d_quote);
+			d_quote = change_bool(d_quote, new);
 		else if (input[start] && input[start] == '\'' && d_quote == false)
-			quote = ft_change_bool(quote);
+			quote = change_bool(quote, new);
 		else
-		{
-			line[i] = input[start];
-			i++;
-		}
+			new->element[i++] = input[start];
 	}
-	return (line);
+	return (new);
 }
 
 t_lexer	*make_lexer(char *input)
@@ -121,9 +117,8 @@ t_lexer	*make_lexer(char *input)
 			start++;
 		if (input[start] && input[start] != ' ')
 		{
-			new = lexer_new(NULL, 0);
-			new->element = lexer_dup(input, start);
-			new->token = find_token(new->element);
+			new = lexer_dup(input, start);
+			new->token = change_token(new);
 			lexer_add_back(&lexer, new);
 			start = lexer_progress(input, start);
 		}

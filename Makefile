@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 #-fsanitize=address
+FLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
 LIBFT = libft/libft.a
 LIBFT_PATH = ./libft
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
@@ -20,6 +20,7 @@ SRCS =	srcs/main.c\
 		srcs/builtins/builtins_other.c\
 		srcs/builtins/chain_list_utils.c\
 		srcs/lexer/lexer.c\
+		srcs/lexer/lexer_utils.c\
 		srcs/lexer/lexer_lst.c\
 		srcs/lexer/lexer_redir.c\
 		srcs/parser/free_utils.c\
