@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 10:30:23 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 10:35:25 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 13:07:17 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ void	builtin_cd(t_env *env, char **args, int fd)
 static void	cd_2_args(t_env *env, char **args, int fd)
 {
 	char	*temp;
-	char	*path_to_pwd;
+	char	*new_path;
 
 	temp = getcwd(NULL, 0);
 	if (!temp)
 	{
-		path_to_pwd = get_env(env, "PWD");
-		temp = ft_strdup(path_to_pwd);
+		temp = ft_strdup(get_env(env, "PWD"));
 		if (!temp)
 			return ;
 	}
@@ -65,7 +64,9 @@ static void	cd_2_args(t_env *env, char **args, int fd)
 			g_exit_code = 1;
 			return (perror(""));
 		}
-		set_env(env, "PWD", getcwd(NULL, 0));
+		new_path = getcwd(NULL, 0);
+		set_env(env, "PWD", new_path);
+		free(new_path);
 	}
 	set_env(env, "OLDPWD", temp);
 	free(temp);

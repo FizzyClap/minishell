@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parser_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 08:41:51 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:36:26 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 12:55:46 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_cmd	*cmd_new(char *line, char *cmd, char **args, t_lexer *out)
+t_cmd	*cmd_new(char *cmd, char **args, t_lexer *out)
 {
 	t_cmd	*tcmd;
 
 	tcmd = malloc(sizeof(t_cmd));
-	tcmd->line = line;
 	tcmd->cmd = cmd;
 	tcmd->args = args;
 	tcmd->redir = out;
@@ -53,28 +52,28 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new)
 	last_element->next = new;
 }
 
-void	make_lines(t_lexer *lexer, t_cmd **final)
-{
-	t_cmd	*tmp;
-	t_lexer	*temp;
+//void	make_lines(t_lexer *lexer, t_cmd **final)
+//{
+//	t_cmd	*tmp;
+//	t_lexer	*temp;
 
-	temp = lexer;
-	tmp = *final;
-	while (temp)
-	{
-		if (temp && temp->element && temp->token != PIPE)
-		{
-			if (tmp->line == NULL)
-				tmp->line = ft_strdup(temp->element);
-			else
-				tmp->line = ft_strjoin(tmp->line, temp->element);
-			tmp->line = ft_strjoin(tmp->line, " ");
-			temp = temp->next;
-		}
-		else if (temp && temp->element && temp->token == PIPE)
-		{
-			temp = temp->next;
-			tmp = tmp->next;
-		}
-	}
-}
+//	temp = lexer;
+//	tmp = *final;
+//	while (temp)
+//	{
+//		if (temp && temp->element && temp->token != PIPE)
+//		{
+//			if (tmp->line == NULL)
+//				tmp->line = ft_strdup(temp->element);
+//			else
+//				tmp->line = ft_strjoin(tmp->line, temp->element);
+//			tmp->line = ft_strjoin(tmp->line, " ");
+//			temp = temp->next;
+//		}
+//		else if (temp && temp->element && temp->token == PIPE)
+//		{
+//			temp = temp->next;
+//			tmp = tmp->next;
+//		}
+//	}
+//}

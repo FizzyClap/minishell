@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 11:58:06 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 12:56:40 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@
 # include <stdbool.h>
 # include <curses.h>
 
-//MAIN
-void		execute_builtins(t_env *env, t_cmd *command, int fd);
 //INIT
 void		init_env(t_env **env);
 void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
@@ -57,6 +55,7 @@ void		modify_node(t_env *env, char *env_line);
 void		swap_nodes(t_env *node1, t_env *node2);
 //BUILTINS/UTILS BUILTINS
 int			is_builtins(t_cmd *command);
+void		execute_builtins(t_env *env, t_cmd *command, int fd);
 t_env		*copy_env(t_env *env);
 void		free_env(t_env *head);
 char		*get_env(t_env *env, char *var_name);
@@ -75,11 +74,10 @@ t_lexer		*clean_redir(t_lexer *lexer);
 t_lexer		*make_lexer(char *input);
 int			check_valid_lex(t_lexer *lexer);
 //PARSER/PARSER LST
-t_cmd		*cmd_new(char *line, char *cmd, char **args, t_lexer *out);
+t_cmd		*cmd_new(char *cmd, char **args, t_lexer *out);
 void		cmd_add_back(t_cmd **lst, t_cmd *new);
 //PARSER/PARSER
 t_cmd		*make_cmd(t_split_cmd *split);
-void		make_lines(t_lexer *lexer, t_cmd **final);
 //PARSER/SPLIT CMD
 t_split_cmd	*split_cmd(t_lexer *lexer);
 //PIPEX/EXECUTION
