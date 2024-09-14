@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:11:15 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 09:49:54 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,24 @@ static void	execute_child(t_pipex *pipex, int i)
 		if (pipex->nb_pipes > 0)
 			close(pipex->pipefd[i][0]);
 		if (i == pipex->nb_pipes || pipex->outfile != STDOUT_FILENO)
-			exec(pipex, pipex->infile, pipex->outfile);
+			dup_and_exec(pipex, pipex->infile, pipex->outfile);
 		else
-			exec(pipex, pipex->infile, pipex->pipefd[i][1]);
+			dup_and_exec(pipex, pipex->infile, pipex->pipefd[i][1]);
 	}
 	else if (i == pipex->nb_pipes)
 	{
 		if (pipex->infile != STDIN_FILENO)
-		{
-			close(pipex->pipefd[i - 1][1]);
-			exec(pipex, pipex->infile, pipex->outfile);
-		}
+			dup_and_exec(pipex, pipex->infile, pipex->outfile);
 		else
-			exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
+			dup_and_exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
 	}
 	else
 	{
 		close(pipex->pipefd[i][0]);
 		if (pipex->outfile != STDOUT_FILENO)
-			exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
+			dup_and_exec(pipex, pipex->pipefd[i - 1][0], pipex->outfile);
 		else
-			exec(pipex, pipex->pipefd[i - 1][0], pipex->pipefd[i][1]);
+			dup_and_exec(pipex, pipex->pipefd[i - 1][0], pipex->pipefd[i][1]);
 	}
 }
 
@@ -76,7 +73,7 @@ void	execute_pipes(t_pipex *pipex)
 		if (pipex->cmd && pipex->cmd->next)
 		{
 			pipex->cmd = pipex->cmd->next;
-			open_and_exec(pipex);
+			open_files(pipex);
 		}
 	}
 }
@@ -90,10 +87,17 @@ void	exec_command(t_pipex *pipex)
 		execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
 		exit(EXIT_SUCCESS);
 	}
+	if (access(pipex->cmd->args[0], X_OK) == 0)
+	{
+		if (execve(pipex->cmd->args[0], pipex->cmd->args, __environ) == FAILURE)
+		{
+			free_pipex(pipex);
+			error_exit("Error executing command");
+		}
+	}
 	path = get_path(pipex);
 	if (!path)
 	{
-		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
 		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
 		free_pipex(pipex);
 		g_exit_code = COMMAND_NOT_FOUND;
@@ -108,8 +112,10 @@ void	exec_command(t_pipex *pipex)
 	}
 }
 
-void	exec(t_pipex *pipex, int inputfd, int outputfd)
+void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd)
 {
+	if (inputfd == FAILURE || outputfd == FAILURE)
+		exit(EXIT_FAILURE);
 	if (dup2(inputfd, STDIN_FILENO) == FAILURE)
 		error_exit("Dup2 input error");
 	if (dup2(outputfd, STDOUT_FILENO) == FAILURE)
@@ -122,24 +128,23 @@ void	exec(t_pipex *pipex, int inputfd, int outputfd)
 	error_exit("Execve error");
 }
 
-int	open_and_exec(t_pipex *pipex)
+void	open_files(t_pipex *pipex)
 {
 	open_infile(pipex);
 	open_outfile(pipex);
-	execute_pipes(pipex);
-	return (SUCCESS);
 }
 
-void	execute_pipex (t_cmd *command, t_env *env)
+void	execute_pipeline(t_cmd *command, t_env *env)
 {
 	t_pipex *pipex;
 	int		i;
 
 	pipex = malloc(sizeof(t_pipex));
 	init_pipex(pipex, command, env);
-	open_and_exec(pipex);
+	open_files(pipex);
+	execute_pipes(pipex);
 	i = -1;
-	while (++i < pipex->nb_pipes)
+	while (++i <= pipex->nb_pipes)
 		waitpid(pipex->child[i], &pipex->status, 0);
 	free_pipex(pipex);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:01:46 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 09:51:20 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # include <curses.h>
 
 //INIT
-void		init_minishell(t_env **env);
+void		init_env(t_env **env);
 void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 //BUILTINS/BUILTINS ENV
 void		builtin_env(t_env *head, char *command, int fd);
@@ -68,7 +68,6 @@ char		*parsing_env(char *line, t_env *env);
 t_var		*var_new(char *variable, bool exist);
 void		var_add_back(t_var **lst, t_var *new);
 int			list_var_size(t_cmd *lst);
-
 //LEXER/LEXER REDIR
 t_lexer		*clean_redir(t_lexer *lexer);
 //LEXER/LEXER
@@ -89,8 +88,8 @@ char		*get_path(t_pipex *pipex);
 //PIPEX/PIPEX
 void		execute_pipes(t_pipex *pipex);
 void		exec_command(t_pipex *pipex);
-void		exec(t_pipex *pipex, int inputfd, int outputfd);
-void		execute_pipex (t_cmd *command, t_env *env);
+void		dup_and_exec(t_pipex *pipex, int inputfd, int outputfd);
+void		execute_pipeline (t_cmd *command, t_env *env);
 //PIPEX/UTILS PIPEX
 void		error_exit(const char *msg);
 int			open_infile(t_pipex *pipex);
@@ -98,7 +97,7 @@ int			open_outfile(t_pipex *pipex);
 void		close_pipes(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 void		execute_builtins(t_env *env, t_cmd *command, int fd);
-int			open_and_exec(t_pipex *pipex);
+void		open_files(t_pipex *pipex);
 //FREE_UTILS
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);

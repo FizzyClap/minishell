@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:40:31 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:01:59 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 09:51:01 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	init_env(t_env **env)
+void	init_env(t_env **env)
 {
 	int	i;
 
@@ -45,9 +45,4 @@ void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)
 	pipex->child = malloc(sizeof(pid_t) * (pipex->nb_pipes + 1));
 	if (!pipex->child)
 		return ;
-}
-
-void	init_minishell(t_env **env)
-{
-	init_env(env);
 }

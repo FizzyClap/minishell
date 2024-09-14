@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/13 10:04:02 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 20:28:36 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_lexer	*find_last_redir(t_cmd *cmd, int token)
 void	here_doc(t_pipex *pipex, t_lexer *redir)
 {
 	t_lexer	*last;
+	
 	last = find_last_redir(pipex->cmd, HEREDOC);
 	pipex->limiter = ft_strdup(redir->element);
 	fill_here_doc(pipex);

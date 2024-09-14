@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/13 10:04:19 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/13 15:19:15 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	open_infile(t_pipex *pipex)
 			{
 				ft_fprintf(STDERR_FILENO, "bash: %s: ", parse->element);
 				perror("");
-				pipex->infile = STDIN_FILENO;
+				pipex->infile = FAILURE;
 				return (FAILURE);
 			}
 			if (ft_strcmp(parse->element, pipex->last_infile->element) == 0)
@@ -79,7 +79,7 @@ int	open_outfile(t_pipex *pipex)
 					ft_fprintf(STDERR_FILENO, "bash: %s: Permission denied\n", \
 						parse->element);
 				pipex->print_msg = true;
-				pipex->outfile = STDOUT_FILENO;
+				pipex->outfile = FAILURE;
 				return (FAILURE);
 			}
 			if (ft_strcmp(parse->element, last->element) == 0)
