@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:46:28 by gartan            #+#    #+#             */
-/*   Updated: 2024/09/13 10:33:31 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 11:58:21 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,34 @@ void	set_termios(bool set)
 	else if (set == false)
 		term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
+void	ft_ctrl_c(int signum)
+{
+	if (signum == 2)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_exit_code = 130;
+	}
+}
+
+void	ft_ctrl_bs(int signum)
+{
+	if (signum == 3)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+void	ft_ctrld(char *line)
+{
+	free(line);
+	rl_clear_history();
+	printf("exit\n");
+	exit (EXIT_SUCCESS);
 }

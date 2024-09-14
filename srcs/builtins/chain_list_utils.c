@@ -6,23 +6,13 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 11:21:27 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/06 08:36:35 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 11:10:17 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	equal_pos_exist(t_env *new, char *equal_pos)
-{
-	new->var = ft_substr(new->line, 0, equal_pos - new->line);
-	if (!new->var)
-		return (free(new->line), free(new), FAILURE);
-	new->token = 1;
-	new->args = ft_substr(equal_pos + 1, 0, ft_strlen(equal_pos + 1));
-	if (!new->args)
-		return (free(new->var), free(new->line), free(new), FAILURE);
-	return (SUCCESS);
-}
+static int	equal_pos_exist(t_env *new, char *equal_pos);
 
 t_env	*create_node(char *env_line)
 {
@@ -51,6 +41,18 @@ t_env	*create_node(char *env_line)
 	if (equal_pos_exist(new, equal_pos) == FAILURE)
 		return (NULL);
 	return (new);
+}
+
+static int	equal_pos_exist(t_env *new, char *equal_pos)
+{
+	new->var = ft_substr(new->line, 0, equal_pos - new->line);
+	if (!new->var)
+		return (free(new->line), free(new), FAILURE);
+	new->token = 1;
+	new->args = ft_substr(equal_pos + 1, 0, ft_strlen(equal_pos + 1));
+	if (!new->args)
+		return (free(new->var), free(new->line), free(new), FAILURE);
+	return (SUCCESS);
 }
 
 void	add_node(t_env **head, char *env_line)

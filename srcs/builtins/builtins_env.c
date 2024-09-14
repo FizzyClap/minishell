@@ -5,27 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 10:17:38 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/13 10:17:41 by ggoy             ###   ########.fr       */
+/*   Created: 2024/09/14 10:25:22 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/14 11:54:30 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	sort_and_print(t_env *env, t_cmd *cmd, int fd)
-{
-	t_env	*sorted_env;
-	int		nb_args;
-
-	nb_args = ft_count_args(cmd->args);
-	if (ft_strcmp(cmd->cmd, "export") == 0 && nb_args == 1)
-	{
-		sorted_env = copy_env(env);
-		sort_env(sorted_env);
-		builtin_env(sorted_env, cmd->cmd, fd);
-		free_env(sorted_env);
-	}
-}
+static void	sort_and_print(t_env *env, t_cmd *cmd, int fd);
+static void	sort_env(t_env *env);
 
 void	builtin_export(t_env *env, t_cmd *cmd, int fd)
 {
@@ -102,16 +90,40 @@ void	builtin_env(t_env *head, char *command, int fd)
 	}
 }
 
-void	set_env(t_env *env, char *var_name, char *new_path)
+static void	sort_and_print(t_env *env, t_cmd *cmd, int fd)
 {
-	while (env)
+	t_env	*sorted_env;
+	int		nb_args;
+
+	nb_args = ft_count_args(cmd->args);
+	if (ft_strcmp(cmd->cmd, "export") == 0 && nb_args == 1)
 	{
-		if (ft_strcmp(env->var, var_name) == 0)
+		sorted_env = copy_env(env);
+		sort_env(sorted_env);
+		builtin_env(sorted_env, cmd->cmd, fd);
+		free_env(sorted_env);
+	}
+}
+
+static void	sort_env(t_env *env)
+{
+	t_env	*current_node;
+	t_env	*next_node;
+	t_env	*min_node;
+
+	current_node = env;
+	while (current_node)
+	{
+		min_node = current_node;
+		next_node = current_node->next;
+		while (next_node)
 		{
-			free(env->args);
-			env->args = ft_strdup(new_path);
-			return ;
+			if (ft_strcmp(next_node->var, min_node->var) < 0)
+				min_node = next_node;
+			next_node = next_node->next;
 		}
-		env = env->next;
+		if (min_node != current_node)
+			swap_nodes(current_node, min_node);
+		current_node = current_node->next;
 	}
 }

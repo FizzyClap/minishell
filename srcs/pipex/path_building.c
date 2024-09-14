@@ -3,16 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   path_building.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:25:55 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/11 15:21:04 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 10:36:13 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*get_path_in_env(t_env *env)
+static void	cmd_exist_in_path(t_pipex *pipex);
+static char	*get_path(t_pipex *pipex);
+static char	*extract_path_in_env(t_env *env);
+static char	*build_path(char **paths, char *command);
+
+void	exec_command(t_pipex *pipex)
+{
+	char	*path;
+
+	if (is_builtins(pipex->cmd))
+	{
+		execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
+		exit(EXIT_SUCCESS);
+	}
+	cmd_exist_in_path(pipex);
+	path = get_path(pipex);
+	if (!path)
+	{
+		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
+		free_pipex(pipex);
+		g_exit_code = COMMAND_NOT_FOUND;
+		exit(g_exit_code);
+	}
+	free(pipex->cmd->args[0]);
+	pipex->cmd->args[0] = path;
+	if (execve(pipex->cmd->args[0], pipex->cmd->args, __environ) == FAILURE)
+	{
+		free_pipex(pipex);
+		error_exit("Error executing command");
+	}
+}
+
+static void	cmd_exist_in_path(t_pipex *pipex)
+{
+	if (access(pipex->cmd->args[0], X_OK) == 0)
+	{
+		if (execve(pipex->cmd->args[0], pipex->cmd->args, __environ) == FAILURE)
+		{
+			free_pipex(pipex);
+			error_exit("Error executing command");
+		}
+	}
+}
+
+static char	*get_path(t_pipex *pipex)
+{
+	char	**paths;
+	char	*full_path;
+	char	*path_env;
+	char	*cmd;
+
+	path_env = extract_path_in_env(pipex->env);
+	paths = ft_split(path_env, ':');
+	cmd = NULL;
+	if (!paths)
+	{
+		free(path_env);
+		free_pipex(pipex);
+		error_exit("Split error");
+	}
+	if (pipex->cmd->cmd)
+	{
+		cmd = ft_strdup(pipex->cmd->cmd);
+		if (!cmd)
+			return (NULL);
+	}
+	full_path = build_path(paths, cmd);
+	if (!full_path)
+		return (NULL);
+	free(path_env);
+	return (full_path);
+}
+
+static char	*extract_path_in_env(t_env *env)
 {
 	t_env	*current;
 	char	*path_env;
@@ -58,31 +131,4 @@ static char	*build_path(char **paths, char *command)
 	free(command);
 	ft_free_tab(paths);
 	return (NULL);
-}
-
-char	*get_path(t_pipex *pipex)
-{
-	char	**paths;
-	char	*full_path;
-	char	*path_env;
-	char	*cmd;
-
-	path_env = get_path_in_env(pipex->env);
-	paths = ft_split(path_env, ':');
-	cmd = NULL;
-	if (!paths)
-	{
-		free(path_env);
-		free_pipex(pipex);
-		error_exit("Split error");
-	}
-	if (pipex->cmd->cmd)
-		cmd = ft_strdup(pipex->cmd->cmd);
-			if (!cmd)
-				return (NULL);
-	full_path = build_path(paths, cmd);
-	if (!full_path)
-		return (NULL);
-	free(path_env);
-	return (full_path);
 }
