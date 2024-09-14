@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/14 11:52:18 by ggoy             ###   ########.fr       */
+/*   Created: 2024/09/14 11:53:28 by ggoy              #+#    #+#             */
+/*   Updated: 2024/09/14 11:55:37 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../includes/minishell.h"
 
@@ -19,7 +18,7 @@ static t_var	*add_var(t_env *env, char *line, int i)
 	char	*tmp;
 	int		dup;
 	int		temp;
-	
+
 	dup = 0;
 	i++;
 	temp = i;

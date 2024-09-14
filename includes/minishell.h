@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 11:47:21 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 11:58:06 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ void		free_lexer(t_lexer *lexer);
 void		free_vars(t_var *var);
 //SIGNALS
 void		set_termios(bool set);
+void		ft_ctrl_c(int signum);
+void		ft_ctrl_bs(int signum);
+void		ft_ctrld(char *line);
 //DEBUG
 void		print_tab(char **tab);
 void		print_lexer(t_lexer *lexer);
