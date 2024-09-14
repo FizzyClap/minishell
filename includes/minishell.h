@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 09:45:36 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 12:56:40 by roespici         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -73,6 +61,10 @@ t_lexer		*clean_redir(t_lexer *lexer);
 //LEXER/LEXER
 t_lexer		*make_lexer(char *input);
 int			check_valid_lex(t_lexer *lexer);
+t_cmd		*prompt_loop(char *line);
+int			change_token(t_lexer *new);
+bool		change_bool(bool quote, t_lexer *new);
+int			find_token(char *element);
 //PARSER/PARSER LST
 t_cmd		*cmd_new(char *cmd, char **args, t_lexer *out);
 void		cmd_add_back(t_cmd **lst, t_cmd *new);
