@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 17:34:44 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/14 11:05:47 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 11:44:53 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,11 @@ static void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd)
 {
 	if (pipex->infile_exist == false || outputfd == FAILURE)
 	{
-		if (pipex->infile_exist == false)
-			ft_fprintf(STDERR_FILENO, "bash: %s: No such file or directory\n", \
-				pipex->infile_error);
+		if (open(pipex->infile_error, O_RDONLY) == FAILURE)
+		{
+			ft_fprintf(STDERR_FILENO, "bash: %s: ", pipex->infile_error);
+			perror("");
+		}
 		if (outputfd == FAILURE)
 			ft_fprintf(STDERR_FILENO, "bash: %s: Permission denied\n", \
 					pipex->outfile_error);
