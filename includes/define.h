@@ -6,7 +6,7 @@
 /*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:23:28 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/13 10:24:47 by ggoy             ###   ########.fr       */
+/*   Updated: 2024/09/14 16:26:33 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ extern int	g_exit_code;
 # define OUT 3
 # define HEREDOC 4
 # define APPEND 5
-# define QUESTION 7
-# define OR 8
-# define AND 9
+# define OR 6
+# define AND 7
+# define CONNARD 8
 //ERROR MESSAGES
 # define ERR_SYNT "Frausdistan: syntax error near unexpected token"
 

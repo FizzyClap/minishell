@@ -3,38 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ggoy <ggoy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 11:53:28 by ggoy              #+#    #+#             */
-/*   Updated: 2024/09/14 14:59:50 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/14 18:01:54 by ggoy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	ft_bonjour(char *line, int i)
+{
+	if (i > 1 && line[i - 1] == '$' && line[i] == '?')
+		return (1);
+	else if (ft_chrinstr(" \"\'$", line[i]) != 0)
+		return (1);
+	else
+		return (0);
+}
+
+static int	ft_connard(char *line, int i)
+{
+	while (line[i] && ft_bonjour(line, i) != 0)
+	{
+		i++;
+		if (line[i - 1] == '?' && line [i - 2] == '$')
+			return (i);
+	}
+	return (i);
+}
+
+static char	*zboub(char *line, int dup, int i, int start)
+{
+	char	*tmp;
+	
+	tmp = ft_calloc(dup + 1, sizeof(char));
+	dup = 0;
+	while (start < i)
+	{
+		tmp[dup] = line[start];
+		dup++;
+		start++;
+	}
+	return (tmp);
+}
 
 static t_var	*add_var(t_env *env, char *line, int i)
 {
 	t_var	*new;
 	char	*tmp;
 	int		dup;
-	int		temp;
+	int		start;
 
 	dup = 0;
 	i++;
-	temp = i;
+	if (line[i] == '?')
+	{
+		new = var_new(ft_itoa(g_exit_code), true);
+		return (new);
+	}
+	start = i;
 	while (line[i] && ft_chrinstr(" $\'\"", line[i]) != 0)
 	{
 		i++;
 		dup++;
 	}
-	tmp = ft_calloc(dup + 1, sizeof(char));
-	dup = 0;
-	while (temp < i)
-	{
-		tmp[dup] = line[temp];
-		dup++;
-		temp++;
-	}
+	tmp = zboub(line, dup, i, start);
 	new = var_new(get_env(env, tmp), true);
 	if (!new->variable)
 		new->exist = ft_change_bool(new->exist);
@@ -57,8 +91,7 @@ static t_var	*get_vars(char *line, t_env *env)
 		if (line[i] && line[i] == '$' && quote == false)
 		{
 			var_add_back(&vars, add_var(env, line, i));
-			while (line[i] && ft_chrinstr(" $\'\"", line[i]) != 0)
-				i++;
+			i = ft_connard(line, i);
 		}
 		if (!line[i])
 			break ;
@@ -105,8 +138,7 @@ static char	*replace_vars(char *line, t_var *vars)
 			i++;
 			new = ft_strjoin(new, vars->variable);
 			vars = vars->next;
-			while (line[i] && ft_chrinstr(" $\'\"", line[i]) != 0)
-				i++;
+			i = ft_connard(line, i);
 		}
 		if (line[i] && (line[i] != '$' || quote == true))
 			new = join_char(new, line[i++]);
