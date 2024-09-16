@@ -12,9 +12,9 @@ int	main(int argc, char **argv, char *const *envp)
 	(void)argv;
 	env = NULL;
 	init_env(&env, envp);
-	signals();
 	while (1)
 	{
+		signals();
 		line = readline(PROMPT);
 		if (line == NULL)
 			ft_ctrld(line);
