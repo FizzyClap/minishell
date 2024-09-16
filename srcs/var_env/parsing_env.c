@@ -43,7 +43,8 @@ static t_var	*get_vars(char *line, t_env *env)
 	{
 		if (line[i] == '\'' || line[i] == '\"')
 			quote = strct_bool_change(quote, line[i]);
-		if (line[i + 1] && line[i] == '$' && quote.quote == false)
+		if (line[i + 1] && line[i + 1] != '\"' && \
+			line[i] == '$' && quote.quote == false)
 		{
 			if (line[i + 1] != ' ')
 				var_add_back(&vars, add_var(env, line, i));
@@ -91,7 +92,7 @@ static char	*replace_vars(char *line, t_var *vars)
 		if (line[i] == '\'' || line[i] == '\"')
 			quote = strct_bool_change(quote, line[i]);
 		if (line[i + 1] && line[i] == '$' && quote.quote == false &&\
-			line[i + 1] != ' ' && i++)
+			line[i + 1] != ' ' && line[i + 1] != '\"' && i++)
 		{
 			new = ft_strjoin(new, vars->variable);
 			vars = vars->next;
