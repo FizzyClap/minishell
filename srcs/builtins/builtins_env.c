@@ -76,11 +76,15 @@ void	builtin_env(t_env *head, t_cmd *cmd, int fd)
 	while (current)
 	{
 		if (ft_strcmp(cmd->cmd, "export") == 0)
+		{
 			ft_putstr_fd("declare -x ", fd);
-		if (current->token)
-			ft_fprintf(fd, "%s=\"%s\"\n", current->var, current->args);
-		else if (ft_strcmp(cmd->cmd, "export") == 0)
-			ft_fprintf(fd, "%s\n", current->var);
+			if (current->token)
+				ft_fprintf(fd, "%s=\"%s\"\n", current->var, current->args);
+			else
+				ft_fprintf(fd, "%s\n", current->var);
+		}
+		else if (current->token)
+			ft_fprintf(fd, "%s=%s\n", current->var, current->args);
 		current = current->next;
 	}
 }

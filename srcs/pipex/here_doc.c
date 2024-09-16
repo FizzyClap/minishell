@@ -62,7 +62,10 @@ static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc)
 		return (FAILURE);
 	}
 	if (!pipex->cmd->cmd)
+	{
+		free(pipex->limiter);
 		return (FAILURE);
+	}
 	execute_pipes(pipex);
 	return (SUCCESS);
 }

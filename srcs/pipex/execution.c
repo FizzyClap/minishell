@@ -11,7 +11,6 @@ void	execute_pipeline(t_cmd *command, t_env *env)
 
 	pipex = malloc(sizeof(t_pipex));
 	init_pipex(pipex, command, env);
-	open_files(pipex);
 	execute_pipes(pipex);
 	i = -1;
 	while (++i <= pipex->nb_pipes)
@@ -27,7 +26,7 @@ void	execute_pipes(t_pipex *pipex)
 			if (pipe(pipex->pipefd[pipex->i]) == FAILURE)
 				error_exit("Pipe error");
 		if (pipex->nb_pipes == 0 && is_builtins(pipex->cmd))
-			execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
+			execute_builtins(pipex);
 		else
 			pipex->child[pipex->i] = fork_child();
 		if (!(pipex->nb_pipes == 0 && is_builtins(pipex->cmd)) && \
@@ -41,15 +40,13 @@ void	execute_pipes(t_pipex *pipex)
 				close(pipex->pipefd[pipex->i][1]);
 		}
 		if (pipex->cmd && pipex->cmd->next)
-		{
 			pipex->cmd = pipex->cmd->next;
-			open_files(pipex);
-		}
 	}
 }
 
 static void	execute_child(t_pipex *pipex, int i)
 {
+	open_files(pipex);
 	if (i == 0)
 	{
 		if (pipex->nb_pipes > 0)

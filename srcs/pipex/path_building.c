@@ -11,7 +11,7 @@ void	exec_command(t_pipex *pipex)
 
 	if (is_builtins(pipex->cmd))
 	{
-		execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
+		execute_builtins(pipex);
 		exit(EXIT_SUCCESS);
 	}
 	create_tab_env(pipex->env);

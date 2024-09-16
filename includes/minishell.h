@@ -43,7 +43,7 @@ void		modify_node(t_env *env, char *env_line);
 void		swap_nodes(t_env *node1, t_env *node2);
 //BUILTINS/UTILS BUILTINS
 int			is_builtins(t_cmd *command);
-void		execute_builtins(t_env *env, t_cmd *command, int fd);
+void		execute_builtins(t_pipex *pipex);
 t_env		*copy_env(t_env *env);
 void		free_env(t_env *head);
 char		*get_env(t_env *env, char *var_name);
