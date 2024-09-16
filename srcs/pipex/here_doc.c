@@ -2,6 +2,7 @@
 
 static void	fill_here_doc(t_pipex *pipex);
 static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc);
+static void	close_here_doc(t_pipex *pipex);
 
 void	here_doc(t_pipex *pipex, t_lexer *redir)
 {
@@ -12,21 +13,18 @@ void	here_doc(t_pipex *pipex, t_lexer *redir)
 	fill_here_doc(pipex);
 	if (redir != last)
 	{
-		free(pipex->limiter);
-		unlink("here_doc.tmp");
+		close_here_doc(pipex);
 		return ;
 	}
 	if (open_outfile(pipex) == FAILURE)
 	{
-		free(pipex->limiter);
-		unlink("here_doc.tmp");
+		close_here_doc(pipex);
 		return ;
 	}
 	if (exec_here_doc(pipex, last) == FAILURE)
 		return ;
 	close_pipes(pipex);
-	free(pipex->limiter);
-	unlink("here_doc.tmp");
+	close_here_doc(pipex);
 }
 
 static void	fill_here_doc(t_pipex *pipex)
@@ -57,15 +55,20 @@ static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc)
 		pipex->infile = open("here_doc.tmp", O_RDONLY);
 	else
 	{
-		free(pipex->limiter);
-		unlink("here_doc.tmp");
+		close_here_doc(pipex);
 		return (FAILURE);
 	}
 	if (!pipex->cmd->cmd)
 	{
-		free(pipex->limiter);
-		return (FAILURE);
+		close_here_doc(pipex);
+		exit(EXIT_SUCCESS);
 	}
 	execute_pipes(pipex);
 	return (SUCCESS);
+}
+
+static void	close_here_doc(t_pipex *pipex)
+{
+	free(pipex->limiter);
+	unlink("here_doc.tmp");
 }
