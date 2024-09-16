@@ -1,18 +1,7 @@
 #include "../../includes/minishell.h"
 
-/*		ISIG	When any of the characters INTR, QUIT, SUSP, or DSUSP are
-				received, generate the corresponding signal.
-
-		STRUCTURE DES TERMIOS: termios_p
-
-		tcflag_t	c_iflag;		 input modes 
-		tcflag_t	c_oflag;		 output modes 
-		tcflag_t	c_cflag;		 control modes 
-		tcflag_t	c_lflag;		 local modes 
-		cc_t		c_cc[NCCS];		 special characters
-	
-int tcgetattr(int fd, struct termios *termios_p);
-int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
+/*	int tcgetattr(int fd, struct termios *termios_p);
+	int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
 
 CTRL-C :
 - prompt vide: ^C + retour a la ligne + code 130;
@@ -62,30 +51,25 @@ void	here_signals()
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, ft_ctrl_c_hd);
-	signal(4, ft_ctrl_d_hd);
+	signal(EOF, ft_ctrl_d_hd);
 }
 
 void	ft_ctrl_c_hd(int signum)
 {
 	if (signum == 2)
 	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		unlink("here_doc.tmp");
+		printf("\33[2K\r");
 		g_exit_code = 130;
+		exit(EXIT_FAILURE);
 	}
 }
 
 void	ft_ctrl_d_hd(int signum)
 {
-	if (signum == 4)
+	if (signum == EOF)
 	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		printf("ctrld\n");
 		g_exit_code = 130;
+		exit (EXIT_SUCCESS);
 	}
 }

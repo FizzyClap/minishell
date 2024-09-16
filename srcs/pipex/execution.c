@@ -48,6 +48,7 @@ void	execute_pipes(t_pipex *pipex)
 static void	execute_child(t_pipex *pipex, int i)
 {
 	open_files(pipex);
+	open_files(pipex);
 	if (i == 0)
 	{
 		if (pipex->nb_pipes > 0)
