@@ -12,14 +12,12 @@ int	check_chr(char *line, int i)
 
 int	progress(char *line, int i)
 {
-	if (line[i - 1] == '$' && line[i] == '$')
+	if (i > 0 && line[i - 1] == '$' && line[i] == '$')
+		return (i + 1);
+	else if (i > 0 && line[i] == '?' && line [i - 1] == '$')
 		return (i + 1);
 	while (line[i] && check_chr(line, i) != 0)
-	{
 		i++;
-		if (line[i - 1] == '?' && line [i - 2] == '$')
-			return (i);
-	}
 	return (i);
 }
 
