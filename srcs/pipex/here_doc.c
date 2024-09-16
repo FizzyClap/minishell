@@ -1,6 +1,7 @@
 #include "../../includes/minishell.h"
 
 static void	fill_here_doc(t_pipex *pipex);
+static void	brut_stop(t_pipex *pipex, char *line, int index);
 static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc);
 static void	close_here_doc(t_pipex *pipex);
 
@@ -30,19 +31,19 @@ void	here_doc(t_pipex *pipex, t_lexer *redir)
 static void	fill_here_doc(t_pipex *pipex)
 {
 	char	*line;
+	int		index;
 
 	here_signals();
 	pipex->infile = open("here_doc.tmp", O_CREAT | O_WRONLY, 0644);
 	if (pipex->infile < 0)
 		error_exit("here_doc");
-	while (1)
+	index = 0;
+	while (++index)
 	{
-		ft_putstr("> ");
-		line = get_next_line(STDIN_FILENO);
-		if (!line || ft_strcmp(line, pipex->limiter) == 10)
+		line = readline("> ");
+		if (!line || ft_strcmp(line, pipex->limiter) == 0)
 		{
-			if (!line)
-				printf("\n");
+			brut_stop(pipex, line, index);
 			free(line);
 			break ;
 		}
@@ -50,6 +51,15 @@ static void	fill_here_doc(t_pipex *pipex)
 		free(line);
 	}
 	close(pipex->infile);
+}
+
+static void	brut_stop(t_pipex *pipex, char *line, int index)
+{
+	if (!line)
+	{
+		ft_fprintf(STDERR_FILENO, "Fraudistan: warning: here-document at line "
+		"%d delimited by end-of-file (wanted `%s')\n", index, pipex->limiter);
+	}
 }
 
 static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc)
@@ -75,3 +85,4 @@ static void	close_here_doc(t_pipex *pipex)
 	free(pipex->limiter);
 	unlink("here_doc.tmp");
 }
+
