@@ -31,6 +31,7 @@ static void	fill_here_doc(t_pipex *pipex)
 {
 	char	*line;
 
+	here_signals();
 	pipex->infile = open("here_doc.tmp", O_CREAT | O_WRONLY, 0644);
 	if (pipex->infile < 0)
 		error_exit("here_doc");

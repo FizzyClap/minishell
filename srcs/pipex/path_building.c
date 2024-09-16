@@ -36,7 +36,7 @@ void	exec_command(t_pipex *pipex)
 
 static void	cmd_exist_in_path(t_pipex *pipex)
 {
-	if (access(pipex->cmd->args[0], X_OK) == 0)
+	if (pipex->cmd->cmd && access(pipex->cmd->args[0], X_OK) == 0)
 	{
 		if (execve(pipex->cmd->args[0], pipex->cmd->args, pipex->env->tab_env) \
 			== FAILURE)
