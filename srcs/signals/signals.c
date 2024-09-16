@@ -28,7 +28,7 @@ void	ft_ctrl_c(int signum)
 
 void	here_signals()
 {
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN)	;
 	signal(SIGINT, ft_ctrl_c_hd);
 }
 

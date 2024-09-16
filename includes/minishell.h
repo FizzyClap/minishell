@@ -117,5 +117,6 @@ t_var		*var_new(char *variable, bool exist);
 void		var_add_back(t_var **lst, t_var *new);
 int			list_var_size(t_cmd *lst);
 void		print_vars(t_var *var);
+t_var		*var_exceptions(t_var *new, char *line, int i);
 
 #endif
