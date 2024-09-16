@@ -30,7 +30,7 @@ void	execute_builtins(t_pipex *pipex)
 	else if (ft_strcmp(pipex->cmd->cmd, "cd") == 0)
 		builtin_cd(pipex->env, pipex->cmd->args, pipex->outfile);
 	else if (ft_strcmp(pipex->cmd->cmd, "pwd") == 0)
-		builtin_pwd(pipex->env, pipex->cmd->args, pipex->outfile);
+		builtin_pwd(pipex->env, pipex->outfile);
 	else if (ft_strcmp(pipex->cmd->cmd, "export") == 0)
 		builtin_export(pipex->env, pipex->cmd, pipex->outfile);
 	else if (ft_strcmp(pipex->cmd->cmd, "unset") == 0)

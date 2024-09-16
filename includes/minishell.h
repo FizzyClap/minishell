@@ -34,7 +34,7 @@ void		builtin_unset(t_env *env, char **args);
 void		builtin_env(t_env *head, t_cmd *cmd, int fd);
 //BUILTINS/BUILTINS OTHER
 void		builtin_echo(t_cmd *command, int fd);
-void		builtin_pwd(t_env *env, char **args, int fd);
+void		builtin_pwd(t_env *env, int fd);
 void		builtin_exit(t_env *env, t_cmd *command);
 //BUILTINS/CHAIN LIST UTILS
 t_env		*create_node(char *env_line);
