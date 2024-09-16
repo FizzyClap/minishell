@@ -56,6 +56,10 @@ char		*parsing_env(char *line, t_env *env);
 t_var		*var_new(char *variable, bool exist);
 void		var_add_back(t_var **lst, t_var *new);
 int			list_var_size(t_cmd *lst);
+int			check_chr(char *line, int i);
+int			progress(char *line, int i);
+char		*dup_tmp(char *line, int dup, int i, int start);
+t_quote		strct_bool_change(t_quote quote, char c);
 //LEXER/LEXER REDIR
 t_lexer		*clean_redir(t_lexer *lexer);
 //LEXER/LEXER

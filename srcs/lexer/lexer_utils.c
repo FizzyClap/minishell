@@ -16,7 +16,7 @@ static int	quote_check(char *str)
 		else if (str[i] && str[i] == '\'' && d_quote == false)
 			quote = ft_change_bool(quote);
 	}
-	if (quote ==  true || d_quote == true)
+	if (quote == true || d_quote == true)
 	{
 		ft_fprintf(STDERR_FILENO, "Please close your quotes\n");
 		return (0);
@@ -66,4 +66,3 @@ bool	change_bool(bool quote, t_lexer *new)
 		quote = true;
 	return (quote);
 }
-
