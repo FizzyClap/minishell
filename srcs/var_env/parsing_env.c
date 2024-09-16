@@ -98,7 +98,6 @@ static char	*replace_vars(char *line, t_var *vars)
 			i = progress(line, i);
 		}
 		else if (line[i] || quote.quote == true)
-		else if (line[i] || quote.quote == true)
 			new = join_char(new, line[i++]);
 	}
 	return (new);
