@@ -11,7 +11,9 @@ static t_var	*add_var(t_env *env, char *line, int i)
 	i++;
 	if (line[i] == '?')
 	{
-		new = var_new(ft_itoa(g_exit_code), true);
+		tmp = ft_itoa(g_exit_code);
+		new = var_new(tmp, true);
+		free(tmp);
 		return (new);
 	}
 	start = i;
