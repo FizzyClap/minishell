@@ -61,18 +61,25 @@ void	builtin_unset(t_env *env, char **args)
 	}
 }
 
-void	builtin_env(t_env *head, char *command, int fd)
+void	builtin_env(t_env *head, t_cmd *cmd, int fd)
 {
 	t_env	*current;
+	int		nb_args;
 
+	nb_args = ft_count_args(cmd->args);
+	if (ft_strcmp(cmd->cmd, "env") == 0 && nb_args > 1)
+	{
+		ft_putstr_fd("bash: env: too many arguments\n", STDERR_FILENO);
+		return ;
+	}
 	current = head;
 	while (current)
 	{
-		if (ft_strcmp(command, "export") == 0)
+		if (ft_strcmp(cmd->cmd, "export") == 0)
 			ft_putstr_fd("declare -x ", fd);
 		if (current->token)
 			ft_fprintf(fd, "%s=\"%s\"\n", current->var, current->args);
-		else if (ft_strcmp(command, "export") == 0)
+		else if (ft_strcmp(cmd->cmd, "export") == 0)
 			ft_fprintf(fd, "%s\n", current->var);
 		current = current->next;
 	}
@@ -88,7 +95,7 @@ static void	sort_and_print(t_env *env, t_cmd *cmd, int fd)
 	{
 		sorted_env = copy_env(env);
 		sort_env(sorted_env);
-		builtin_env(sorted_env, cmd->cmd, fd);
+		builtin_env(sorted_env, cmd, fd);
 		free_env(sorted_env);
 	}
 }

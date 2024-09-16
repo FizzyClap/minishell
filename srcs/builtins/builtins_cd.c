@@ -2,6 +2,7 @@
 
 static void	cd_2_args(t_env *env, char **args, int fd);
 static void	cd_prev_path(t_env *env, int fd);
+static void	cd_new_path(t_env *env, char **args);
 static void	set_env(t_env *env, char *var_name, char *new_path);
 
 void	builtin_cd(t_env *env, char **args, int fd)
@@ -33,7 +34,6 @@ void	builtin_cd(t_env *env, char **args, int fd)
 static void	cd_2_args(t_env *env, char **args, int fd)
 {
 	char	*temp;
-	char	*new_path;
 
 	temp = getcwd(NULL, 0);
 	if (!temp)
@@ -45,17 +45,7 @@ static void	cd_2_args(t_env *env, char **args, int fd)
 	if (ft_strcmp(args[1], "-") == 0)
 		cd_prev_path(env, fd);
 	else
-	{
-		if (chdir(args[1]) == FAILURE)
-		{
-			ft_fprintf(STDERR_FILENO, "bash: cd: %s: ", args[1]);
-			g_exit_code = 1;
-			return (perror(""));
-		}
-		new_path = getcwd(NULL, 0);
-		set_env(env, "PWD", new_path);
-		free(new_path);
-	}
+		cd_new_path(env, args);
 	set_env(env, "OLDPWD", temp);
 	free(temp);
 }
@@ -76,6 +66,22 @@ static void	cd_prev_path(t_env *env, int fd)
 		ft_fprintf(fd, "%s\n", prev_path);
 		set_env(env, "PWD", prev_path);
 	}
+}
+
+static void	cd_new_path(t_env *env, char **args)
+{
+	char	*new_path;
+
+	new_path = NULL;
+	if (chdir(args[1]) == FAILURE)
+	{
+		ft_fprintf(STDERR_FILENO, "bash: cd: %s: ", args[1]);
+		g_exit_code = 1;
+		return (perror(""));
+	}
+	new_path = getcwd(NULL, 0);
+	set_env(env, "PWD", new_path);
+	free(new_path);
 }
 
 static void	set_env(t_env *env, char *var_name, char *new_path)

@@ -24,7 +24,7 @@ static int	ft_connard(char *line, int i)
 static char	*zboub(char *line, int dup, int i, int start)
 {
 	char	*tmp;
-	
+
 	tmp = ft_calloc(dup + 1, sizeof(char));
 	dup = 0;
 	while (start < i)
@@ -146,7 +146,6 @@ char	*parsing_env(char *line, t_env *env)
 	vars = get_vars(line, env);
 	tmp = vars;
 	result = replace_vars(line, vars);
-	free_vars(tmp);
 	free(line);
 	return (result);
 }
