@@ -42,9 +42,16 @@ static t_var	*add_var(t_env *env, char *line, int i)
 	char	*tmp;
 	int		dup;
 	int		start;
+	int		start;
 
 	dup = 0;
 	i++;
+	if (line[i] == '?')
+	{
+		new = var_new(ft_itoa(g_exit_code), true);
+		return (new);
+	}
+	start = i;
 	if (line[i] == '?')
 	{
 		new = var_new(ft_itoa(g_exit_code), true);
@@ -56,7 +63,7 @@ static t_var	*add_var(t_env *env, char *line, int i)
 		i++;
 		dup++;
 	}
-	tmp = zboub(line, dup, i, start);
+	tmp = dup_tmp(line, dup, i, start);
 	new = var_new(get_env(env, tmp), true);
 	if (!new->variable)
 		new->exist = ft_change_bool(new->exist);
@@ -66,20 +73,21 @@ static t_var	*add_var(t_env *env, char *line, int i)
 static t_var	*get_vars(char *line, t_env *env)
 {
 	t_var	*vars;
-	bool	quote;
+	t_quote	quote;
 	int		i;
 
-	quote = false;
+	quote.quote = false;
+	quote.d_quote = false;
 	i = -1;
 	vars = NULL;
 	while (line[++i])
 	{
-		if (line[i] == '\'')
-			quote = ft_change_bool(quote);
-		if (line[i] && line[i] == '$' && quote == false)
+		if (line[i] == '\'' || line[i] == '\"')
+			quote = strct_bool_change(quote, line[i]);
+		if (line[i] && line[i] == '$' && quote.quote == false)
 		{
 			var_add_back(&vars, add_var(env, line, i));
-			i = ft_connard(line, i);
+			i = progress(line, i);
 		}
 		if (!line[i])
 			break ;
@@ -109,26 +117,27 @@ static char	*join_char(char *str, char c)
 static char	*replace_vars(char *line, t_var *vars)
 {
 	char	*new;
-	bool	quote;
+	t_quote	quote;
 	int		i;
 	int		j;
 
-	quote = false;
+	quote.quote = false;
+	quote.d_quote = false;
 	i = 0;
 	j = 0;
 	new = NULL;
 	while (line[i])
 	{
-		if (line[i] == '\'')
-			quote = ft_change_bool(quote);
-		if (line[i] && line[i] == '$' && quote == false)
+		if (line[i] == '\'' || line[i] == '\"')
+			quote = strct_bool_change(quote, line[i]);
+		if (line[i] && line[i] == '$' && quote.quote == false)
 		{
 			i++;
 			new = ft_strjoin(new, vars->variable);
 			vars = vars->next;
-			i = ft_connard(line, i);
+			i = progress(line, i);
 		}
-		if (line[i] && (line[i] != '$' || quote == true))
+		if (line[i] && (line[i] != '$' || quote.quote == true))
 			new = join_char(new, line[i++]);
 	}
 	return (new);
@@ -146,6 +155,7 @@ char	*parsing_env(char *line, t_env *env)
 	vars = get_vars(line, env);
 	tmp = vars;
 	result = replace_vars(line, vars);
+	free_vars(tmp);
 	free(line);
 	return (result);
 }

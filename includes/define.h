@@ -20,6 +20,6 @@ extern int	g_exit_code;
 # define AND 7
 # define CONNARD 8
 //ERROR MESSAGES
-# define ERR_SYNT "Frausdistan: syntax error near unexpected token"
+# define ERR_SYNT "Fraudistan: syntax error near unexpected token"
 
 #endif

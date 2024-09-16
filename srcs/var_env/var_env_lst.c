@@ -5,7 +5,7 @@ t_var	*var_new(char *variable, bool exist)
 	t_var	*var;
 
 	var = malloc(sizeof(t_var));
-	var->variable = variable;
+	var->variable = ft_strdup(variable);
 	var->exist = exist;
 	var->next = NULL;
 	return (var);
