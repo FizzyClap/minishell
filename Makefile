@@ -4,7 +4,7 @@ FLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
 LIBFT = libft/libft.a
 LIBFT_PATH = ./libft
 LIBFT_FLAGS = -L$(LIBFT_PATH) -lft
-LDFLAGS = $(LIBFT_FLAGS) -lreadline -lhistory -lncurses -lncurses
+LDFLAGS = $(LIBFT_FLAGS) -lreadline -lhistory -lncurses
 INCLUDES = -I./includes -I$(LIBFT_PATH)/includes
 RM = rm -rf
 GREEN = \033[0;32m
@@ -31,6 +31,7 @@ SRCS =	srcs/main.c\
 		srcs/pipex/here_doc.c\
 		srcs/pipex/open_files.c\
 		srcs/pipex/path_building.c\
+		srcs/pipex/tab_env.c\
 		srcs/pipex/utils_pipex.c\
 		srcs/debug/print.c\
 		srcs/signals/signals.c\
@@ -40,15 +41,20 @@ SRCS =	srcs/main.c\
 
 OBJS = $(SRCS:.c=.o)
 
-$(NAME): $(LIBFT) pimped $(OBJS)
-	@sleep 0.8
+$(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LDFLAGS) $(INCLUDES)
 	@echo "\033[1A\033[2K\033[1A"
 	@echo "│$(GREEN) Compilation of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-	@$(RM) errors.tmp;
+	@$(RM) errors.tmp
 
 .c.o:
+	@if [ ! -f .pimped ]; then \
+		echo "$(NC)┌─────$(NAME)────────────────────────────────┐"; \
+		echo "│$(BLUE) Compiling $(NAME) in progress... ⌛$(NC)	       │"; \
+		echo "\033[s└──────────────────────────────────────────────┘"; \
+		touch .pimped; \
+	fi
 	@$(CC) $(FLAGS) -c -o $@ $< $(INCLUDES) 2>> errors.tmp || \
 	{ \
 		echo "\033[u\033[1A\033[2K│$(RED) Compilation of $(NAME) failed X$(NC)	       │"; \
@@ -59,11 +65,7 @@ $(NAME): $(LIBFT) pimped $(OBJS)
 	}
 
 all: $(NAME)
-
-pimped:
-	@echo "$(NC)┌─────$(NAME)────────────────────────────────┐"
-	@echo "│$(BLUE) Compiling $(NAME) in progress... ⌛$(NC)	       │"
-	@echo "\033[s└──────────────────────────────────────────────┘"
+	@$(RM) .pimped
 
 $(LIBFT):
 	@make -s -C $(LIBFT_PATH)
@@ -74,7 +76,7 @@ clean:
 	@echo "└──────────────────────────────────────────────┘"
 	@sleep 0.8
 	@echo "\033[1A\033[2K\033[1A"
-	@$(RM) $(OBJS)
+	@$(RM) $(OBJS) .pimped
 	@echo "│$(GREEN) Cleaning of $(NAME) objects completed ✓ $(NC)   │"
 	@echo "└──────────────────────────────────────────────┘"
 
@@ -87,7 +89,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-#@make -s -C libft fclean
+	@make -s -C $(LIBFT_PATH) fclean
 
 re: fclean all
 

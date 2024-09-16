@@ -24,7 +24,7 @@
 # include <curses.h>
 
 //INIT
-void		init_env(t_env **env);
+void		init_env(t_env **env, char *const *envp);
 void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 //BUILTINS/BUILTINS CD
 void		builtin_cd(t_env *env, char **args, int fd);
@@ -43,7 +43,7 @@ void		modify_node(t_env *env, char *env_line);
 void		swap_nodes(t_env *node1, t_env *node2);
 //BUILTINS/UTILS BUILTINS
 int			is_builtins(t_cmd *command);
-void		execute_builtins(t_env *env, t_cmd *command, int fd);
+void		execute_builtins(t_pipex *pipex);
 t_env		*copy_env(t_env *env);
 void		free_env(t_env *head);
 char		*get_env(t_env *env, char *var_name);
@@ -93,16 +93,19 @@ pid_t		fork_child(void);
 void		close_pipes(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 t_lexer		*find_last_redir(t_cmd *cmd, int token);
+void		create_tab_env(t_env *env);
 //FREE_UTILS
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);
 void		free_lexer(t_lexer *lexer);
 void		free_vars(t_var *var);
 //SIGNALS
-void		set_termios(bool set);
 void		ft_ctrl_c(int signum);
-void		ft_ctrl_bs(int signum);
 void		ft_ctrld(char *line);
+void		signals(void);
+void		here_signals(void);
+void		ft_ctrl_c_hd(int signum);
+void		ft_ctrl_d_hd(int signum);
 //DEBUG
 void		print_tab(char **tab);
 void		print_lexer(t_lexer *lexer);

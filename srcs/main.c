@@ -2,16 +2,18 @@
 
 int	g_exit_code = 0;
 
-int	main(void)
+int	main(int argc, char **argv, char *const *envp)
 {
 	t_cmd	*command;
 	t_env	*env;
 	char	*line;
 
+	(void)argc;
+	(void)argv;
+	
 	env = NULL;
-	init_env(&env);
-	signal(SIGINT, ft_ctrl_c);
-	signal(SIGQUIT, ft_ctrl_bs);
+	init_env(&env, envp);
+	signals();
 	while (1)
 	{
 		line = readline(PROMPT);

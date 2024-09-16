@@ -32,16 +32,18 @@ CTRL-\ :
 - heredoc en cours: nothing;
 - processus en cours: sorti du processus + "^\Quit  (core dumped)" + code 131;*/
 
-void	set_termios(bool set)
+void	signals(void)
 {
-	struct termios	term;
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ft_ctrl_c);
+}
 
-	tcgetattr(STDIN_FILENO, &term);
-	if (set == true)
-		term.c_lflag |= ECHOCTL;
-	else if (set == false)
-		term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+void	ft_ctrld(char *line)
+{
+	free(line);
+	rl_clear_history();
+	printf("exit\n");
+	exit (EXIT_SUCCESS);
 }
 
 void	ft_ctrl_c(int signum)
@@ -56,20 +58,34 @@ void	ft_ctrl_c(int signum)
 	}
 }
 
-void	ft_ctrl_bs(int signum)
+void	here_signals()
 {
-	if (signum == 3)
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ft_ctrl_c_hd);
+	signal(4, ft_ctrl_d_hd);
+}
+
+void	ft_ctrl_c_hd(int signum)
+{
+	if (signum == 2)
 	{
+		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		unlink("here_doc.tmp");
+		g_exit_code = 130;
 	}
 }
 
-void	ft_ctrld(char *line)
+void	ft_ctrl_d_hd(int signum)
 {
-	free(line);
-	rl_clear_history();
-	printf("exit\n");
-	exit (EXIT_SUCCESS);
+	if (signum == 4)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_exit_code = 130;
+	}
 }
