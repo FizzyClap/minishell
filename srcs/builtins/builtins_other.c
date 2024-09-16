@@ -31,6 +31,8 @@ static int	arg_is_valid(char *arg)
 {
 	int	i;
 
+	if (!arg[0])
+		return (FAILURE);
 	i = -1;
 	while (arg[++i])
 	{
@@ -42,18 +44,11 @@ static int	arg_is_valid(char *arg)
 	return (SUCCESS);
 }
 
-void	builtin_pwd(t_env *env, char **args, int fd)
+void	builtin_pwd(t_env *env, int fd)
 {
 	char	*cwd;
 	char	*path_pwd;
-	int		nb_args;
 
-	nb_args = ft_count_args(args);
-	if (nb_args > 1)
-	{
-		ft_putstr_fd("pwd: too many arguments\n", fd);
-		return ;
-	}
 	cwd = getcwd(NULL, 0);
 	if (cwd)
 	{
@@ -73,7 +68,7 @@ void	builtin_exit(t_env *env, t_cmd *command)
 	printf("exit\n");
 	if (nb_args > 2)
 	{
-		printf("Fraudistan: exit: too many arguments\n");
+		ft_fprintf(STDERR_FILENO, "Fraudistan: exit: too many arguments\n");
 		g_exit_code = 1;
 		return ;
 	}
@@ -82,8 +77,8 @@ void	builtin_exit(t_env *env, t_cmd *command)
 		g_exit_code = ft_atoi(command->args[1]) % 256;
 		if (!ft_strisnum(command->args[1]))
 		{
-			printf("Fraudistan: exit: %s: numeric argument required\n",
-			command->args[1]);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: exit: %s: numeric argument "
+			"required\n", command->args[1]);
 			g_exit_code = 2;
 		}
 	}

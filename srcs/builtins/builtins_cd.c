@@ -14,7 +14,10 @@ void	builtin_cd(t_env *env, char **args, int fd)
 	path_to_home = NULL;
 	nb_args = ft_count_args(args);
 	if (nb_args > 2)
-		printf("Fraudistan: cd: too many arguments\n");
+	{
+		ft_fprintf(STDERR_FILENO, "Fraudistan: cd: too many arguments\n");
+		g_exit_code = EXIT_FAILURE;
+	}
 	if (nb_args == 1 || (nb_args == 2 && ft_strcmp(args[1], "--") == 0))
 	{
 		path_to_home = getenv("HOME");
