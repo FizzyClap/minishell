@@ -69,7 +69,7 @@ void	builtin_env(t_env *head, t_cmd *cmd, int fd)
 	nb_args = ft_count_args(cmd->args);
 	if (ft_strcmp(cmd->cmd, "env") == 0 && nb_args > 1)
 	{
-		ft_putstr_fd("bash: env: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("Fraudistan: env: too many arguments\n", STDERR_FILENO);
 		return ;
 	}
 	current = head;

@@ -4,6 +4,11 @@ void	init_env(t_env **env, char *const *envp)
 {
 	int	i;
 
+	if (!envp[0])
+	{
+		ft_putstr_fd("Fraudistan: environment is missing\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	i = -1;
 	while (envp[++i])
 		add_node(env, envp[i]);

@@ -14,7 +14,7 @@ void	builtin_cd(t_env *env, char **args, int fd)
 	path_to_home = NULL;
 	nb_args = ft_count_args(args);
 	if (nb_args > 2)
-		printf("bash: cd: too many arguments\n");
+		printf("Fraudistan: cd: too many arguments\n");
 	if (nb_args == 1 || (nb_args == 2 && ft_strcmp(args[1], "--") == 0))
 	{
 		path_to_home = getenv("HOME");
@@ -22,7 +22,7 @@ void	builtin_cd(t_env *env, char **args, int fd)
 		if (!temp)
 			return ;
 		if (path_to_home && chdir(path_to_home) == FAILURE)
-			perror("bash: cd: ");
+			perror("Fraudistan: cd: ");
 		set_env(env, "PWD", path_to_home);
 		set_env(env, "OLDPWD", temp);
 		free(temp);
@@ -59,7 +59,7 @@ static void	cd_prev_path(t_env *env, int fd)
 	{
 		if (chdir(prev_path) == FAILURE)
 		{
-			ft_fprintf(STDERR_FILENO, "bash: cd: %s: ", prev_path);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: cd: %s: ", prev_path);
 			g_exit_code = 1;
 			return (perror(""));
 		}
@@ -75,7 +75,7 @@ static void	cd_new_path(t_env *env, char **args)
 	new_path = NULL;
 	if (chdir(args[1]) == FAILURE)
 	{
-		ft_fprintf(STDERR_FILENO, "bash: cd: %s: ", args[1]);
+		ft_fprintf(STDERR_FILENO, "Fraudistan: cd: %s: ", args[1]);
 		g_exit_code = 1;
 		return (perror(""));
 	}

@@ -73,7 +73,7 @@ void	builtin_exit(t_env *env, t_cmd *command)
 	printf("exit\n");
 	if (nb_args > 2)
 	{
-		printf("bash: exit: too many arguments\n");
+		printf("Fraudistan: exit: too many arguments\n");
 		g_exit_code = 1;
 		return ;
 	}
@@ -82,8 +82,8 @@ void	builtin_exit(t_env *env, t_cmd *command)
 		g_exit_code = ft_atoi(command->args[1]) % 256;
 		if (!ft_strisnum(command->args[1]))
 		{
-			printf("bash: exit: %s: numeric argument required\n",
-				command->args[1]);
+			printf("Fraudistan: exit: %s: numeric argument required\n",
+			command->args[1]);
 			g_exit_code = 2;
 		}
 	}

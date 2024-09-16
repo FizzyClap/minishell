@@ -14,7 +14,13 @@ void	execute_pipeline(t_cmd *command, t_env *env)
 	execute_pipes(pipex);
 	i = -1;
 	while (++i <= pipex->nb_pipes)
+	{
 		waitpid(pipex->child[i], &pipex->status, 0);
+		if (WIFEXITED(pipex->status))
+			g_exit_code = WEXITSTATUS(pipex->status);
+		else if (WIFSIGNALED(pipex->status))
+			g_exit_code = WTERMSIG(pipex->status) + 128;
+	}
 	free_pipex(pipex);
 }
 
@@ -88,13 +94,14 @@ static void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd)
 	{
 		if (!pipex->infile_exist && open(pipex->infile_error, O_RDONLY) < 0)
 		{
-			ft_fprintf(STDERR_FILENO, "bash: %s: ", pipex->infile_error);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->infile_error);
 			perror("");
 		}
 		if (outputfd == FAILURE)
-			ft_fprintf(STDERR_FILENO, "bash: %s: Permission denied\n", \
-					pipex->outfile_error);
-		exit(EXIT_FAILURE);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
+			pipex->outfile_error);
+		g_exit_code = EXIT_FAILURE;
+		exit(g_exit_code);
 	}
 	if (dup2(inputfd, STDIN_FILENO) == FAILURE)
 		error_exit("Dup2 input error");

@@ -57,7 +57,7 @@ t_lexer	*find_last_redir(t_cmd *cmd, int token)
 	redir = cmd->redir;
 	while (redir)
 	{
-		if (token == OUT || token == APPEND)
+		if (token == OUT)
 		{
 			if (redir->token == OUT || redir->token == APPEND)
 				last = redir;
