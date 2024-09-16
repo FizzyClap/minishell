@@ -18,8 +18,6 @@ void	execute_pipeline(t_cmd *command, t_env *env)
 		waitpid(pipex->child[i], &pipex->status, 0);
 		if (WIFEXITED(pipex->status))
 			g_exit_code = WEXITSTATUS(pipex->status);
-		else if (WIFSIGNALED(pipex->status))
-			g_exit_code = WTERMSIG(pipex->status) + 128;
 	}
 	free_pipex(pipex);
 }

@@ -1,5 +1,6 @@
 #include "../../includes/minishell.h"
 
+static int	arg_is_exportable(char *str);
 static void	sort_and_print(t_env *env, t_cmd *cmd, int fd);
 static void	sort_env(t_env *env);
 
@@ -16,6 +17,12 @@ void	builtin_export(t_env *env, t_cmd *cmd, int fd)
 		current = env;
 		while (current)
 		{
+			if (arg_is_exportable(cmd->args[i]) == FAILURE)
+			{
+				ft_fprintf(STDERR_FILENO, "Fraudistan: export: %s: not a valid identifier\n", cmd->args[i]);
+				g_exit_code = EXIT_FAILURE;
+				return ;
+			}
 			if (ft_strncmp(current->var, cmd->args[i], \
 				ft_strchr(cmd->args[i], '=') - cmd->args[i]) == 0)
 			{
@@ -32,6 +39,27 @@ void	builtin_export(t_env *env, t_cmd *cmd, int fd)
 	sort_and_print(env, cmd, fd);
 }
 
+static int	arg_is_exportable(char *str)
+{
+	int	i;
+	int	len;
+
+	if (!str || str[0] == '=')
+		return (FAILURE);
+	i = -1;
+	if (ft_strchr(str, '='))
+		len = ft_strchr(str, '=') - str;
+	else
+		len = ft_strlen(str);
+	while (++i < len)
+	{
+		if (str[0] >= '0' && str[0] <= '9')
+			return (FAILURE);
+		if (!ft_isalnum(str[i]))
+			return (FAILURE);
+	}
+	return (SUCCESS);
+}
 void	builtin_unset(t_env *env, char **args)
 {
 	t_env	*current;
