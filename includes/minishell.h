@@ -31,7 +31,7 @@ void		builtin_cd(t_env *env, char **args, int fd);
 //BUILTINS/BUILTINS ENV
 void		builtin_export(t_env *env, t_cmd *cmd, int fd);
 void		builtin_unset(t_env *env, char **args);
-void		builtin_env(t_env *head, char *command, int fd);
+void		builtin_env(t_env *head, t_cmd *cmd, int fd);
 //BUILTINS/BUILTINS OTHER
 void		builtin_echo(t_cmd *command, int fd);
 void		builtin_pwd(t_env *env, char **args, int fd);

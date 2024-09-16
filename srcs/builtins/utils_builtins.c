@@ -35,7 +35,7 @@ void	execute_builtins(t_env *env, t_cmd *command, int fd)
 	else if (ft_strcmp(command->cmd, "unset") == 0)
 		builtin_unset(env, command->args);
 	else if (ft_strcmp(command->cmd, "env") == 0)
-		builtin_env(env, command->cmd, fd);
+		builtin_env(env, command, fd);
 	else if (ft_strcmp(command->cmd, "exit") == 0)
 		builtin_exit(env, command);
 	else
