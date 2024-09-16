@@ -99,10 +99,12 @@ void		free_split_cmd(t_split_cmd *split);
 void		free_lexer(t_lexer *lexer);
 void		free_vars(t_var *var);
 //SIGNALS
-void		set_termios(bool set);
 void		ft_ctrl_c(int signum);
-void		ft_ctrl_bs(int signum);
 void		ft_ctrld(char *line);
+void		signals(void);
+void		here_signals(void);
+void		ft_ctrl_c_hd(int signum);
+void		ft_ctrl_d_hd(int signum);
 //DEBUG
 void		print_tab(char **tab);
 void		print_lexer(t_lexer *lexer);

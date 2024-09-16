@@ -10,8 +10,8 @@ int	main(void)
 
 	env = NULL;
 	init_env(&env);
-	signal(SIGINT, ft_ctrl_c);
-	signal(SIGQUIT, ft_ctrl_bs);
+
+	signals();
 	while (1)
 	{
 		line = readline(PROMPT);
