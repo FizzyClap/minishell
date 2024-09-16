@@ -1,12 +1,12 @@
 #include "../includes/minishell.h"
 
-void	init_env(t_env **env)
+void	init_env(t_env **env, char *const *envp)
 {
 	int	i;
 
 	i = -1;
-	while (__environ[++i])
-		add_node(env, __environ[i]);
+	while (envp[++i])
+		add_node(env, envp[i]);
 }
 
 void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)

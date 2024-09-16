@@ -11,9 +11,10 @@ void	exec_command(t_pipex *pipex)
 
 	if (is_builtins(pipex->cmd))
 	{
-		execute_builtins(pipex->env, pipex->cmd, pipex->outfile);
+		execute_builtins(pipex);
 		exit(EXIT_SUCCESS);
 	}
+	create_tab_env(pipex->env);
 	cmd_exist_in_path(pipex);
 	path = get_path(pipex);
 	if (!path)
@@ -25,7 +26,8 @@ void	exec_command(t_pipex *pipex)
 	}
 	free(pipex->cmd->args[0]);
 	pipex->cmd->args[0] = path;
-	if (execve(pipex->cmd->args[0], pipex->cmd->args, __environ) == FAILURE)
+	if (execve(pipex->cmd->args[0], pipex->cmd->args, pipex->env->tab_env) \
+		== FAILURE)
 	{
 		free_pipex(pipex);
 		error_exit("Error executing command");
@@ -34,9 +36,10 @@ void	exec_command(t_pipex *pipex)
 
 static void	cmd_exist_in_path(t_pipex *pipex)
 {
-	if (access(pipex->cmd->args[0], X_OK) == 0)
+	if (pipex->cmd->cmd && access(pipex->cmd->args[0], X_OK) == 0)
 	{
-		if (execve(pipex->cmd->args[0], pipex->cmd->args, __environ) == FAILURE)
+		if (execve(pipex->cmd->args[0], pipex->cmd->args, pipex->env->tab_env) \
+			== FAILURE)
 		{
 			free_pipex(pipex);
 			error_exit("Error executing command");
@@ -98,7 +101,7 @@ static char	*build_path(char **paths, char *command)
 	size_t	len;
 
 	i = -1;
-	while (paths[++i])
+	while (command && paths[++i])
 	{
 		len = ft_strlen(paths[i]) + ft_strlen(command) + 2;
 		full_path = ft_calloc(1, len);

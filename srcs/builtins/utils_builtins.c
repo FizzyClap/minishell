@@ -22,24 +22,25 @@ int	is_builtins(t_cmd *command)
 	return (ISNOTBUILTINS);
 }
 
-void	execute_builtins(t_env *env, t_cmd *command, int fd)
+void	execute_builtins(t_pipex *pipex)
 {
-	if (ft_strcmp(command->cmd, "echo") == 0)
-		builtin_echo(command, fd);
-	else if (ft_strcmp(command->cmd, "cd") == 0)
-		builtin_cd(env, command->args, fd);
-	else if (ft_strcmp(command->cmd, "pwd") == 0)
-		builtin_pwd(env, command->args, fd);
-	else if (ft_strcmp(command->cmd, "export") == 0)
-		builtin_export(env, command, fd);
-	else if (ft_strcmp(command->cmd, "unset") == 0)
-		builtin_unset(env, command->args);
-	else if (ft_strcmp(command->cmd, "env") == 0)
-		builtin_env(env, command, fd);
-	else if (ft_strcmp(command->cmd, "exit") == 0)
-		builtin_exit(env, command);
+	open_files(pipex);
+	if (ft_strcmp(pipex->cmd->cmd, "echo") == 0)
+		builtin_echo(pipex->cmd, pipex->outfile);
+	else if (ft_strcmp(pipex->cmd->cmd, "cd") == 0)
+		builtin_cd(pipex->env, pipex->cmd->args, pipex->outfile);
+	else if (ft_strcmp(pipex->cmd->cmd, "pwd") == 0)
+		builtin_pwd(pipex->env, pipex->cmd->args, pipex->outfile);
+	else if (ft_strcmp(pipex->cmd->cmd, "export") == 0)
+		builtin_export(pipex->env, pipex->cmd, pipex->outfile);
+	else if (ft_strcmp(pipex->cmd->cmd, "unset") == 0)
+		builtin_unset(pipex->env, pipex->cmd->args);
+	else if (ft_strcmp(pipex->cmd->cmd, "env") == 0)
+		builtin_env(pipex->env, pipex->cmd, pipex->outfile);
+	else if (ft_strcmp(pipex->cmd->cmd, "exit") == 0)
+		builtin_exit(pipex->env, pipex->cmd);
 	else
-		printf("%s: command not found\n", command->cmd);
+		printf("%s: command not found\n", pipex->cmd->cmd);
 }
 
 t_env	*copy_env(t_env *env)
