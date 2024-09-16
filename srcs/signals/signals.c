@@ -1,18 +1,7 @@
 #include "../../includes/minishell.h"
 
-/*		ISIG	When any of the characters INTR, QUIT, SUSP, or DSUSP are
-				received, generate the corresponding signal.
-
-		STRUCTURE DES TERMIOS: termios_p
-
-		tcflag_t	c_iflag;		 input modes 
-		tcflag_t	c_oflag;		 output modes 
-		tcflag_t	c_cflag;		 control modes 
-		tcflag_t	c_lflag;		 local modes 
-		cc_t		c_cc[NCCS];		 special characters
-	
-int tcgetattr(int fd, struct termios *termios_p);
-int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
+/*	int tcgetattr(int fd, struct termios *termios_p);
+	int tcsetattr(int fd, int optional_actions, const struct termios *termios_p);
 
 CTRL-C :
 - prompt vide: ^C + retour a la ligne + code 130;
