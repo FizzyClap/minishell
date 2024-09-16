@@ -39,8 +39,10 @@ static void	fill_here_doc(t_pipex *pipex)
 	{
 		ft_putstr("> ");
 		line = get_next_line(STDIN_FILENO);
-		if (ft_strcmp(line, pipex->limiter) == 10)
+		if (!line || ft_strcmp(line, pipex->limiter) == 10)
 		{
+			if (!line)
+				printf("\n");
 			free(line);
 			break ;
 		}

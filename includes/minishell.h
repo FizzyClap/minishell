@@ -105,7 +105,7 @@ void		ft_ctrld(char *line);
 void		signals(void);
 void		here_signals(void);
 void		ft_ctrl_c_hd(int signum);
-void		ft_ctrl_d_hd(int signum);
+void		ft_ctrl_bs_hd(int signum);
 //DEBUG
 void		print_tab(char **tab);
 void		print_lexer(t_lexer *lexer);

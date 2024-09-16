@@ -39,37 +39,27 @@ void	ft_ctrl_c(int signum)
 {
 	if (signum == 2)
 	{
+		g_exit_code = 130;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		g_exit_code = 130;
 	}
 }
 
 void	here_signals()
 {
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, ft_ctrl_bs_hd);
 	signal(SIGINT, ft_ctrl_c_hd);
-	signal(EOF, ft_ctrl_d_hd);
 }
 
 void	ft_ctrl_c_hd(int signum)
 {
 	if (signum == 2)
 	{
+		// g_exit_code = 130;
 		printf("\33[2K\r");
-		g_exit_code = 130;
-		exit(EXIT_FAILURE);
+		exit(130);
 	}
 }
 
-void	ft_ctrl_d_hd(int signum)
-{
-	if (signum == EOF)
-	{
-		printf("ctrld\n");
-		g_exit_code = 130;
-		exit (EXIT_SUCCESS);
-	}
-}
