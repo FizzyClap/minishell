@@ -51,7 +51,6 @@ void	here_signals()
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, ft_ctrl_c_hd);
-	signal(EOF, ft_ctrl_d_hd);
 }
 
 void	ft_ctrl_c_hd(int signum)
@@ -61,15 +60,5 @@ void	ft_ctrl_c_hd(int signum)
 		printf("\33[2K\r");
 		g_exit_code = 130;
 		exit(EXIT_FAILURE);
-	}
-}
-
-void	ft_ctrl_d_hd(int signum)
-{
-	if (signum == EOF)
-	{
-		printf("ctrld\n");
-		g_exit_code = 130;
-		exit (EXIT_SUCCESS);
 	}
 }

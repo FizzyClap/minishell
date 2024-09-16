@@ -89,7 +89,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-	@make -s -C $(LIBFT_PATH) fclean
+#@make -s -C $(LIBFT_PATH) fclean
 
 re: fclean all
 

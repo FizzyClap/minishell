@@ -10,7 +10,6 @@ int	main(int argc, char **argv, char *const *envp)
 
 	(void)argc;
 	(void)argv;
-	
 	env = NULL;
 	init_env(&env, envp);
 	signals();
