@@ -1,5 +1,7 @@
 #include "../../includes/minishell.h"
 
+static int	arg_is_valid(char *arg);
+
 void	builtin_echo(t_cmd *command, int fd)
 {
 	int	newline;
@@ -7,7 +9,7 @@ void	builtin_echo(t_cmd *command, int fd)
 
 	newline = 1;
 	i = 1;
-	while (command->args[i] && ft_strcmp(command->args[i], "-n") == 0)
+	while (command->args[i] && arg_is_valid(command->args[i]) == SUCCESS)
 	{
 		newline = 0;
 		i++;
@@ -23,6 +25,21 @@ void	builtin_echo(t_cmd *command, int fd)
 	}
 	if (newline)
 		ft_putchar_fd('\n', fd);
+}
+
+static int	arg_is_valid(char *arg)
+{
+	int	i;
+
+	i = -1;
+	while (arg[++i])
+	{
+		if (arg[0] != '-')
+			return (FAILURE);
+		if (i >= 1 && arg[i] != 'n')
+			return (FAILURE);
+	}
+	return (SUCCESS);
 }
 
 void	builtin_pwd(t_env *env, char **args, int fd)

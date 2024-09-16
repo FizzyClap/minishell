@@ -58,17 +58,15 @@ $(NAME): $(LIBFT) pimped $(OBJS)
 		exit 1; \
 	}
 
+all: $(NAME)
+
 pimped:
 	@echo "$(NC)┌─────$(NAME)────────────────────────────────┐"
 	@echo "│$(BLUE) Compiling $(NAME) in progress... ⌛$(NC)	       │"
 	@echo "\033[s└──────────────────────────────────────────────┘"
 
-
 $(LIBFT):
 	@make -s -C $(LIBFT_PATH)
-
-all: $(NAME)
-
 
 clean:
 	@echo "$(NC)┌─────clean $(NAME)──────────────────────────┐"
@@ -102,4 +100,4 @@ norme:
 	fi
 	@$(RM) norme.tmp
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re pimped norme
