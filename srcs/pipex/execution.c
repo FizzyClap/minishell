@@ -26,11 +26,12 @@ void	execute_pipes(t_pipex *pipex)
 			if (pipe(pipex->pipefd[pipex->i]) == FAILURE)
 				error_exit("Pipe error");
 		if (pipex->nb_pipes == 0 && is_builtins(pipex->cmd))
+		{
 			execute_builtins(pipex);
-		else
-			pipex->child[pipex->i] = fork_child();
-		if (!(pipex->nb_pipes == 0 && is_builtins(pipex->cmd)) && \
-			pipex->child[pipex->i] == 0)
+			return ;
+		}
+		pipex->child[pipex->i] = fork_child();
+		if (pipex->child[pipex->i] == 0)
 			execute_child(pipex, pipex->i);
 		else
 		{
@@ -46,6 +47,7 @@ void	execute_pipes(t_pipex *pipex)
 
 static void	execute_child(t_pipex *pipex, int i)
 {
+	open_files(pipex);
 	open_files(pipex);
 	if (i == 0)
 	{

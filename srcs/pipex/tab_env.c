@@ -14,7 +14,7 @@ void	create_tab_env(t_env *env)
 	i = 0;
 	while (current)
 	{
-		env->tab_env[i] = ft_strdup(env->line);
+		env->tab_env[i] = ft_strdup(current->line);
 		if (!env->tab_env[i])
 			return ;
 		i++;
