@@ -12,6 +12,8 @@ int	check_chr(char *line, int i)
 
 int	progress(char *line, int i)
 {
+	if (line[i - 1] == '$' && line[i] == '$')
+		return (i + 1);
 	while (line[i] && check_chr(line, i) != 0)
 	{
 		i++;
@@ -43,4 +45,26 @@ t_quote	strct_bool_change(t_quote quote, char c)
 	else if (c == '\"' && quote.quote == false)
 		quote.d_quote = ft_change_bool(quote.d_quote);
 	return (quote);
+}
+
+t_var	*var_exceptions(t_var *new, char *line, int i)
+{
+	char	*tmp;
+
+	if (line[i] == '?')
+	{
+		tmp = ft_itoa(g_exit_code);
+		new = var_new(tmp, true);
+		free(tmp);
+		return (new);
+	}
+	else if (line [i] == '$')
+	{
+		tmp = ft_itoa(getpid());
+		new = var_new(tmp, true);
+		free(tmp);
+		return (new);
+	}
+	else
+		return (NULL);
 }
