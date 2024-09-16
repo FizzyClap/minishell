@@ -11,6 +11,7 @@ void	execute_pipeline(t_cmd *command, t_env *env)
 
 	pipex = malloc(sizeof(t_pipex));
 	init_pipex(pipex, command, env);
+	open_files(pipex);
 	execute_pipes(pipex);
 	i = -1;
 	while (++i <= pipex->nb_pipes)
@@ -48,7 +49,6 @@ void	execute_pipes(t_pipex *pipex)
 static void	execute_child(t_pipex *pipex, int i)
 {
 	open_files(pipex);
-	open_files(pipex);
 	if (i == 0)
 	{
 		if (pipex->nb_pipes > 0)
@@ -82,18 +82,18 @@ static void	inter_cmd(t_pipex *pipex, int i)
 		dup_and_exec(pipex, pipex->pipefd[i - 1][0], pipex->pipefd[i][1]);
 }
 
-static void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd)
+static void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd) 
 {
 	if (pipex->infile_exist == false || outputfd == FAILURE)
 	{
 		if (!pipex->infile_exist && open(pipex->infile_error, O_RDONLY) < 0)
 		{
-			ft_fprintf(STDERR_FILENO, "bash: %s: ", pipex->infile_error);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->infile_error);
 			perror("");
 		}
 		if (outputfd == FAILURE)
-			ft_fprintf(STDERR_FILENO, "bash: %s: Permission denied\n", \
-					pipex->outfile_error);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
+			pipex->outfile_error);
 		exit(EXIT_FAILURE);
 	}
 	if (dup2(inputfd, STDIN_FILENO) == FAILURE)

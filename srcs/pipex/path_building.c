@@ -87,6 +87,8 @@ static char	*extract_path_in_env(t_env *env)
 		if (ft_strcmp(current->var, "PATH") == 0)
 		{
 			path_env = ft_strdup(current->args);
+			if (!path_env)
+				return (NULL);
 			break ;
 		}
 		current = current->next;

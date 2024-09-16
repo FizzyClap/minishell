@@ -14,7 +14,7 @@ CTRL-D :
 - prompt rempli: nothing;
 - heredoc en cours: sorti du heredoc + juste la 1re ligne en historique + code 0;
 - processus en cours: nothing;
-	
+
 CTRL-\ :
 - prompt vide: nothing;
 - prompt rempli: nothing;

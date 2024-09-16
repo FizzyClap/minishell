@@ -49,11 +49,11 @@ $(NAME): $(LIBFT) $(OBJS)
 	@$(RM) errors.tmp
 
 .c.o:
-	@if [ ! -f .pimped ]; then \
+	@if [ ! -f .mandatory ]; then \
 		echo "$(NC)┌─────$(NAME)────────────────────────────────┐"; \
 		echo "│$(BLUE) Compiling $(NAME) in progress... ⌛$(NC)	       │"; \
 		echo "\033[s└──────────────────────────────────────────────┘"; \
-		touch .pimped; \
+		touch .mandatory; \
 	fi
 	@$(CC) $(FLAGS) -c -o $@ $< $(INCLUDES) 2>> errors.tmp || \
 	{ \
@@ -65,7 +65,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	}
 
 all: $(NAME)
-	@$(RM) .pimped
+	@$(RM) .mandatory
 
 $(LIBFT):
 	@make -s -C $(LIBFT_PATH)
@@ -76,7 +76,7 @@ clean:
 	@echo "└──────────────────────────────────────────────┘"
 	@sleep 0.8
 	@echo "\033[1A\033[2K\033[1A"
-	@$(RM) $(OBJS) .pimped
+	@$(RM) $(OBJS) .mandatory
 	@echo "│$(GREEN) Cleaning of $(NAME) objects completed ✓ $(NC)   │"
 	@echo "└──────────────────────────────────────────────┘"
 
@@ -102,4 +102,4 @@ norme:
 	fi
 	@$(RM) norme.tmp
 
-.PHONY: all clean fclean re pimped norme
+.PHONY: all clean fclean re norme
