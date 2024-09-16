@@ -1,57 +1,14 @@
 #include "../../includes/minishell.h"
 
-static int	ft_bonjour(char *line, int i)
-{
-	if (i > 1 && line[i - 1] == '$' && line[i] == '?')
-		return (1);
-	else if (ft_chrinstr(" \"\'$", line[i]) != 0)
-		return (1);
-	else
-		return (0);
-}
-
-static int	ft_connard(char *line, int i)
-{
-	while (line[i] && ft_bonjour(line, i) != 0)
-	{
-		i++;
-		if (line[i - 1] == '?' && line [i - 2] == '$')
-			return (i);
-	}
-	return (i);
-}
-
-static char	*zboub(char *line, int dup, int i, int start)
-{
-	char	*tmp;
-
-	tmp = ft_calloc(dup + 1, sizeof(char));
-	dup = 0;
-	while (start < i)
-	{
-		tmp[dup] = line[start];
-		dup++;
-		start++;
-	}
-	return (tmp);
-}
-
 static t_var	*add_var(t_env *env, char *line, int i)
 {
 	t_var	*new;
 	char	*tmp;
 	int		dup;
 	int		start;
-	int		start;
 
 	dup = 0;
 	i++;
-	if (line[i] == '?')
-	{
-		new = var_new(ft_itoa(g_exit_code), true);
-		return (new);
-	}
-	start = i;
 	if (line[i] == '?')
 	{
 		new = var_new(ft_itoa(g_exit_code), true);

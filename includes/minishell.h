@@ -24,7 +24,7 @@
 # include <curses.h>
 
 //INIT
-void		init_env(t_env **env);
+void		init_env(t_env **env, char *const *envp);
 void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 //BUILTINS/BUILTINS CD
 void		builtin_cd(t_env *env, char **args, int fd);
@@ -93,6 +93,7 @@ pid_t		fork_child(void);
 void		close_pipes(t_pipex *pipex);
 void		free_pipex(t_pipex *pipex);
 t_lexer		*find_last_redir(t_cmd *cmd, int token);
+void		create_tab_env(t_env *env);
 //FREE_UTILS
 void		free_cmd(t_cmd *cmd);
 void		free_split_cmd(t_split_cmd *split);

@@ -35,7 +35,7 @@ static void	fill_here_doc(t_pipex *pipex)
 
 	pipex->infile = open("here_doc.tmp", O_CREAT | O_WRONLY, 0644);
 	if (pipex->infile < 0)
-		error_exit("Here_doc error");
+		error_exit("here_doc");
 	while (1)
 	{
 		ft_putstr("> ");
@@ -61,6 +61,8 @@ static int	exec_here_doc(t_pipex *pipex, t_lexer *last_heredoc)
 		unlink("here_doc.tmp");
 		return (FAILURE);
 	}
+	if (!pipex->cmd->cmd)
+		return (FAILURE);
 	execute_pipes(pipex);
 	return (SUCCESS);
 }

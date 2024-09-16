@@ -11,6 +11,7 @@ typedef struct s_cmd
 
 typedef struct s_env
 {
+	char			**tab_env;
 	char			*line;
 	char			*var;
 	char			*args;
