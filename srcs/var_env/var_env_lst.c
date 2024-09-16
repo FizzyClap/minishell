@@ -6,6 +6,8 @@ t_var	*var_new(char *variable, bool exist)
 
 	var = malloc(sizeof(t_var));
 	var->variable = ft_strdup(variable);
+	if (!var->variable)
+		return (free(var), NULL);
 	var->exist = exist;
 	var->next = NULL;
 	return (var);
