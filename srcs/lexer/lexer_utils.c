@@ -36,6 +36,11 @@ t_cmd	*prompt_loop(char *line)
 	if (quote_check(line) == 0)
 		return (NULL);
 	lexer = make_lexer(line);
+	if (check_valid_lex(lexer) == 0)
+	{
+		free_lexer(lexer);
+		return (NULL);
+	}
 	if (lexer == NULL)
 		return (NULL);
 	lex_redir = clean_redir(lexer);
@@ -65,4 +70,20 @@ bool	change_bool(bool quote, t_lexer *new)
 	else
 		quote = true;
 	return (quote);
+}
+
+int	find_token(char *element)
+{
+	if (ft_strcmp(element, "|") == 0)
+		return (PIPE);
+	else if (ft_strcmp(element, "<") == 0)
+		return (IN);
+	else if (ft_strcmp(element, ">") == 0)
+		return (OUT);
+	else if (ft_strcmp(element, "<<") == 0)
+		return (HEREDOC);
+	else if (ft_strcmp(element, ">>") == 0)
+		return (APPEND);
+	else
+		return (WORD);
 }

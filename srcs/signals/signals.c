@@ -26,9 +26,9 @@ void	ft_ctrl_c(int signum)
 	}
 }
 
-void	here_signals()
+void	here_signals(void)
 {
-	signal(SIGQUIT, SIG_IGN)	;
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, ft_ctrl_c_hd);
 }
 
@@ -40,4 +40,3 @@ void	ft_ctrl_c_hd(int signum)
 		exit(g_exit_code);
 	}
 }
-

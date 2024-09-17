@@ -61,3 +61,25 @@ int	check_valid_lex(t_lexer *lexer)
 	}
 	return (1);
 }
+
+int	is_token(char c)
+{
+	if (ft_chrinstr("|<>", c) == 0)
+		return (1);
+	else
+		return (0);
+}
+
+int	next_token(char *input, int start, int i)
+{
+	char	c;
+
+	i = 0;
+	c = input[start];
+	while (input[start] && input[start] == c)
+	{
+		i++;
+		start++;
+	}
+	return (i);
+}
