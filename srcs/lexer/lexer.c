@@ -1,9 +1,29 @@
 #include "../../includes/minishell.h"
 
-static int	next_token_pr(char *input, int start, t_lexer *new)
+static int	check_valid_token(char c, int i)
+{
+	if ((i > 1 && c == '|'))
+	{
+		ft_fprintf(STDERR_FILENO, \
+			"syntax error near unexpected token `%c'\n", c);
+		return (-1);
+	}
+	else if (i > 2)
+	{
+		ft_fprintf(STDERR_FILENO, \
+			"syntax error near unexpected token `%c'\n", c);
+		return (-1);
+	}
+	else
+		return (0);
+}
+
+static int	next_token_pr(char *input, int start)
 {
 	char	c;
+	int		i;
 
+	i = 0;
 	c = input[start];
 	if (start > 0 && ft_chrinstr("<>", c) == 0 && \
 		ft_chrinstr("\"\'", input[start -1]) == 0)
@@ -15,48 +35,14 @@ static int	next_token_pr(char *input, int start, t_lexer *new)
 	else
 	{
 		while (input[start] && input[start] == c)
-			start++;
-		if ((start > 3 && c == '|') || start > 4)
 		{
-			ft_fprintf(STDERR_FILENO, \
-				"syntax error near unexpected token `%c'\n", c);
-			new->token = WORD;
-			return (-1);
+			start++;
+			i++;
 		}
+		if (check_valid_token(c, i) == -1)
+			return (-1);
 		return (start);
 	}
-}
-
-static int	is_token(char c)
-{
-	if (ft_chrinstr("|<>", c) == 0)
-		return (1);
-	else
-		return (0);
-}
-
-static int	next_token_pr(char *input, int start)
-{
-	char	c;
-
-	c = input[start];
-	while (input[start] && input[start] == c)
-		start++;
-	return (start);
-}
-
-static int	next_token(char *input, int start, int i)
-{
-	char	c;
-
-	i = 0;
-	c = input[start];
-	while (input[start] && input[start] == c)
-	{
-		i++;
-		start++;
-	}
-	return (i);
 }
 
 static int	lexer_len(char *input, int start)
@@ -70,12 +56,10 @@ static int	lexer_len(char *input, int start)
 	i = 0;
 	if (is_token(input[start]) == 1)
 		return (next_token(input, start, i));
-	if (is_token(input[start]) == 1)
-		return (next_token(input, start, i));
 	start--;
 	while (input[++start])
 	{
-		if (is_token(input[start]) == 1)
+		if (is_token(input[start]) == 1 && quote == false && d_quote == false)
 			return (i);
 		if (input[start] == ' ' && quote == false && d_quote == false)
 			return (i);
@@ -89,7 +73,7 @@ static int	lexer_len(char *input, int start)
 	return (i);
 }
 
-static int	lexer_progress(char *input, int start, t_lexer *new)
+static int	lexer_progress(char *input, int start)
 {
 	bool	quote;
 	bool	d_quote;
@@ -98,15 +82,13 @@ static int	lexer_progress(char *input, int start, t_lexer *new)
 	d_quote = false;
 	if (is_token(input[start]) == 1)
 	{
-		start = next_token_pr(input, start, new);
+		start = next_token_pr(input, start);
 		return (start);
 	}
 	start--;
 	while (input[++start])
 	{
-		if (is_token(input[start]) == 1)
-			return (start);
-		if (is_token(input[start]) == 1)
+		if (is_token(input[start]) == 1 && quote == false && d_quote == false)
 			return (start);
 		if (input[start] == ' ' && quote == false && d_quote == false)
 			return (start);
@@ -158,12 +140,11 @@ t_lexer	*make_lexer(char *input)
 		while (input[start] == ' ')
 			start++;
 		while (input[start] && input[start] != ' ')
-		while (input[start] && input[start] != ' ')
 		{
 			new = lexer_dup(input, start);
 			new->token = change_token(new);
 			lexer_add_back(&lexer, new);
-			start = lexer_progress(input, start, new);
+			start = lexer_progress(input, start);
 			if (start == -1)
 			{
 				free_lexer(lexer);
