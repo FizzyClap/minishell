@@ -79,13 +79,14 @@ static void	both_are_wrong(t_pipex *pipex, bool should_exit)
 		if (pipex->infile_error->index < pipex->outfile_error->index)
 		{
 			open(pipex->infile_error->element, O_RDONLY);
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->infile_error);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ",
+			pipex->infile_error->element);
 			perror("");
 			if (should_exit == true)
 				exit(EXIT_FAILURE);
 		}
 		ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
-		pipex->outfile_error);
+		pipex->outfile_error->element);
 		if (should_exit == true)
 			exit(EXIT_FAILURE);
 	}

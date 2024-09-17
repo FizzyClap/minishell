@@ -68,16 +68,27 @@ static int	return_outfile(t_pipex *pipex, t_lexer *parse, t_lexer *last)
 	{
 		if (parse->token == OUT || parse->token == APPEND)
 		{
-			if (parse->token == OUT)
+			if (parse->token == OUT && ((pipex->infile_error && \
+			pipex->infile_error->index > parse->index) || !pipex->infile_error))
+			{
 				pipex->outfile = open(parse->element, \
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else if (parse->token == APPEND)
+				if (access(parse->element, W_OK) == FAILURE)
+				{
+					pipex->outfile_error = parse;
+					return (FAILURE);
+				}
+			}
+			else if (parse->token == APPEND && ((pipex->infile_error && \
+			pipex->infile_error->index > parse->index) || !pipex->infile_error))
+			{
 				pipex->outfile = open(parse->element, \
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (access(parse->element, W_OK) == FAILURE)
-			{
-				pipex->outfile_error = parse;
-				return (FAILURE);
+				if (access(parse->element, W_OK) == FAILURE)
+				{
+					pipex->outfile_error = parse;
+					return (FAILURE);
+				}
 			}
 			if (ft_strcmp(parse->element, last->element) == 0)
 				return (SUCCESS);
