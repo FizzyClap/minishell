@@ -1,12 +1,13 @@
 #include "../../includes/minishell.h"
 
-t_lexer	*lexer_new(char *element, int token)
+t_lexer	*lexer_new(char *element, int token, int index)
 {
 	t_lexer	*tlex;
 
 	tlex = malloc(sizeof(t_lexer));
 	tlex->element = element;
 	tlex->token = token;
+	tlex->index = index;
 	tlex->next = NULL;
 	return (tlex);
 }

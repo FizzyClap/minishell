@@ -42,6 +42,7 @@ typedef struct s_lexer
 {
 	char			*element;
 	int				token;
+	int				index;
 	struct s_lexer	*next;
 }	t_lexer;
 

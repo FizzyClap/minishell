@@ -21,13 +21,13 @@ t_lexer	*clean_redir(t_lexer *lexer)
 			if (!lexer->next)
 				return (long_line(clean, itoa), NULL);
 			lexer_add_back(&clean, \
-				lexer_new(ft_strdup(lexer->next->element), lexer->token));
+				lexer_new(ft_strdup(lexer->next->element), lexer->token, 0));
 			lexer = lexer->next->next;
 		}
 		else
 		{
 			lexer_add_back(&clean, \
-				lexer_new(ft_strdup(lexer->element), lexer->token));
+				lexer_new(ft_strdup(lexer->element), lexer->token, 0));
 			lexer = lexer->next;
 		}
 		free(itoa);
@@ -47,12 +47,12 @@ int	check_valid_lex(t_lexer *lexer)
 			ft_fprintf(2, "%s `%s'\n", ERR_SYNT, tmp->next->element);
 			return (0);
 		}
-		else if (tmp->next && tmp->token > WORD && tmp->next->token > WORD)
+		else if (tmp->next && tmp->token > PIPE && tmp->next->token > PIPE)
 		{
 			ft_fprintf(2, "%s `%s'\n", ERR_SYNT, tmp->next->element);
 			return (0);
 		}
-		else if (!tmp->next && tmp->token > WORD && tmp->token < 7)
+		else if (!tmp->next && tmp->token > PIPE && tmp->token < 7)
 		{
 			ft_fprintf(STDERR_FILENO, "%s%s", ERR_SYNT, " `newline'\n");
 			return (0);

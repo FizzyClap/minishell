@@ -50,7 +50,7 @@ t_split_cmd	*split_cmd(t_lexer *lexer)
 		new = split_new();
 		while (lexer && lexer->token != PIPE)
 		{
-			lex = lexer_new(ft_strdup(lexer->element), lexer->token);
+			lex = lexer_new(ft_strdup(lexer->element), lexer->token, 0);
 			lexer_add_back(&new->cmd, lex);
 			lexer = lexer->next;
 		}
