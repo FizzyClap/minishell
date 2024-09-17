@@ -28,11 +28,11 @@ static int	trim_args(t_split_cmd **split, t_cmd **new, int arg)
 	return (arg);
 }
 
-void	cmd_node(t_split_cmd *split, int arg, t_cmd **new)
+void	cmd_node(t_split_cmd *split, int arg, t_cmd **new, int redir)
 {
-	t_lexer	*ntm;
+	t_lexer	*tmp;
 
-	ntm = split->cmd;
+	tmp = split->cmd;
 	while (split->cmd)
 	{
 		if (split->cmd->token == WORD && (*new)->cmd == NULL)
@@ -42,11 +42,11 @@ void	cmd_node(t_split_cmd *split, int arg, t_cmd **new)
 		else
 		{
 			lexer_add_back(&(*new)->redir, \
-				lexer_new(ft_strdup(split->cmd->element), split->cmd->token));
+				lexer_new(ft_strdup(split->cmd->element), split->cmd->token, ++redir));
 			split->cmd = split->cmd->next;
 		}
 	}
-	split->cmd = ntm;
+	split->cmd = tmp;
 }
 
 t_cmd	*make_cmd(t_split_cmd *split)
@@ -58,7 +58,7 @@ t_cmd	*make_cmd(t_split_cmd *split)
 	while (split)
 	{
 		new = cmd_new(NULL, NULL, NULL);
-		cmd_node(split, -1, &new);
+		cmd_node(split, -1, &new, -1);
 		split = split->next;
 		cmd_add_back(&final, new);
 	}

@@ -5,10 +5,13 @@ void	print_tab(char **tab)
 	int	i;
 
 	i = 0;
-	while (tab[i])
+	if (tab)
 	{
-		printf("tab[%i] = %s\n", i, tab[i]);
-		i++;
+		while (tab[i])
+		{
+			printf("tab[%i] = %s\n", i, tab[i]);
+			i++;
+		}
 	}
 }
 
@@ -22,7 +25,8 @@ void	print_lexer(t_lexer *lexer)
 	while (tmp)
 	{
 		printf("lexer nbr: %i\n", i);
-		printf("element: %s\ntoken: %i\n", tmp->element, tmp->token);
+		printf("num %i:\telement: %s\ttoken: %i\n",tmp->index, \
+			tmp->element, tmp->token);
 		i++;
 		tmp = tmp->next;
 	}

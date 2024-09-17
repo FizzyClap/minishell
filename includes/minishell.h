@@ -51,7 +51,7 @@ void		free_env(t_env *head);
 char		*get_env(t_env *env, char *var_name);
 void		sort_env(t_env *env);
 //LEXER/LEXER LST
-t_lexer		*lexer_new(char *element, int token);
+t_lexer		*lexer_new(char *element, int token, int index);
 void		lexer_add_back(t_lexer **lst, t_lexer *new);
 int			list_cmd_size(t_cmd *lst);
 //VAR_ENV/VAR_ENV_LST
