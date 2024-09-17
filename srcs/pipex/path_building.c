@@ -40,8 +40,21 @@ static void	cmd_exist_in_path(t_pipex *pipex)
 		if (execve(pipex->cmd->args[0], pipex->cmd->args, pipex->env->tab_env) \
 			== FAILURE)
 		{
+			if (ft_strncmp(pipex->cmd->args[0], "./", 2) == 0 || \
+				ft_strncmp(pipex->cmd->args[0], "/", 1) == 0)
+			{
+				ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Is a directory\n", \
+				pipex->cmd->args[0]);
+				g_exit_code = EXIT_PERMISSION_DENIED;
+			}
+			else
+			{
+				ft_fprintf(STDERR_FILENO, "Fraudistan: %s: command not found\n",
+				pipex->cmd->args[0]);
+				g_exit_code = COMMAND_NOT_FOUND;
+			}
 			free_pipex(pipex);
-			error_exit("Error executing command");
+			exit(g_exit_code);
 		}
 	}
 }

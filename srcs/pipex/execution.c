@@ -88,18 +88,7 @@ static void	inter_cmd(t_pipex *pipex, int i)
 
 static void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd)
 {
-	if (pipex->infile_exist == false || outputfd == FAILURE)
-	{
-		if (!pipex->infile_exist && open(pipex->infile_error, O_RDONLY) < 0)
-		{
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->infile_error);
-			perror("");
-		}
-		if (outputfd == FAILURE)
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
-			pipex->outfile_error);
-		exit(EXIT_FAILURE);
-	}
+	files_are_valid(pipex, true);
 	if (dup2(inputfd, STDIN_FILENO) == FAILURE)
 		error_exit("Dup2 input error");
 	if (dup2(outputfd, STDOUT_FILENO) == FAILURE)
