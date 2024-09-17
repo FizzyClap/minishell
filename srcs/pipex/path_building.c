@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path_building.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:05:01 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:16:55 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	cmd_exist_in_path(t_pipex *pipex);
@@ -50,29 +62,14 @@ static void	cmd_exist_in_path(t_pipex *pipex)
 			else
 			{
 				ft_fprintf(STDERR_FILENO, "Fraudistan: %s: command not found\n",
-				pipex->cmd->args[0]);
+					pipex->cmd->args[0]);
 				g_exit_code = COMMAND_NOT_FOUND;
 			}
 			free_pipex(pipex);
 			exit(g_exit_code);
 		}
 	}
-	else if (ft_strncmp(pipex->cmd->args[0], "./", 2) == 0 || \
-			ft_strncmp(pipex->cmd->args[0], "/", 1) == 0)
-	{
-		if (access(pipex->cmd->args[0], F_OK) != 0)
-		{
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->cmd->args[0]);
-			perror("");
-			exit(127);
-		}
-		if (access(pipex->cmd->args[0], X_OK != 0) != 0)
-		{
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->cmd->args[0]);
-			perror("");
-			exit(EXIT_PERMISSION_DENIED);
-		}
-	}
+	verif_is_executable(pipex);
 }
 
 static char	*get_path(t_pipex *pipex)

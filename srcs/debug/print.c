@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:03:53 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:07:44 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	print_tab(char **tab)
@@ -25,7 +37,7 @@ void	print_lexer(t_lexer *lexer)
 	while (tmp)
 	{
 		printf("lexer nbr: %i\n", i);
-		printf("num %i:\telement: %s\ttoken: %i\n",tmp->index, \
+		printf("num %i:\telement: %s\ttoken: %i\n", tmp->index, \
 			tmp->element, tmp->token);
 		i++;
 		tmp = tmp->next;

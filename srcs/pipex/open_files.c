@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   open_files.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:04:56 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:16:34 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	return_infile(t_pipex *pipex, t_lexer *parse);
@@ -52,8 +64,8 @@ static void	return_infile(t_pipex *pipex, t_lexer *parse)
 			pipex->infile = open(parse->element, O_RDONLY);
 			if (pipex->infile == FAILURE)
 				pipex->infile_error = parse;
-			if ((ft_strcmp(parse->element, pipex->last_infile->element) == 0) &&
-				parse->index == pipex->last_infile->index)
+			if ((ft_strcmp(parse->element, pipex->last_infile->element) == 0)
+				&& parse->index == pipex->last_infile->index)
 				return ;
 			close(pipex->infile);
 		}
@@ -68,28 +80,8 @@ static int	return_outfile(t_pipex *pipex, t_lexer *parse, t_lexer *last)
 	{
 		if (parse->token == OUT || parse->token == APPEND)
 		{
-			if (parse->token == OUT && ((pipex->infile_error && \
-			pipex->infile_error->index > parse->index) || !pipex->infile_error))
-			{
-				pipex->outfile = open(parse->element, \
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (access(parse->element, W_OK) == FAILURE)
-				{
-					pipex->outfile_error = parse;
-					return (FAILURE);
-				}
-			}
-			else if (parse->token == APPEND && ((pipex->infile_error && \
-			pipex->infile_error->index > parse->index) || !pipex->infile_error))
-			{
-				pipex->outfile = open(parse->element, \
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (access(parse->element, W_OK) == FAILURE)
-				{
-					pipex->outfile_error = parse;
-					return (FAILURE);
-				}
-			}
+			if (create_outfile(pipex, parse) == FAILURE)
+				return (FAILURE);
 			if (ft_strcmp(parse->element, last->element) == 0)
 				return (SUCCESS);
 			close(pipex->outfile);

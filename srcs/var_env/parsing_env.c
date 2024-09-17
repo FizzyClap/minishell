@@ -1,30 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_env.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:05:24 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 15:01:21 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-static t_var	*add_var(t_env *env, char *line, int i)
-{
-	t_var	*new;
-	char	*tmp;
-	int		dup;
-	int		start;
+static t_var	*get_vars(char *line, t_env *env);
+static char		*replace_vars(char *line, t_var *vars);
+static t_var	*add_var(t_env *env, char *line, int i);
 
-	new = NULL;
-	dup = 0;
-	i++;
-	new = var_exceptions(new, line, i);
-	if (new == NULL)
-	{
-		start = i;
-		while (line[i] && ft_chrinstr(" $\'\"", line[i]) != 0)
-		{
-			i++;
-			dup++;
-		}
-		tmp = dup_tmp(line, dup, i, start);
-		new = var_new(get_env(env, tmp), true);
-		return (free(tmp), new);
-	}
-	else
-		return (new);
+char	*parsing_env(char *line, t_env *env)
+{
+	char	*result;
+	t_var	*vars;
+	t_var	*tmp;
+
+	tmp = NULL;
+	vars = NULL;
+	result = NULL;
+	vars = get_vars(line, env);
+	tmp = vars;
+	result = replace_vars(line, vars);
+	free_vars(tmp);
+	free(line);
+	return (result);
 }
 
 static t_var	*get_vars(char *line, t_env *env)
@@ -52,6 +58,33 @@ static t_var	*get_vars(char *line, t_env *env)
 			break ;
 	}
 	return (vars);
+}
+
+static t_var	*add_var(t_env *env, char *line, int i)
+{
+	t_var	*new;
+	char	*tmp;
+	int		dup;
+	int		start;
+
+	new = NULL;
+	dup = 0;
+	i++;
+	new = var_exceptions(new, line, i);
+	if (new == NULL)
+	{
+		start = i;
+		while (line[i] && ft_chrinstr(" $\'\"", line[i]) != 0)
+		{
+			i++;
+			dup++;
+		}
+		tmp = dup_tmp(line, dup, i, start);
+		new = var_new(get_env(env, tmp), true);
+		return (free(tmp), new);
+	}
+	else
+		return (new);
 }
 
 static char	*join_char(char *str, char c)
@@ -100,21 +133,4 @@ static char	*replace_vars(char *line, t_var *vars)
 			new = join_char(new, line[i++]);
 	}
 	return (new);
-}
-
-char	*parsing_env(char *line, t_env *env)
-{
-	char	*result;
-	t_var	*vars;
-	t_var	*tmp;
-
-	tmp = NULL;
-	vars = NULL;
-	result = NULL;
-	vars = get_vars(line, env);
-	tmp = vars;
-	result = replace_vars(line, vars);
-	free_vars(tmp);
-	free(line);
-	return (result);
 }

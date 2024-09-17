@@ -1,6 +1,16 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_builtins.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:03:39 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:11:17 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static void	both_are_wrong(t_pipex *pipex, bool should_exit);
+#include "../../includes/minishell.h"
 
 int	is_builtins(t_cmd *command)
 {
@@ -43,51 +53,4 @@ void	execute_builtins(t_pipex *pipex)
 		builtin_env(pipex->env, pipex->cmd, pipex->outfile);
 	else if (ft_strcmp(pipex->cmd->cmd, "exit") == 0)
 		builtin_exit(pipex->env, pipex->cmd);
-}
-
-int	files_are_valid(t_pipex *pipex, bool should_exit)
-{
-	if (pipex->infile_error || pipex->outfile_error)
-	{
-		both_are_wrong(pipex, should_exit);
-		if (pipex->infile_error)
-		{
-			open(pipex->infile_error->element, O_RDONLY);
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ",
-			pipex->infile_error->element);
-			perror("");
-			if (should_exit == true)
-				exit(EXIT_FAILURE);
-		}
-		if (pipex->outfile == FAILURE)
-		{
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
-			pipex->outfile_error);
-			if (should_exit == true)
-				exit(EXIT_FAILURE);
-		}
-		g_exit_code = EXIT_FAILURE;
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-static void	both_are_wrong(t_pipex *pipex, bool should_exit)
-{
-	if (pipex->infile_error && pipex->outfile_error)
-	{
-		if (pipex->infile_error->index < pipex->outfile_error->index)
-		{
-			open(pipex->infile_error->element, O_RDONLY);
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ",
-			pipex->infile_error->element);
-			perror("");
-			if (should_exit == true)
-				exit(EXIT_FAILURE);
-		}
-		ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
-		pipex->outfile_error->element);
-		if (should_exit == true)
-			exit(EXIT_FAILURE);
-	}
 }

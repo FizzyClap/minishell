@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_lst.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:04:01 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:45:58 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 t_lexer	*lexer_new(char *element, int token, int index)
@@ -34,19 +46,4 @@ void	lexer_add_back(t_lexer **lst, t_lexer *new)
 	}
 	last_element = lexer_last(*lst);
 	last_element->next = new;
-}
-
-int	list_cmd_size(t_cmd *lst)
-{
-	int	count;
-
-	count = 0;
-	if (!lst)
-		return (count);
-	while (lst)
-	{
-		count++;
-		lst = lst->next;
-	}
-	return (count);
 }

@@ -1,12 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:05:15 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 15:11:36 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
+
+static void	ctrl_c(int signum);
+static void	ctrl_c_hd(int signum);
 
 void	signals(void)
 {
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, ft_ctrl_c);
+	signal(SIGINT, ctrl_c);
 }
 
-void	ft_ctrld(char *line)
+void	ctrl_d(char *line)
 {
 	free(line);
 	rl_clear_history();
@@ -14,7 +29,13 @@ void	ft_ctrld(char *line)
 	exit (EXIT_SUCCESS);
 }
 
-void	ft_ctrl_c(int signum)
+void	here_signals(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ctrl_c_hd);
+}
+
+static void	ctrl_c(int signum)
 {
 	if (signum == 2)
 	{
@@ -26,13 +47,7 @@ void	ft_ctrl_c(int signum)
 	}
 }
 
-void	here_signals(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, ft_ctrl_c_hd);
-}
-
-void	ft_ctrl_c_hd(int signum)
+static void	ctrl_c_hd(int signum)
 {
 	if (signum == 2)
 	{

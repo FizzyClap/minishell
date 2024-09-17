@@ -1,4 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:04:36 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 15:01:05 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
+
+static t_split_cmd	*split_new(void);
+static t_split_cmd	*split_last(t_split_cmd *lst);
+static void			split_add_back(t_split_cmd **lst, t_split_cmd *new);
+
+t_split_cmd	*split_cmd(t_lexer *lexer)
+{
+	t_split_cmd	*split;
+	t_split_cmd	*new;
+	t_lexer		*lex;
+
+	split = NULL;
+	while (lexer)
+	{
+		new = split_new();
+		while (lexer && lexer->token != PIPE)
+		{
+			lex = lexer_new(ft_strdup(lexer->element), lexer->token, 0);
+			lexer_add_back(&new->cmd, lex);
+			lexer = lexer->next;
+		}
+		if (lexer && lexer->token == PIPE)
+			lexer = lexer->next;
+		split_add_back(&split, new);
+	}
+	return (split);
+}
 
 static t_split_cmd	*split_new(void)
 {
@@ -36,27 +75,4 @@ static void	split_add_back(t_split_cmd **lst, t_split_cmd *new)
 	}
 	last_element = split_last(*lst);
 	last_element->next = new;
-}
-
-t_split_cmd	*split_cmd(t_lexer *lexer)
-{
-	t_split_cmd	*split;
-	t_split_cmd	*new;
-	t_lexer		*lex;
-
-	split = NULL;
-	while (lexer)
-	{
-		new = split_new();
-		while (lexer && lexer->token != PIPE)
-		{
-			lex = lexer_new(ft_strdup(lexer->element), lexer->token, 0);
-			lexer_add_back(&new->cmd, lex);
-			lexer = lexer->next;
-		}
-		if (lexer && lexer->token == PIPE)
-			lexer = lexer->next;
-		split_add_back(&split, new);
-	}
-	return (split);
 }

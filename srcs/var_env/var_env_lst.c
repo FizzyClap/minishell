@@ -1,4 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   var_env_lst.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:05:39 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 15:11:12 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
+
+static t_var	*var_last(t_var *lst);
 
 t_var	*var_new(char *variable, bool exist)
 {
@@ -16,15 +30,6 @@ t_var	*var_new(char *variable, bool exist)
 	return (var);
 }
 
-static t_var	*var_last(t_var *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst && lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
 void	var_add_back(t_var **lst, t_var *new)
 {
 	t_var	*last_variable;
@@ -38,6 +43,15 @@ void	var_add_back(t_var **lst, t_var *new)
 	}
 	last_variable = var_last(*lst);
 	last_variable->next = new;
+}
+
+static t_var	*var_last(t_var *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst && lst->next)
+		lst = lst->next;
+	return (lst);
 }
 
 int	list_var_size(t_cmd *lst)

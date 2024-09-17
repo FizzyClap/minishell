@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_other.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:03:27 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:07:29 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static int	arg_is_valid(char *arg);
@@ -77,7 +89,7 @@ void	builtin_exit(t_env *env, t_cmd *command)
 		g_exit_code = ft_atoi(command->args[1]) % 256;
 		if (!ft_strisnum(command->args[1]))
 		{
-			ft_fprintf(STDERR_FILENO, "Fraudistan: exit: %s: numeric argument "
+			ft_fprintf(STDERR_FILENO, "Fraudistan: exit: %s: numeric argument "\
 			"required\n", command->args[1]);
 			g_exit_code = EXIT_SYNTAX_ERROR;
 		}

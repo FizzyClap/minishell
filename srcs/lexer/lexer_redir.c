@@ -1,11 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_redir.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:04:05 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 15:04:51 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-static void	long_line(t_lexer *clean, char *itoa)
-{
-	ft_fprintf(STDERR_FILENO, "syntax error near unexpected token `newline'\n");
-	free_lexer(clean);
-	free(itoa);
-}
+static void	long_line(t_lexer *clean, char *itoa);
 
 t_lexer	*clean_redir(t_lexer *lexer)
 {
@@ -35,31 +42,11 @@ t_lexer	*clean_redir(t_lexer *lexer)
 	return (clean);
 }
 
-int	check_valid_lex(t_lexer *lexer)
+static void	long_line(t_lexer *clean, char *itoa)
 {
-	t_lexer	*tmp;
-
-	tmp = lexer;
-	while (tmp)
-	{
-		if (tmp->next && tmp->token == PIPE && tmp->next->token == PIPE)
-		{
-			ft_fprintf(2, "%s `%s'\n", ERR_SYNT, tmp->next->element);
-			return (0);
-		}
-		else if (tmp->next && tmp->token > PIPE && tmp->next->token > PIPE)
-		{
-			ft_fprintf(2, "%s `%s'\n", ERR_SYNT, tmp->next->element);
-			return (0);
-		}
-		else if (!tmp->next && tmp->token > PIPE && tmp->token < 7)
-		{
-			ft_fprintf(STDERR_FILENO, "%s%s", ERR_SYNT, " `newline'\n");
-			return (0);
-		}
-		tmp = tmp->next;
-	}
-	return (1);
+	ft_fprintf(STDERR_FILENO, "syntax error near unexpected token `newline'\n");
+	free_lexer(clean);
+	free(itoa);
 }
 
 int	is_token(char c)

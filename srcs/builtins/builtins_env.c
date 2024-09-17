@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_env.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:03:18 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:07:18 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	exec_export(t_env *current, t_cmd *cmd, int i, bool var_exist);
@@ -26,7 +38,7 @@ static void	exec_export(t_env *current, t_cmd *cmd, int i, bool var_exist)
 	{
 		if (arg_is_exportable(cmd->args[i]) == FAILURE)
 		{
-			ft_fprintf(STDERR_FILENO, "Fraudistan: export: %s: not a valid "
+			ft_fprintf(STDERR_FILENO, "Fraudistan: export: %s: not a valid " \
 			"identifier\n", cmd->args[i]);
 			g_exit_code = EXIT_FAILURE;
 			return ;

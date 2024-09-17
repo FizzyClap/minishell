@@ -1,66 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:04:09 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:33:30 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
-
-static int	quote_check(char *str)
-{
-	bool	quote;
-	bool	d_quote;
-	int		i;
-
-	i = -1;
-	quote = false;
-	d_quote = false;
-	while (str[++i])
-	{
-		if (str[i] && str[i] == '\"' && quote == false)
-			d_quote = ft_change_bool(d_quote);
-		else if (str[i] && str[i] == '\'' && d_quote == false)
-			quote = ft_change_bool(quote);
-	}
-	if (quote == true || d_quote == true)
-	{
-		ft_fprintf(STDERR_FILENO, "Fraudistan: quotes unclosed\n");
-		return (0);
-	}
-	else
-		return (1);
-}
-
-t_cmd	*prompt_loop(char *line)
-{
-	t_lexer		*lexer;
-	t_lexer		*lex_redir;
-	t_split_cmd	*split;
-	t_cmd		*final;
-
-	final = NULL;
-	if (quote_check(line) == 0)
-		return (NULL);
-	lexer = make_lexer(line);
-	if (check_valid_lex(lexer) == 0)
-	{
-		free_lexer(lexer);
-		return (NULL);
-	}
-	if (lexer == NULL)
-		return (NULL);
-	lex_redir = clean_redir(lexer);
-	if (lex_redir == NULL)
-		return (NULL);
-	free_lexer(lexer);
-	split = split_cmd(lex_redir);
-	free_lexer(lex_redir);
-	final = make_cmd(split);
-	free_split_cmd(split);
-	return (final);
-}
-
-int	change_token(t_lexer *new)
-{
-	if ((new->token % 2) != 0)
-		return (WORD);
-	else
-		return (find_token(new->element));
-}
 
 bool	change_bool(bool quote, t_lexer *new)
 {
@@ -72,18 +22,75 @@ bool	change_bool(bool quote, t_lexer *new)
 	return (quote);
 }
 
-int	find_token(char *element)
+int	check_valid_token(char c, int i)
 {
-	if (ft_strcmp(element, "|") == 0)
-		return (PIPE);
-	else if (ft_strcmp(element, "<") == 0)
-		return (IN);
-	else if (ft_strcmp(element, ">") == 0)
-		return (OUT);
-	else if (ft_strcmp(element, "<<") == 0)
-		return (HEREDOC);
-	else if (ft_strcmp(element, ">>") == 0)
-		return (APPEND);
+	if ((i > 1 && c == '|'))
+	{
+		ft_fprintf(STDERR_FILENO, \
+			"syntax error near unexpected token `%c'\n", c);
+		return (-1);
+	}
+	else if (i > 2)
+	{
+		ft_fprintf(STDERR_FILENO, \
+			"syntax error near unexpected token `%c'\n", c);
+		return (-1);
+	}
 	else
-		return (WORD);
+		return (0);
+}
+
+int	next_token_pr(char *input, int start)
+{
+	char	c;
+	int		i;
+
+	i = 0;
+	c = input[start];
+	if (start > 0 && ft_chrinstr("<>", c) == 0 && \
+		ft_chrinstr("\"\'", input[start -1]) == 0)
+	{
+		while (input[start] && input[start] == c)
+			start++;
+		return (start);
+	}
+	else
+	{
+		while (input[start] && input[start] == c)
+		{
+			start++;
+			i++;
+		}
+		if (check_valid_token(c, i) == -1)
+			return (-1);
+		return (start);
+	}
+}
+
+int	lexer_len(char *input, int start)
+{
+	bool	quote;
+	bool	d_quote;
+	int		i;
+
+	quote = false;
+	d_quote = false;
+	i = 0;
+	if (is_token(input[start]) == 1)
+		return (next_token(input, start, i));
+	start--;
+	while (input[++start])
+	{
+		if (is_token(input[start]) == 1 && quote == false && d_quote == false)
+			return (i);
+		if (input[start] == ' ' && quote == false && d_quote == false)
+			return (i);
+		if (input[start] == '\"' && quote == false)
+			d_quote = ft_change_bool(d_quote);
+		else if (input[start] == '\'' && d_quote == false)
+			quote = ft_change_bool(quote);
+		else
+			i++;
+	}
+	return (i);
 }

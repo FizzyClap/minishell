@@ -13,26 +13,28 @@ BLUE = \033[38;5;153m
 NC = \033[0m
 
 SRCS =	srcs/main.c\
-		srcs/init.c\
 		srcs/builtins/builtins_cd.c\
 		srcs/builtins/utils_builtins.c\
 		srcs/builtins/builtins_env.c\
 		srcs/builtins/builtins_other.c\
 		srcs/builtins/chain_list_utils.c\
 		srcs/builtins/utils_env.c\
-		srcs/lexer/lexer.c\
-		srcs/lexer/lexer_utils.c\
 		srcs/lexer/lexer_lst.c\
 		srcs/lexer/lexer_redir.c\
+		srcs/lexer/lexer_utils.c\
+		srcs/lexer/lexer.c\
+		srcs/lexer/prompt_loop.c\
 		srcs/parser/free_utils.c\
 		srcs/parser/parser.c\
 		srcs/parser/parser_lst.c\
 		srcs/parser/split_cmd.c\
 		srcs/pipex/execution.c\
 		srcs/pipex/here_doc.c\
+		srcs/pipex/init.c\
 		srcs/pipex/open_files.c\
 		srcs/pipex/path_building.c\
 		srcs/pipex/tab_env.c\
+		srcs/pipex/utils_files.c\
 		srcs/pipex/utils_pipex.c\
 		srcs/debug/print.c\
 		srcs/signals/signals.c\
@@ -90,7 +92,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "│$(GREEN) Cleaning of $(NAME) completed ✓ $(NC)	       │"
 	@echo "└──────────────────────────────────────────────┘"
-#@make -s -C $(LIBFT_PATH) fclean
+	@make -s -C $(LIBFT_PATH) fclean
 
 re: fclean all
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 14:04:51 by roespici          #+#    #+#             */
+/*   Updated: 2024/09/17 14:08:52 by roespici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static void	fill_here_doc(t_pipex *pipex);
@@ -57,7 +69,7 @@ static void	brut_stop(t_pipex *pipex, char *line, int index)
 {
 	if (!line)
 	{
-		ft_fprintf(STDERR_FILENO, "Fraudistan: warning: here-document at line "
+		ft_fprintf(STDERR_FILENO, "Fraudistan: warning: here-document at line "\
 		"%d delimited by end-of-file (wanted `%s')\n", index, pipex->limiter);
 	}
 }
@@ -85,4 +97,3 @@ static void	close_here_doc(t_pipex *pipex)
 	free(pipex->limiter);
 	unlink("here_doc.tmp");
 }
-
