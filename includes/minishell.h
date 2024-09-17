@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:06:02 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/17 15:12:58 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:16:57 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@ void		execute_pipeline(t_cmd *command, t_env *env);
 void		execute_pipes(t_pipex *pipex);
 //PIPEX/HERE DOC
 void		here_doc(t_pipex *pipex, t_lexer *redir);
+//PIPEX/INIT
+void		init_env(t_env **env, char *const *envp);
+void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 //PIPEX/OPEN FILES
 void		open_files(t_pipex *pipex);
 void		open_infile(t_pipex *pipex);
