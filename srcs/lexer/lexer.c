@@ -56,6 +56,8 @@ static int	lexer_len(char *input, int start)
 	i = 0;
 	if (is_token(input[start]) == 1)
 		return (next_token(input, start, i));
+	if (is_token(input[start]) == 1)
+		return (next_token(input, start, i));
 	start--;
 	while (input[++start])
 	{
@@ -73,7 +75,7 @@ static int	lexer_len(char *input, int start)
 	return (i);
 }
 
-static int	lexer_progress(char *input, int start)
+static int	lexer_progress(char *input, int start, t_lexer *new)
 {
 	bool	quote;
 	bool	d_quote;
@@ -139,6 +141,7 @@ t_lexer	*make_lexer(char *input)
 	{
 		while (input[start] == ' ')
 			start++;
+		while (input[start] && input[start] != ' ')
 		while (input[start] && input[start] != ' ')
 		{
 			new = lexer_dup(input, start);
