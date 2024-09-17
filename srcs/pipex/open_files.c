@@ -15,7 +15,6 @@ void	open_infile(t_pipex *pipex)
 
 	parse = pipex->cmd->redir;
 	pipex->last_infile = find_last_redir(pipex->cmd, IN);
-	pipex->infile_exist = true;
 	if (!pipex->last_infile)
 	{
 		pipex->infile = STDIN_FILENO;
@@ -52,11 +51,9 @@ static void	return_infile(t_pipex *pipex, t_lexer *parse)
 		{
 			pipex->infile = open(parse->element, O_RDONLY);
 			if (pipex->infile == FAILURE)
-			{
-				pipex->infile_error = parse->element;
-				pipex->infile_exist = false;
-			}
-			if (ft_strcmp(parse->element, pipex->last_infile->element) == 0)
+				pipex->infile_error = parse;
+			if ((ft_strcmp(parse->element, pipex->last_infile->element) == 0) &&
+				parse->index == pipex->last_infile->index)
 				return ;
 			close(pipex->infile);
 		}
@@ -79,8 +76,7 @@ static int	return_outfile(t_pipex *pipex, t_lexer *parse, t_lexer *last)
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (access(parse->element, W_OK) == FAILURE)
 			{
-				pipex->outfile_error = parse->element;
-				pipex->outfile = FAILURE;
+				pipex->outfile_error = parse;
 				return (FAILURE);
 			}
 			if (ft_strcmp(parse->element, last->element) == 0)

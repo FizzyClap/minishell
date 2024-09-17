@@ -1,5 +1,7 @@
 #include "../../includes/minishell.h"
 
+static void	both_are_wrong(t_pipex *pipex, bool should_exit);
+
 int	is_builtins(t_cmd *command)
 {
 	if (command->cmd)
@@ -45,11 +47,14 @@ void	execute_builtins(t_pipex *pipex)
 
 int	files_are_valid(t_pipex *pipex, bool should_exit)
 {
-	if (pipex->infile_exist == false || pipex->outfile == FAILURE)
+	if (pipex->infile_error || pipex->outfile_error)
 	{
-		if (!pipex->infile_exist && open(pipex->infile_error, O_RDONLY) < 0)
+		both_are_wrong(pipex, should_exit);
+		if (pipex->infile_error)
 		{
-			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->infile_error);
+			open(pipex->infile_error->element, O_RDONLY);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ",
+			pipex->infile_error->element);
 			perror("");
 			if (should_exit == true)
 				exit(EXIT_FAILURE);
@@ -65,4 +70,23 @@ int	files_are_valid(t_pipex *pipex, bool should_exit)
 		return (FAILURE);
 	}
 	return (SUCCESS);
+}
+
+static void	both_are_wrong(t_pipex *pipex, bool should_exit)
+{
+	if (pipex->infile_error && pipex->outfile_error)
+	{
+		if (pipex->infile_error->index < pipex->outfile_error->index)
+		{
+			open(pipex->infile_error->element, O_RDONLY);
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->infile_error);
+			perror("");
+			if (should_exit == true)
+				exit(EXIT_FAILURE);
+		}
+		ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
+		pipex->outfile_error);
+		if (should_exit == true)
+			exit(EXIT_FAILURE);
+	}
 }

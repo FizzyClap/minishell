@@ -22,7 +22,8 @@ void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)
 	pipex->env = env;
 	pipex->cmd = command;
 	pipex->i = -1;
-	pipex->infile_exist = true;
+	pipex->infile_error = NULL;
+	pipex->outfile_error = NULL;
 	pipex->limiter = NULL;
 	size = pipex->cmd;
 	pipex->nb_pipes = list_cmd_size(size) - 1;
