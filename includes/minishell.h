@@ -72,6 +72,8 @@ t_cmd		*prompt_loop(char *line);
 int			change_token(t_lexer *new);
 bool		change_bool(bool quote, t_lexer *new);
 int			find_token(char *element);
+int			is_token(char c);
+int			next_token(char *input, int start, int i);
 //PARSER/PARSER LST
 t_cmd		*cmd_new(char *cmd, char **args, t_lexer *out);
 void		cmd_add_back(t_cmd **lst, t_cmd *new);
