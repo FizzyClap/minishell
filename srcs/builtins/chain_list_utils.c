@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:03:33 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/17 14:03:34 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/17 15:33:39 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	modify_node(t_env *env, char *env_line)
 			if (!env->line)
 				return (free(new_args));
 			env->args = new_args;
+			env->token = 1;
 			return ;
 		}
 		env = env->next;
