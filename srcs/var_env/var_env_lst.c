@@ -5,7 +5,10 @@ t_var	*var_new(char *variable, bool exist)
 	t_var	*var;
 
 	var = malloc(sizeof(t_var));
-	var->variable = ft_strdup(variable);
+	if (!variable)
+		var->variable = ft_strdup("");
+	else
+		var->variable = ft_strdup(variable);
 	if (!var->variable)
 		return (free(var), NULL);
 	var->exist = exist;

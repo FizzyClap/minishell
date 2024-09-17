@@ -21,8 +21,6 @@ static t_var	*add_var(t_env *env, char *line, int i)
 		}
 		tmp = dup_tmp(line, dup, i, start);
 		new = var_new(get_env(env, tmp), true);
-		if (!new->variable)
-			new->exist = ft_change_bool(new->exist);
 		return (free(tmp), new);
 	}
 	else
@@ -43,14 +41,14 @@ static t_var	*get_vars(char *line, t_env *env)
 	{
 		if (line[i] == '\'' || line[i] == '\"')
 			quote = strct_bool_change(quote, line[i]);
-		if (line[i + 1] && line[i + 1] != '\"' && \
+		else if (line[i + 1] && line[i + 1] != '\"' && \
 			line[i] == '$' && quote.quote == false)
 		{
 			if (line[i + 1] != ' ')
 				var_add_back(&vars, add_var(env, line, i));
 			i = progress(line, i);
 		}
-		if (!line[i])
+		else if (!line[i])
 			break ;
 	}
 	return (vars);
@@ -92,7 +90,7 @@ static char	*replace_vars(char *line, t_var *vars)
 		if (line[i] == '\'' || line[i] == '\"')
 			quote = strct_bool_change(quote, line[i]);
 		if (line[i + 1] && line[i] == '$' && quote.quote == false &&\
-			line[i + 1] != ' ' && line[i + 1] != '\"' && i++)
+			line[i + 1] != ' ' && line[i + 1] != '\"' && ++i)
 		{
 			new = ft_strjoin(new, vars->variable);
 			vars = vars->next;
