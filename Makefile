@@ -19,6 +19,7 @@ SRCS =	srcs/main.c\
 		srcs/builtins/builtins_env.c\
 		srcs/builtins/builtins_other.c\
 		srcs/builtins/chain_list_utils.c\
+		srcs/builtins/utils_env.c\
 		srcs/lexer/lexer.c\
 		srcs/lexer/lexer_utils.c\
 		srcs/lexer/lexer_lst.c\

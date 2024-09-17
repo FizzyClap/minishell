@@ -2,7 +2,7 @@
 
 static void	long_line(t_lexer *clean, char *itoa)
 {
-	printf("syntax error near unexpected token `newline'\n");
+	ft_fprintf(STDERR_FILENO, "syntax error near unexpected token `newline'\n");
 	free_lexer(clean);
 	free(itoa);
 }
@@ -44,17 +44,17 @@ int	check_valid_lex(t_lexer *lexer)
 	{
 		if (tmp->next && tmp->token == PIPE && tmp->next->token == PIPE)
 		{
-			printf("%s `%s'\n", ERR_SYNT, tmp->next->element);
+			ft_fprintf(2, "%s `%s'\n", ERR_SYNT, tmp->next->element);
 			return (0);
 		}
 		else if (tmp->next && tmp->token > WORD && tmp->next->token > WORD)
 		{
-			printf("%s `%s'\n", ERR_SYNT, tmp->next->element);
+			ft_fprintf(2, "%s `%s'\n", ERR_SYNT, tmp->next->element);
 			return (0);
 		}
 		else if (!tmp->next && tmp->token > WORD && tmp->token < 7)
 		{
-			printf("%s%s", ERR_SYNT, " `newline'\n");
+			ft_fprintf(STDERR_FILENO, "%s%s", ERR_SYNT, " `newline'\n");
 			return (0);
 		}
 		tmp = tmp->next;

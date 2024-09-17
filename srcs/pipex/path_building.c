@@ -19,10 +19,9 @@ void	exec_command(t_pipex *pipex)
 	path = get_path(pipex);
 	if (!path)
 	{
-		ft_fprintf(pipex->outfile, "%s: command not found\n", pipex->cmd->cmd);
+		ft_fprintf(STDERR_FILENO, "%s: command not found\n", pipex->cmd->cmd);
 		free_pipex(pipex);
-		g_exit_code = COMMAND_NOT_FOUND;
-		exit(g_exit_code);
+		exit(COMMAND_NOT_FOUND);
 	}
 	free(pipex->cmd->args[0]);
 	pipex->cmd->args[0] = path;

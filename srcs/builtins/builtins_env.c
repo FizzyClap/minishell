@@ -1,8 +1,8 @@
 #include "../../includes/minishell.h"
 
+static void	exec_export(t_env *current, t_cmd *cmd, int i, bool var_exist);
 static int	arg_is_exportable(char *str);
 static void	sort_and_print(t_env *env, t_cmd *cmd, int fd);
-static void	sort_env(t_env *env);
 
 void	builtin_export(t_env *env, t_cmd *cmd, int fd)
 {
@@ -15,28 +15,34 @@ void	builtin_export(t_env *env, t_cmd *cmd, int fd)
 	{
 		var_exist = false;
 		current = env;
-		while (current)
-		{
-			if (arg_is_exportable(cmd->args[i]) == FAILURE)
-			{
-				ft_fprintf(STDERR_FILENO, "Fraudistan: export: %s: not a valid identifier\n", cmd->args[i]);
-				g_exit_code = EXIT_FAILURE;
-				return ;
-			}
-			if (ft_strncmp(current->var, cmd->args[i], \
-				ft_strchr(cmd->args[i], '=') - cmd->args[i]) == 0)
-			{
-				var_exist = true;
-				if (ft_strchr(cmd->args[i], '='))
-					modify_node(current, cmd->args[i]);
-				break ;
-			}
-			if (!current->next && var_exist == false)
-				add_node(&current, cmd->args[i]);
-			current = current->next;
-		}
+		exec_export(current, cmd, i, var_exist);
 	}
 	sort_and_print(env, cmd, fd);
+}
+
+static void	exec_export(t_env *current, t_cmd *cmd, int i, bool var_exist)
+{
+	while (current)
+	{
+		if (arg_is_exportable(cmd->args[i]) == FAILURE)
+		{
+			ft_fprintf(STDERR_FILENO, "Fraudistan: export: %s: not a valid "
+			"identifier\n", cmd->args[i]);
+			g_exit_code = EXIT_FAILURE;
+			return ;
+		}
+		if (ft_strncmp(current->var, cmd->args[i], \
+			ft_strchr(cmd->args[i], '=') - cmd->args[i]) == 0)
+		{
+			var_exist = true;
+			if (ft_strchr(cmd->args[i], '='))
+				modify_node(current, cmd->args[i]);
+			return ;
+		}
+		if (!current->next && var_exist == false)
+			add_node(&current, cmd->args[i]);
+		current = current->next;
+	}
 }
 
 static int	arg_is_exportable(char *str)
@@ -59,34 +65,6 @@ static int	arg_is_exportable(char *str)
 			return (FAILURE);
 	}
 	return (SUCCESS);
-}
-void	builtin_unset(t_env *env, char **args)
-{
-	t_env	*current;
-	t_env	*prev;
-	t_env	*temp;
-	int		i;
-
-	i = 0;
-	while (args[++i])
-	{
-		current = env;
-		while (current->next)
-		{
-			if (ft_strcmp(current->next->var, args[i]) == 0)
-			{
-				prev = current;
-				temp = current->next;
-				prev->next = current->next->next;
-				free(temp->line);
-				free(temp->var);
-				free(temp->args);
-				free(temp);
-			}
-			else
-				current = current->next;
-		}
-	}
 }
 
 void	builtin_env(t_env *head, t_cmd *cmd, int fd)
@@ -129,28 +107,5 @@ static void	sort_and_print(t_env *env, t_cmd *cmd, int fd)
 		sort_env(sorted_env);
 		builtin_env(sorted_env, cmd, fd);
 		free_env(sorted_env);
-	}
-}
-
-static void	sort_env(t_env *env)
-{
-	t_env	*current_node;
-	t_env	*next_node;
-	t_env	*min_node;
-
-	current_node = env;
-	while (current_node)
-	{
-		min_node = current_node;
-		next_node = current_node->next;
-		while (next_node)
-		{
-			if (ft_strcmp(next_node->var, min_node->var) < 0)
-				min_node = next_node;
-			next_node = next_node->next;
-		}
-		if (min_node != current_node)
-			swap_nodes(current_node, min_node);
-		current_node = current_node->next;
 	}
 }

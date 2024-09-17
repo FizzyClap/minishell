@@ -51,8 +51,8 @@ void	execute_pipes(t_pipex *pipex)
 
 static void	execute_child(t_pipex *pipex, int i)
 {
-	open_files(pipex);
 	here_signals();
+	open_files(pipex);
 	if (i == 0)
 	{
 		if (pipex->nb_pipes > 0)
@@ -98,8 +98,7 @@ static void	dup_and_exec(t_pipex *pipex, int inputfd, int outputfd)
 		if (outputfd == FAILURE)
 			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
 			pipex->outfile_error);
-		g_exit_code = EXIT_FAILURE;
-		exit(g_exit_code);
+		exit(EXIT_FAILURE);
 	}
 	if (dup2(inputfd, STDIN_FILENO) == FAILURE)
 		error_exit("Dup2 input error");

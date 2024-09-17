@@ -21,5 +21,6 @@ extern int	g_exit_code;
 # define CONNARD 8
 //ERROR MESSAGES
 # define ERR_SYNT "Fraudistan: syntax error near unexpected token"
-
+# define EXIT_SYNTAX_ERROR 2
+# define EXIT_SIGINT 130
 #endif

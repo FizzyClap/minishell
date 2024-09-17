@@ -30,12 +30,12 @@ void		init_pipex(t_pipex *pipex, t_cmd *command, t_env *env);
 void		builtin_cd(t_env *env, char **args, int fd);
 //BUILTINS/BUILTINS ENV
 void		builtin_export(t_env *env, t_cmd *cmd, int fd);
-void		builtin_unset(t_env *env, char **args);
 void		builtin_env(t_env *head, t_cmd *cmd, int fd);
 //BUILTINS/BUILTINS OTHER
 void		builtin_echo(t_cmd *command, int fd);
 void		builtin_pwd(t_env *env, int fd);
 void		builtin_exit(t_env *env, t_cmd *command);
+void		builtin_unset(t_env *env, char **args);
 //BUILTINS/CHAIN LIST UTILS
 t_env		*create_node(char *env_line);
 void		add_node(t_env **head, char *env_line);
@@ -44,9 +44,11 @@ void		swap_nodes(t_env *node1, t_env *node2);
 //BUILTINS/UTILS BUILTINS
 int			is_builtins(t_cmd *command);
 void		execute_builtins(t_pipex *pipex);
+//BUILTINS/UTILS ENV
 t_env		*copy_env(t_env *env);
 void		free_env(t_env *head);
 char		*get_env(t_env *env, char *var_name);
+void		sort_env(t_env *env);
 //LEXER/LEXER LST
 t_lexer		*lexer_new(char *element, int token);
 void		lexer_add_back(t_lexer **lst, t_lexer *new);
