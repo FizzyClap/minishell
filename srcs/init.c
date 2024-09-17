@@ -22,13 +22,10 @@ void	init_pipex(t_pipex *pipex, t_cmd *command, t_env *env)
 	pipex->env = env;
 	pipex->cmd = command;
 	pipex->i = -1;
-	pipex->print_msg = false;
 	pipex->infile_exist = true;
 	pipex->limiter = NULL;
 	size = pipex->cmd;
 	pipex->nb_pipes = list_cmd_size(size) - 1;
-	i = -1;
-	pipex->exit_status = 0;
 	pipex->status = 1;
 	pipex->pipefd = malloc(sizeof(int *) * pipex->nb_pipes);
 	if (!pipex->pipefd)

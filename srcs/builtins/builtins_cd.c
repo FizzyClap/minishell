@@ -63,7 +63,7 @@ static void	cd_prev_path(t_env *env, int fd)
 		if (chdir(prev_path) == FAILURE)
 		{
 			ft_fprintf(STDERR_FILENO, "Fraudistan: cd: %s: ", prev_path);
-			g_exit_code = 1;
+			g_exit_code = EXIT_FAILURE;
 			return (perror(""));
 		}
 		ft_fprintf(fd, "%s\n", prev_path);
@@ -79,7 +79,7 @@ static void	cd_new_path(t_env *env, char **args)
 	if (chdir(args[1]) == FAILURE)
 	{
 		ft_fprintf(STDERR_FILENO, "Fraudistan: cd: %s: ", args[1]);
-		g_exit_code = 1;
+		g_exit_code = EXIT_FAILURE;
 		return (perror(""));
 	}
 	new_path = getcwd(NULL, 0);

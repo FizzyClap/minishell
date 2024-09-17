@@ -18,7 +18,7 @@ void	ft_ctrl_c(int signum)
 {
 	if (signum == 2)
 	{
-		g_exit_code = 130;
+		g_exit_code = EXIT_SIGINT;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);

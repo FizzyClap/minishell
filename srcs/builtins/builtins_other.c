@@ -69,7 +69,7 @@ void	builtin_exit(t_env *env, t_cmd *command)
 	if (nb_args > 2)
 	{
 		ft_fprintf(STDERR_FILENO, "Fraudistan: exit: too many arguments\n");
-		g_exit_code = 1;
+		g_exit_code = EXIT_FAILURE;
 		return ;
 	}
 	else if (nb_args == 2)
@@ -79,10 +79,39 @@ void	builtin_exit(t_env *env, t_cmd *command)
 		{
 			ft_fprintf(STDERR_FILENO, "Fraudistan: exit: %s: numeric argument "
 			"required\n", command->args[1]);
-			g_exit_code = 2;
+			g_exit_code = EXIT_SYNTAX_ERROR;
 		}
 	}
 	free_cmd(command);
 	free_env(env);
 	exit(g_exit_code);
+}
+
+void	builtin_unset(t_env *env, char **args)
+{
+	t_env	*current;
+	t_env	*prev;
+	t_env	*temp;
+	int		i;
+
+	i = 0;
+	while (args[++i])
+	{
+		current = env;
+		while (current->next)
+		{
+			if (ft_strcmp(current->next->var, args[i]) == 0)
+			{
+				prev = current;
+				temp = current->next;
+				prev->next = current->next->next;
+				free(temp->line);
+				free(temp->var);
+				free(temp->args);
+				free(temp);
+			}
+			else
+				current = current->next;
+		}
+	}
 }

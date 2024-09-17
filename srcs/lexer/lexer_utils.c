@@ -18,7 +18,7 @@ static int	quote_check(char *str)
 	}
 	if (quote == true || d_quote == true)
 	{
-		ft_fprintf(STDERR_FILENO, "Please close your quotes\n");
+		ft_fprintf(STDERR_FILENO, "Fraudistan: quotes unclosed\n");
 		return (0);
 	}
 	else
