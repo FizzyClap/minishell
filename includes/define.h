@@ -8,7 +8,6 @@ extern int	g_exit_code;
 # define FAILURE -1
 # define ISBUILTINS 1
 # define ISNOTBUILTINS 0
-# define COMMAND_NOT_FOUND 127
 //TOKEN
 # define WORD 0
 # define PIPE 1
@@ -22,5 +21,8 @@ extern int	g_exit_code;
 //ERROR MESSAGES
 # define ERR_SYNT "Fraudistan: syntax error near unexpected token"
 # define EXIT_SYNTAX_ERROR 2
+# define EXIT_PERMISSION_DENIED 126
+# define COMMAND_NOT_FOUND 127
 # define EXIT_SIGINT 130
+
 #endif

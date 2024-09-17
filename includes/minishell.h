@@ -44,6 +44,7 @@ void		swap_nodes(t_env *node1, t_env *node2);
 //BUILTINS/UTILS BUILTINS
 int			is_builtins(t_cmd *command);
 void		execute_builtins(t_pipex *pipex);
+int			files_are_valid(t_pipex *pipex, bool should_exit);
 //BUILTINS/UTILS ENV
 t_env		*copy_env(t_env *env);
 void		free_env(t_env *head);
