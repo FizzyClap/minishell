@@ -49,15 +49,14 @@ typedef struct s_lexer
 typedef struct s_pipex
 {
 	int			infile;
-	char		*infile_error;
-	bool		infile_exist;
 	int			outfile;
-	char		*outfile_error;
 	int			i;
 	int			nb_pipes;
 	int			status;
 	int			**pipefd;
 	char		*limiter;
+	t_lexer		*infile_error;
+	t_lexer		*outfile_error;
 	t_lexer		*last_infile;
 	pid_t		*child;
 	t_env		*env;

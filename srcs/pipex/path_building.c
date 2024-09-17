@@ -57,6 +57,22 @@ static void	cmd_exist_in_path(t_pipex *pipex)
 			exit(g_exit_code);
 		}
 	}
+	else if (ft_strncmp(pipex->cmd->args[0], "./", 2) == 0 || \
+			ft_strncmp(pipex->cmd->args[0], "/", 1) == 0)
+	{
+		if (access(pipex->cmd->args[0], F_OK) != 0)
+		{
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->cmd->args[0]);
+			perror("");
+			exit(127);
+		}
+		if (access(pipex->cmd->args[0], X_OK != 0) != 0)
+		{
+			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: ", pipex->cmd->args[0]);
+			perror("");
+			exit(EXIT_PERMISSION_DENIED);
+		}
+	}
 }
 
 static char	*get_path(t_pipex *pipex)
