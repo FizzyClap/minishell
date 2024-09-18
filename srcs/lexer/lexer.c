@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:04:14 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/17 15:00:26 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:51:18 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ t_lexer	*make_lexer(char *input)
 	lexer = NULL;
 	while (input[start])
 	{
-		while (input[start] == ' ')
+		while (is_space(input[start]) == SUCCESS)
 			start++;
-		while (input[start] && input[start] != ' ')
+		while (input[start] && is_space(input[start]) == FAILURE)
 		{
 			new = lexer_dup(input, start);
 			new->token = change_token(new);
@@ -113,7 +113,8 @@ static int	lexer_progress(char *input, int start)
 	{
 		if (is_token(input[start]) == 1 && quote == false && d_quote == false)
 			return (start);
-		if (input[start] == ' ' && quote == false && d_quote == false)
+		if (is_space(input[start]) == SUCCESS && quote == false && \
+			d_quote == false)
 			return (start);
 		if (input[start] == '\"' && quote == false)
 			d_quote = ft_change_bool(d_quote);

@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:06:02 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/17 15:16:57 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:49:34 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ bool		change_bool(bool quote, t_lexer *new);
 int			check_valid_token(char c, int i);
 int			next_token_pr(char *input, int start);
 int			lexer_len(char *input, int start);
+int			is_space(char c);
 //LEXER/LEXER
 t_lexer		*make_lexer(char *input);
 //LEXER/PROMPT_LOOP

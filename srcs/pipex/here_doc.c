@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:04:51 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/17 14:08:52 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:47:18 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	fill_here_doc(t_pipex *pipex)
 			free(line);
 			break ;
 		}
-		ft_putstr_fd(line, pipex->infile);
+		ft_fprintf(pipex->infile, "%s\n", line);
 		free(line);
 	}
 	close(pipex->infile);
