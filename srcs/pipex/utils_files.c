@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:10:29 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/17 14:15:56 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/24 08:51:42 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	files_are_valid(t_pipex *pipex, bool should_exit)
 		if (pipex->outfile == FAILURE)
 		{
 			ft_fprintf(STDERR_FILENO, "Fraudistan: %s: Permission denied\n", \
-				pipex->outfile_error);
+				pipex->outfile_error->element);
 			if (should_exit == true)
 				exit(EXIT_FAILURE);
 		}
