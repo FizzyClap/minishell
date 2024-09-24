@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:03:39 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/18 11:46:40 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/24 08:43:27 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	is_builtins(t_cmd *command)
 
 void	execute_builtins(t_pipex *pipex)
 {
-
 	open_files(pipex);
 	if (files_are_valid(pipex, false) == FAILURE)
 		return ;

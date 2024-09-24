@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:04:09 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/18 11:51:37 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/24 08:43:51 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,5 @@ int	is_space(char c)
 	if (c == ' ' || (c >= 9 && c <= 13))
 		return (SUCCESS);
 	else
-		return(FAILURE);
+		return (FAILURE);
 }
