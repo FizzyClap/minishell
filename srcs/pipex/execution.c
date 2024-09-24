@@ -6,7 +6,7 @@
 /*   By: roespici <roespici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 14:04:45 by roespici          #+#    #+#             */
-/*   Updated: 2024/09/17 14:04:46 by roespici         ###   ########.fr       */
+/*   Updated: 2024/09/24 08:40:26 by roespici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static void	execute_child(t_pipex *pipex, int i)
 {
 	here_signals();
 	open_files(pipex);
+	if (!pipex->cmd->cmd)
+		exit(EXIT_SUCCESS);
 	if (i == 0)
 	{
 		if (pipex->nb_pipes > 0)
